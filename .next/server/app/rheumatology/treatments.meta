@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/rheumatology/layout,_N_T_/rheumatology/treatments/layout,_N_T_/rheumatology/treatments/page,_N_T_/rheumatology/treatments"
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/b3b64a506debe28404d77fa37403c37987b9951c6148cdc125b65817d1030273/$/rheumatology/treatments",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/rheumatology/treatments/page"
+    },
+    "isFallback": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/dermatology/layout,_N_T_/dermatology/page,_N_T_/dermatology"
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/9ad93ea10312a3bba4552ac1ee7cf29138340c389d73842217acb7254f0709b1/$/dermatology",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/dermatology/page"
+    },
+    "isFallback": false
+  }
+}

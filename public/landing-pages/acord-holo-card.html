@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>ACORD Clinics Holographic Medical Card</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Bebas+Neue&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap');
+
+    :root {
+      color-scheme: normal;
+      --teal: #13BEB5;
+      --aqua: #21C6C2;
+      --mint: #89EAD7;
+      --pale-aqua: #E6F8F5;
+      --deep-green: #114E3F;
+      --royal: #1F2F98;
+      --azure: #1CA7EC;
+      --ink: #031917;
+      --purple: #7B4FBF;
+      --amber: #F59E2B;
+      --rose: #E8715A;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #FFFFFF !important;
+      color-scheme: light;
+      overscroll-behavior: none;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+      cursor: grab;
+      touch-action: none;
+    }
+    #scene canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+    body.dragging #scene { cursor: grabbing; }
+
+    .hud {
+      position: fixed;
+      margin: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .hud-controls {
+      left: 50%;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hud-btn {
+      padding: 7px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid #13BEB5;
+      box-shadow: 0 4px 14px rgba(19, 190, 181, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 11px;
+      font-weight: 800;
+      color: #0F172A;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .hud-btn:hover {
+      background: #ffffff;
+      border-color: #1F2F98;
+      color: #1F2F98;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(19, 190, 181, 0.3);
+    }
+    .hud-btn:active { transform: translateY(0); }
+
+    .hud-btn-primary {
+      background: #1F2F98;
+      color: #ffffff;
+      border-color: #1CA7EC;
+    }
+    .hud-btn-primary:hover {
+      background: #13BEB5;
+      color: #ffffff;
+      border-color: #13BEB5;
+    }
+
+    @media (max-width: 480px) {
+      .hud-btn { padding: 6px 11px; font-size: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hud-btn { transition: none; }
+    }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="scene" role="img" aria-label="Interactive ACORD Clinics Holographic Card. Tilt with pointer, drag to rotate, double-click or press F to flip 180 degrees."></div>
+
+  <div class="hud hud-controls">
+    <button class="hud-btn" id="btnFlip" title="Flip card 180 degrees (F key)">
+      <span>⇄</span>
+      <span id="flipLabel">Flip 180°</span>
+    </button>
+    <button class="hud-btn hud-btn-primary" id="btnBook" title="Book Consultation with Specialist">
+      <span>📅</span>
+      <span>Book Consultation</span>
+    </button>
+    <button class="hud-btn" id="btnReset" title="Reset View (R key)">
+      <span>↺</span>
+      <span>Reset (R)</span>
+    </button>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+    // Parse variant from URL query (?variant=clinic | dr-aakash | dr-ankita)
+    const urlParams = new URLSearchParams(window.location.search);
+    const variant = urlParams.get('variant') || 'clinic';
+
+    // Setup scene, camera, renderer with generous vertical margins
+    const container = document.getElementById('scene');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xFFFFFF);
+
+    const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 5.1); // Ample breathing room so top/bottom are never cut
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setClearColor(0xFFFFFF, 1.0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1.5 : 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    container.appendChild(renderer.domElement);
+
+    // Post-processing: Render pass + Very Subtle Bloom
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      0.08, // Very subtle strength to keep text 100% crisp and readable
+      0.3,
+      0.92
+    );
+    composer.addPass(bloomPass);
+
+    // Color Grade Finishing Pass
+    const FinishShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        varying vec2 vUv;
+
+        void main() {
+          vec4 c = texture2D(tDiffuse, vUv);
+          gl_FragColor = vec4(c.rgb, 1.0);
+        }
+      `
+    };
+    const finishPass = new ShaderPass(FinishShader);
+    composer.addPass(finishPass);
+
+    // Balanced Stage Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    keyLight.position.set(3, 4, 5);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0x89EAD7, 0.8);
+    rimLight.position.set(-3, -2, -3);
+    scene.add(rimLight);
+
+    // Ambient Cell / Bubble Particles
+    const particleCount = 36;
+    const particleGeo = new THREE.BufferGeometry();
+    const posArray = new Float32Array(particleCount * 3);
+    const particleSpeeds = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      posArray[i * 3 + 0] = (Math.random() - 0.5) * 5.5;
+      posArray[i * 3 + 1] = (Math.random() - 0.5) * 4.5;
+      posArray[i * 3 + 2] = (Math.random() - 0.5) * 3.5;
+      particleSpeeds.push({
+        y: 0.002 + Math.random() * 0.004,
+        x: (Math.random() - 0.5) * 0.0015,
+        r: Math.random() * Math.PI * 2
+      });
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const pCanvas = document.createElement('canvas');
+    pCanvas.width = 64;
+    pCanvas.height = 64;
+    const pCtx = pCanvas.getContext('2d');
+    const pGrad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 30);
+    pGrad.addColorStop(0, 'rgba(137, 234, 215, 0.85)');
+    pGrad.addColorStop(0.4, 'rgba(19, 190, 181, 0.4)');
+    pGrad.addColorStop(1, 'rgba(33, 198, 194, 0)');
+    pCtx.fillStyle = pGrad;
+    pCtx.fillRect(0, 0, 64, 64);
+    const pTexture = new THREE.CanvasTexture(pCanvas);
+
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.14,
+      map: pTexture,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const particleSystem = new THREE.Points(particleGeo, particleMat);
+    scene.add(particleSystem);
+
+    // ─────────────────────────────────────────────────────────────
+    // CARD GEOMETRY & HIGH-CONTRAST CANVAS TEXTURES
+    // ─────────────────────────────────────────────────────────────
+    const CARD_W = 1.76;
+    const CARD_H = 2.58;
+    const CARD_DEPTH = 0.04;
+
+    const logoImg = new Image();
+    logoImg.crossOrigin = 'anonymous';
+    logoImg.src = '/images/acord-logo.png';
+
+    // Generate High-Contrast Front Canvas Texture matching Hero section
+    function createFrontCanvas(logo, vMode = variant) {
+      const c = document.createElement('canvas');
+      c.width = 1024;
+      c.height = 1500;
+      const ctx = c.getContext('2d');
+
+      // 1. Solid Clean Background matching Hero (#F0F9FF -> #FFFFFF -> #F8FAFC)
+      const grad = ctx.createLinearGradient(0, 0, 1024, 1500);
+      grad.addColorStop(0, '#F0F9FF');
+      grad.addColorStop(0.45, '#FFFFFF');
+      grad.addColorStop(1, '#F8FAFC');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1024, 1500);
+
+      // Subtle Background Wave Lines
+      ctx.strokeStyle = 'rgba(19, 190, 181, 0.18)';
+      ctx.lineWidth = 2;
+      for (let y = 100; y < 1450; y += 80) {
+        ctx.beginPath();
+        ctx.moveTo(50, y);
+        ctx.bezierCurveTo(340, y - 35, 680, y + 35, 974, y);
+        ctx.stroke();
+      }
+
+      // 2. High-Contrast Outer Borders
+      ctx.strokeStyle = vMode === 'dr-aakash' ? '#1F2F98' : '#13BEB5';
+      ctx.lineWidth = 12;
+      ctx.strokeRect(36, 36, 952, 1428);
+
+      ctx.strokeStyle = '#21C6C2';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(52, 52, 920, 1396);
+
+      // Corner accent dots
+      ctx.fillStyle = '#13BEB5';
+      ctx.fillRect(40, 40, 20, 20);
+      ctx.fillRect(964, 40, 20, 20);
+      ctx.fillRect(40, 1440, 20, 20);
+      ctx.fillRect(964, 1440, 20, 20);
+
+      if (vMode === 'dr-aakash') {
+        // DR. AAKASH SINGH
+        ctx.fillStyle = '#1F2F98';
+        ctx.font = '900 24px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '5px';
+        ctx.textAlign = 'center';
+        ctx.fillText('DEPARTMENT OF RHEUMATOLOGY & IMMUNOLOGY', 512, 120);
+
+        if (logo && logo.complete && logo.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(31, 47, 152, 0.25)';
+          ctx.shadowBlur = 24;
+          ctx.drawImage(logo, 512 - 180, 160, 360, 360);
+          ctx.restore();
+        }
+
+        ctx.font = '900 68px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '2px';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('DR. AAKASH SINGH', 512, 640);
+
+        ctx.font = '800 26px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#7B4FBF';
+        ctx.fillText('MD (Medicine), DM (Clinical Immunology & Rheumatology)', 512, 690);
+
+        ctx.font = '800 23px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#114E3F';
+        ctx.fillText('AIR 1, PGIMER Chandigarh · AIIMS & JIPMER Alumnus', 512, 735);
+
+        // Solid High-Contrast Pills
+        const pills = [
+          { label: 'Arthritis & SLE Care', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 280, y: 830 },
+          { label: 'Biologics Infusion', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 744, y: 830 },
+          { label: 'MSK Ultrasound', color: '#172554', border: '#1F2F98', bg: '#DBEAFE', x: 280, y: 915 },
+          { label: 'Vasculitis Specialist', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 744, y: 915 }
+        ];
+        pills.forEach(p => {
+          ctx.fillStyle = p.bg;
+          ctx.strokeStyle = p.border;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = p.color;
+          ctx.font = '900 23px "Plus Jakarta Sans"';
+          ctx.fillText(p.label, p.x, p.y + 8);
+        });
+
+        ctx.font = '800 26px "Noto Sans Devanagari"';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('जटिल गठिया एवं ल्यूपस के विशेषज्ञ परामर्श', 512, 1040);
+
+        ctx.fillStyle = '#1F2F98';
+        ctx.font = '900 28px "Plus Jakarta Sans"';
+        ctx.fillText('Director & Lead Consultant', 512, 1150);
+        ctx.fillStyle = '#334155';
+        ctx.font = '700 22px "Plus Jakarta Sans"';
+        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1195);
+
+      } else if (vMode === 'dr-ankita') {
+        // DR. ANKITA PUNDIR
+        ctx.fillStyle = '#13BEB5';
+        ctx.font = '900 24px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '5px';
+        ctx.textAlign = 'center';
+        ctx.fillText('DEPARTMENT OF DERMATOLOGY & AESTHETICS', 512, 120);
+
+        if (logo && logo.complete && logo.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(19, 190, 181, 0.25)';
+          ctx.shadowBlur = 24;
+          ctx.drawImage(logo, 512 - 180, 160, 360, 360);
+          ctx.restore();
+        }
+
+        ctx.font = '900 68px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '2px';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('DR. ANKITA PUNDIR', 512, 640);
+
+        ctx.font = '800 26px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#13BEB5';
+        ctx.fillText('MBBS, MD (Dermatology, Venereology & Leprosy)', 512, 690);
+
+        ctx.font = '800 23px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#1F2F98';
+        ctx.fillText('NEET PG AIR 1488 · AIIMS Rank 456 · S. Korea Fellow', 512, 735);
+
+        const pills = [
+          { label: 'Vitiligo Grafting Surgery', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 280, y: 830 },
+          { label: 'FUE Hair Transplant', color: '#451A03', border: '#F59E2B', bg: '#FEF3C7', x: 744, y: 830 },
+          { label: 'Laser Aesthetics', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 280, y: 915 },
+          { label: 'Botox & Thread Lifts', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 744, y: 915 }
+        ];
+        pills.forEach(p => {
+          ctx.fillStyle = p.bg;
+          ctx.strokeStyle = p.border;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = p.color;
+          ctx.font = '900 23px "Plus Jakarta Sans"';
+          ctx.fillText(p.label, p.x, p.y + 8);
+        });
+
+        ctx.font = '800 26px "Noto Sans Devanagari"';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('त्वचा, बाल एवं विटिलिगो सर्जरी की उन्नत तकनीक', 512, 1040);
+
+        ctx.fillStyle = '#13BEB5';
+        ctx.font = '900 28px "Plus Jakarta Sans"';
+        ctx.fillText('Director & Senior Dermatosurgeon', 512, 1150);
+        ctx.fillStyle = '#334155';
+        ctx.font = '700 22px "Plus Jakarta Sans"';
+        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1195);
+
+      } else {
+        // CLINIC DEFAULT EMBLEM
+        ctx.fillStyle = '#114E3F';
+        ctx.font = '900 24px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '5px';
+        ctx.textAlign = 'center';
+        ctx.fillText('SUPER-SPECIALITY CENTRE OF EXCELLENCE', 512, 120);
+
+        if (logo && logo.complete && logo.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(19, 190, 181, 0.25)';
+          ctx.shadowBlur = 24;
+          ctx.drawImage(logo, 512 - 200, 160, 400, 400);
+          ctx.restore();
+        }
+
+        ctx.font = '900 78px "Plus Jakarta Sans"';
+        ctx.letterSpacing = '4px';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('ACORD CLINICS', 512, 670);
+
+        // High contrast colored underline
+        const uGrad = ctx.createLinearGradient(260, 0, 764, 0);
+        uGrad.addColorStop(0, '#13BEB5');
+        uGrad.addColorStop(0.5, '#1F2F98');
+        uGrad.addColorStop(1, '#21C6C2');
+        ctx.fillStyle = uGrad;
+        ctx.fillRect(260, 695, 504, 7);
+
+        ctx.font = '700 27px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#0F172A';
+        ctx.letterSpacing = '1px';
+        ctx.fillText('Autoimmunity Centre Of excellence in', 512, 760);
+        ctx.font = '900 30px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#1F2F98';
+        ctx.fillText('Rheumatology & Dermatology', 512, 805);
+
+        const pills = [
+          { label: 'Arthritis & SLE', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 280, y: 890 },
+          { label: 'Cold-Chain Biologics', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 744, y: 890 },
+          { label: 'Vitiligo Surgery', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 280, y: 975 },
+          { label: 'Lasers & Hair FUE', color: '#451A03', border: '#F59E2B', bg: '#FEF3C7', x: 744, y: 975 }
+        ];
+
+        pills.forEach(p => {
+          ctx.fillStyle = p.bg;
+          ctx.strokeStyle = p.border;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = p.color;
+          ctx.font = '900 24px "Plus Jakarta Sans"';
+          ctx.fillText(p.label, p.x, p.y + 8);
+        });
+
+        ctx.font = '800 26px "Noto Sans Devanagari"';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('स्वास्थ्य और आत्मविश्वास की ओर सही मार्ग', 512, 1090);
+
+        ctx.fillStyle = '#1F2F98';
+        ctx.font = '900 28px "Plus Jakarta Sans"';
+        ctx.fillText('Gorakhpur (UP) · Bhagalpur (Bihar)', 512, 1190);
+
+        ctx.fillStyle = '#334155';
+        ctx.font = '700 22px "Plus Jakarta Sans"';
+        ctx.fillText('Purvanchal · Bihar · Jharkhand Super-Speciality', 512, 1235);
+      }
+
+      ctx.font = '800 20px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#13BEB5';
+      ctx.fillText('✦ TAP OR DOUBLE-CLICK TO FLIP 180° ✦', 512, 1370);
+
+      return c;
+    }
+
+    // Generate High-Contrast Back Canvas Texture
+    function createBackCanvas() {
+      const c = document.createElement('canvas');
+      c.width = 1024;
+      c.height = 1500;
+      const ctx = c.getContext('2d');
+
+      // 1. Clean Background matching Hero
+      const grad = ctx.createLinearGradient(0, 0, 1024, 1500);
+      grad.addColorStop(0, '#F0F9FF');
+      grad.addColorStop(0.5, '#FFFFFF');
+      grad.addColorStop(1, '#F8FAFC');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1024, 1500);
+
+      // Borders
+      ctx.strokeStyle = '#1F2F98';
+      ctx.lineWidth = 12;
+      ctx.strokeRect(36, 36, 952, 1428);
+
+      ctx.strokeStyle = '#13BEB5';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(52, 52, 920, 1396);
+
+      // Header
+      ctx.fillStyle = '#1F2F98';
+      ctx.font = '900 48px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCOPE OF SERVICES', 512, 120);
+
+      ctx.fillStyle = '#114E3F';
+      ctx.font = '800 23px "Plus Jakarta Sans"';
+      ctx.fillText('Super-Speciality Protocols & Advanced Therapeutics', 512, 165);
+
+      // Department 1: Rheumatology & Immunology
+      ctx.fillStyle = '#F5F3FF';
+      ctx.strokeStyle = '#7B4FBF';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(70, 205, 884, 380, 24);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#4C1D95';
+      ctx.font = '900 30px "Plus Jakarta Sans"';
+      ctx.fillText('RHEUMATOLOGY & AUTOIMMUNITY', 110, 260);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 23px "Plus Jakarta Sans"';
+      const rheumBullets = [
+        '• Inflammatory Arthritis (Rheumatoid, Ankylosing, Gout)',
+        '• Lupus (SLE), Scleroderma, Myositis & CTDs',
+        '• In-House Cold-Chain Targeted Biologics Infusions',
+        '• MSK Ultrasound Guided Joint Injections & Biopsies',
+        '• Systemic Vasculitis & Complex Autoimmune Care'
+      ];
+      rheumBullets.forEach((b, i) => {
+        ctx.fillText(b, 110, 315 + i * 48);
+      });
+
+      // Department 2: Dermatology, Lasers & Hair
+      ctx.fillStyle = '#F0FDFA';
+      ctx.strokeStyle = '#0D9488';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(70, 610, 884, 380, 24);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#115E59';
+      ctx.font = '900 30px "Plus Jakarta Sans"';
+      ctx.fillText('DERMATOLOGY, LASERS & AESTHETICS', 110, 665);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 23px "Plus Jakarta Sans"';
+      const dermBullets = [
+        '• Vitiligo Epidermal Cell Suspension & Grafting Surgery',
+        '• Micro-FUE Hair Restoration & QR678® Bio-Peptides',
+        '• Triple-Wavelength Diode Laser Hair Reduction',
+        '• Q-Switched Nd:YAG Laser for Melasma & Pigmentation',
+        '• Botox®, Fillers, Thread Lifts & Medical Chemical Peels'
+      ];
+      dermBullets.forEach((b, i) => {
+        ctx.fillText(b, 110, 720 + i * 48);
+      });
+
+      // Direct Appointment Lines Box
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#1F2F98';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(70, 1015, 884, 180, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#1F2F98';
+      ctx.font = '900 26px "Plus Jakarta Sans"';
+      ctx.fillText('DIRECT CLINIC APPOINTMENT LINES', 512, 1060);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 25px "Plus Jakarta Sans"';
+      ctx.fillText('Gorakhpur: +91 77029 41735 / +91 91980 43636', 512, 1110);
+      ctx.fillText('Bhagalpur: +91 79034 68113', 512, 1155);
+
+      // Book Consultation CTA Button
+      const btnGrad = ctx.createLinearGradient(200, 1225, 824, 1340);
+      btnGrad.addColorStop(0, '#1F2F98');
+      btnGrad.addColorStop(0.5, '#13BEB5');
+      btnGrad.addColorStop(1, '#0D9488');
+      ctx.fillStyle = btnGrad;
+      ctx.beginPath();
+      ctx.roundRect(220, 1225, 584, 94, 47);
+      ctx.fill();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 32px "Plus Jakarta Sans"';
+      ctx.fillText('📅 BOOK CONSULTATION', 512, 1285);
+
+      ctx.font = '800 20px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#13BEB5';
+      ctx.fillText('✦ DOUBLE-CLICK OR PRESS F TO FLIP BACK ✦', 512, 1380);
+
+      return c;
+    }
+
+    // Refined High-Contrast Foil Shader
+    const FoilHoloShader = {
+      uniforms: {
+        tColor: { value: null },
+        uTime: { value: 0 },
+        uPointer: { value: new THREE.Vector2(0.5, 0.5) },
+        uTeal: { value: new THREE.Color('#13BEB5') },
+        uAqua: { value: new THREE.Color('#21C6C2') },
+        uMint: { value: new THREE.Color('#89EAD7') },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vNormalWorld;
+        varying vec3 vViewDir;
+
+        void main() {
+          vUv = uv;
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vNormalWorld = normalize(mat3(modelMatrix) * normal);
+          vViewDir = normalize(cameraPosition - worldPos.xyz);
+          gl_Position = projectionMatrix * viewMatrix * worldPos;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tColor;
+        uniform float uTime;
+        uniform vec2 uPointer;
+        uniform vec3 uTeal;
+        uniform vec3 uAqua;
+        uniform vec3 uMint;
+
+        varying vec2 vUv;
+        varying vec3 vNormalWorld;
+        varying vec3 vViewDir;
+
+        void main() {
+          vec4 baseColor = texture2D(tColor, vUv);
+
+          // Subtle rim reflection that doesn't wash out text
+          float fresnel = pow(1.0 - max(dot(vNormalWorld, vViewDir), 0.0), 3.0);
+
+          // Pointer-reactive iridescent glint
+          vec2 pOffset = vUv - uPointer;
+          float pDist = length(pOffset);
+          float shimmer = sin(pDist * 16.0 - uTime * 1.2) * 0.5 + 0.5;
+
+          vec3 holo = mix(uTeal, uAqua, sin(vUv.x * 6.28 + uTime * 0.4) * 0.5 + 0.5);
+          holo = mix(holo, uMint, sin(vUv.y * 6.28 - uTime * 0.3) * 0.5 + 0.5);
+
+          // Preserve dark text and sharp contrast: only apply sheen to lighter areas
+          float lum = dot(baseColor.rgb, vec3(0.299, 0.587, 0.114));
+          vec3 finalRgb = baseColor.rgb;
+          if (lum > 0.55) {
+            finalRgb += holo * shimmer * 0.08 + uMint * fresnel * 0.12;
+          } else {
+            // Dark text stays razor sharp and deep
+            finalRgb = mix(baseColor.rgb, holo * 0.4, fresnel * 0.05);
+          }
+
+          gl_FragColor = vec4(finalRgb, baseColor.a);
+        }
+      `
+    };
+
+    const cardGroup = new THREE.Group();
+    scene.add(cardGroup);
+
+    const frontCanvas = createFrontCanvas(logoImg);
+    const frontTexture = new THREE.CanvasTexture(frontCanvas);
+    frontTexture.colorSpace = THREE.SRGBColorSpace;
+    frontTexture.anisotropy = 16;
+
+    const backCanvas = createBackCanvas();
+    const backTexture = new THREE.CanvasTexture(backCanvas);
+    backTexture.colorSpace = THREE.SRGBColorSpace;
+    backTexture.anisotropy = 16;
+
+    logoImg.onload = () => {
+      const refreshedFront = createFrontCanvas(logoImg);
+      frontTexture.image = refreshedFront;
+      frontTexture.needsUpdate = true;
+    };
+
+    const frontMat = new THREE.ShaderMaterial({
+      uniforms: {
+        ...THREE.UniformsUtils.clone(FoilHoloShader.uniforms),
+        tColor: { value: frontTexture }
+      },
+      vertexShader: FoilHoloShader.vertexShader,
+      fragmentShader: FoilHoloShader.fragmentShader
+    });
+
+    const backMat = new THREE.ShaderMaterial({
+      uniforms: {
+        ...THREE.UniformsUtils.clone(FoilHoloShader.uniforms),
+        tColor: { value: backTexture }
+      },
+      vertexShader: FoilHoloShader.vertexShader,
+      fragmentShader: FoilHoloShader.fragmentShader
+    });
+
+    const edgeMat = new THREE.MeshStandardMaterial({
+      color: 0x13BEB5,
+      metalness: 0.7,
+      roughness: 0.25,
+      emissive: 0x114E3F,
+      emissiveIntensity: 0.15
+    });
+
+    const frontPlaneGeo = new THREE.PlaneGeometry(CARD_W, CARD_H, 32, 32);
+    const frontMesh = new THREE.Mesh(frontPlaneGeo, frontMat);
+    frontMesh.position.z = CARD_DEPTH / 2 + 0.001;
+    cardGroup.add(frontMesh);
+
+    const backPlaneGeo = new THREE.PlaneGeometry(CARD_W, CARD_H, 32, 32);
+    const backMesh = new THREE.Mesh(backPlaneGeo, backMat);
+    backMesh.position.z = -(CARD_DEPTH / 2 + 0.001);
+    backMesh.rotation.y = Math.PI;
+    cardGroup.add(backMesh);
+
+    const cardBoxGeo = new THREE.BoxGeometry(CARD_W, CARD_H, CARD_DEPTH);
+    const cardBoxMesh = new THREE.Mesh(cardBoxGeo, edgeMat);
+    cardGroup.add(cardBoxMesh);
+
+    // Interaction controls
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+    let currentRotationX = 0;
+    let currentRotationY = 0;
+    let isFlipped = false;
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+    let pointerPos = new THREE.Vector2(0.5, 0.5);
+
+    function toggleFlip() {
+      isFlipped = !isFlipped;
+      targetRotationY = isFlipped ? Math.PI : 0;
+      targetRotationX = 0;
+      document.getElementById('flipLabel').textContent = isFlipped ? 'Show Front' : 'Flip 180°';
+    }
+
+    function resetView() {
+      isFlipped = false;
+      targetRotationX = 0;
+      targetRotationY = 0;
+      document.getElementById('flipLabel').textContent = 'Flip 180°';
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      const normX = e.clientX / window.innerWidth;
+      const normY = e.clientY / window.innerHeight;
+      pointerPos.set(normX, normY);
+
+      if (isDragging) {
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+        targetRotationY += deltaX * 0.008;
+        targetRotationX += deltaY * 0.008;
+        targetRotationX = Math.max(-1.1, Math.min(1.1, targetRotationX));
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+      } else {
+        const tiltX = (normY - 0.5) * -0.38;
+        const tiltY = (normX - 0.5) * 0.38;
+        if (!isFlipped) {
+          targetRotationX = tiltX;
+          targetRotationY = tiltY;
+        } else {
+          targetRotationX = tiltX;
+          targetRotationY = Math.PI - tiltY;
+        }
+      }
+    });
+
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.hud-btn')) return;
+      isDragging = true;
+      document.body.classList.add('dragging');
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+    });
+
+    window.addEventListener('pointerup', () => {
+      isDragging = false;
+      document.body.classList.remove('dragging');
+    });
+
+    window.addEventListener('dblclick', (e) => {
+      if (e.target.closest('.hud-btn')) return;
+      toggleFlip();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'f' || e.key === 'F') toggleFlip();
+      if (e.key === 'r' || e.key === 'R') resetView();
+      if (e.key === 'ArrowLeft') targetRotationY -= 0.2;
+      if (e.key === 'ArrowRight') targetRotationY += 0.2;
+      if (e.key === 'ArrowUp') targetRotationX -= 0.2;
+      if (e.key === 'ArrowDown') targetRotationX += 0.2;
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      camera.position.z += e.deltaY * 0.002;
+      camera.position.z = Math.max(3.8, Math.min(6.2, camera.position.z));
+    }, { passive: false });
+
+    document.getElementById('btnFlip').addEventListener('click', toggleFlip);
+    document.getElementById('btnReset').addEventListener('click', resetView);
+    document.getElementById('btnBook').addEventListener('click', () => {
+      window.parent.postMessage({ type: 'acord:book', variant: variant }, '*');
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    let isTabVisible = !document.hidden;
+    document.addEventListener('visibilitychange', () => {
+      isTabVisible = !document.hidden;
+    });
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isTabVisible) return;
+
+      const delta = clock.getDelta();
+      const elapsed = clock.getElapsedTime();
+
+      currentRotationX += (targetRotationX - currentRotationX) * 0.1;
+      currentRotationY += (targetRotationY - currentRotationY) * 0.1;
+
+      cardGroup.rotation.x = currentRotationX;
+      cardGroup.rotation.y = currentRotationY;
+
+      frontMat.uniforms.uTime.value = elapsed;
+      frontMat.uniforms.uPointer.value = pointerPos;
+      backMat.uniforms.uTime.value = elapsed;
+      backMat.uniforms.uPointer.value = pointerPos;
+
+      const pos = particleGeo.attributes.position.array;
+      for (let i = 0; i < particleCount; i++) {
+        pos[i * 3 + 1] += particleSpeeds[i].y;
+        pos[i * 3 + 0] += Math.sin(elapsed + particleSpeeds[i].r) * 0.0012;
+
+        if (pos[i * 3 + 1] > 2.6) {
+          pos[i * 3 + 1] = -2.2;
+          pos[i * 3 + 0] = (Math.random() - 0.5) * 5.5;
+        }
+      }
+      particleGeo.attributes.position.needsUpdate = true;
+
+      composer.render();
+    }
+    animate();
+  </script>
+</body>
+</html>

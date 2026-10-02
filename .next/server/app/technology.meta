@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/technology/layout,_N_T_/technology/page,_N_T_/technology"
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/d623dc6484298df5f6c460a12824d7e04e141d9ec6df1900ac7a17927a344b97/$/technology",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/technology/page"
+    },
+    "isFallback": false
+  }
+}

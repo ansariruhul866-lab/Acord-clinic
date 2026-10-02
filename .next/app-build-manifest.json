@@ -1,0 +1,257 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/app/_not-found/page-f187ad254cc1b0eb.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/app/not-found-9093aa2fc3f173fd.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/css/0970202980df186b.css",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/376-7d446196ba60b66e.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/layout-bf19bfc0b8674a5a.js"
+    ],
+    "/about/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/376-7d446196ba60b66e.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/about/page-bedae7f39a1b462d.js"
+    ],
+    "/contact/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/contact/page-d4121fd941ee5fa4.js"
+    ],
+    "/dermatology/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/dermatology/page-c7b118fd141eb011.js"
+    ],
+    "/book-appointment/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/book-appointment/page-56315974def30c79.js"
+    ],
+    "/doctors/[slug]/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/doctors/[slug]/page-cb9f88a4fd8c1293.js"
+    ],
+    "/doctors/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/doctors/page-df1f4faefcaf4b26.js"
+    ],
+    "/dermatology/treatments/[slug]/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/dermatology/treatments/[slug]/page-5f2ceb491a38f1b5.js"
+    ],
+    "/locations/[slug]/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/locations/[slug]/page-e2c3179c9e51dd96.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/337-33f1e513b76af677.js",
+      "static/chunks/app/page-4234e757c758b137.js"
+    ],
+    "/medical-disclaimer/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/app/medical-disclaimer/page-c17f5a860b7b94d8.js"
+    ],
+    "/locations/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/locations/page-c90723fe917766a0.js"
+    ],
+    "/patient-hub/faq/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/patient-hub/faq/page-faba456f2dac16df.js"
+    ],
+    "/patient-hub/blog/[slug]/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/patient-hub/blog/[slug]/page-16d122b92f892af7.js"
+    ],
+    "/patient-hub/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/patient-hub/page-2f322e599f3b1fa9.js"
+    ],
+    "/privacy-policy/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/privacy-policy/page-0f64abb86f8a8011.js"
+    ],
+    "/results/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/results/page-a5497dce0c19c7c0.js"
+    ],
+    "/rheumatology/conditions/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/rheumatology/conditions/page-7a0201aa4d694b9c.js"
+    ],
+    "/rheumatology/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/337-33f1e513b76af677.js",
+      "static/chunks/app/rheumatology/page-e1714d4bcd88794c.js"
+    ],
+    "/rheumatology/treatments/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/rheumatology/treatments/page-56f3645b614740d9.js"
+    ],
+    "/rheumatology/procedures/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/rheumatology/procedures/page-cafbc4f83e883b5f.js"
+    ],
+    "/rheumatology/conditions/[slug]/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/rheumatology/conditions/[slug]/page-f2cd649a075832b6.js"
+    ],
+    "/rheumatology/symptom-finder/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/337-33f1e513b76af677.js",
+      "static/chunks/app/rheumatology/symptom-finder/page-16d242a50256e08e.js"
+    ],
+    "/technology/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/technology/page-6ca40d7ff084f290.js"
+    ],
+    "/terms/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/app/terms/page-2dac2564cdf3f5af.js"
+    ],
+    "/testimonials/page": [
+      "static/chunks/webpack-153925e87036407a.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-ce8c7c75002f810b.js",
+      "static/chunks/main-app-241c646646729419.js",
+      "static/chunks/619-ba102abea3e3d0e4.js",
+      "static/chunks/89-28495f902c6f5ea1.js",
+      "static/chunks/app/testimonials/page-5d6cbc7b7dc9693f.js"
+    ]
+  }
+}

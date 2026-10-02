@@ -1,0 +1,188 @@
+"use client";
+import React from "react";
+import Link from "next/link";
+import { CLINIC_INFO, DOCTORS } from "@/lib/data";
+import { useLanguage } from "@/lib/language-context";
+import { useBooking } from "@/lib/booking-context";
+import AcordLogo from "@/components/AcordLogo";
+import { Award, ShieldCheck, Sparkles, Building, ArrowRight, HeartHandshake } from "lucide-react";
+
+export default function AboutPage() {
+  const { t, isHindi } = useLanguage();
+  const { openBooking } = useBooking();
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900 py-14 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto space-y-16">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <span>/</span>
+          <span className="text-[#1F2F98] font-semibold">About ACORD</span>
+        </div>
+
+        {/* Hero Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1CA7EC]/10 border border-[#1CA7EC]/30 text-[#1F2F98] text-xs font-semibold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-[#1CA7EC]" />
+              <span>{t("Origin & Philosophy", "हमारी उत्पत्ति एवं सिद्धांत")}</span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              {t("Autoimmunity Centre Of excellence in Rheumatology & Dermatology", "ऑटोइम्यूनिटी सेंटर ऑफ एक्सीलेंस इन रुमेटोलॉजी एंड डर्मेटोलॉजी")}
+            </h1>
+            <p className="text-base text-slate-600 leading-relaxed">
+              {t(
+                "ACORD Clinics was founded by AIIMS and PGIMER trained specialists to bridge the acute super-speciality deficit in Eastern Uttar Pradesh, Bihar, and Jharkhand. We unite advanced immunological science with medical aesthetics under one patient-first sanctuary.",
+                "ACORD क्लिनिक्स की स्थापना एम्स एवं पीजीआईएमईआर प्रशिक्षित विशेषज्ञों द्वारा पूर्वांचल, बिहार और झारखंड में विश्वस्तरीय रुमेटोलॉजी और त्वचा रोग चिकित्सा उपलब्ध कराने हेतु की गई।"
+              )}
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <button
+                onClick={() => openBooking()}
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white font-bold text-sm hover:opacity-95 transition-all shadow-md shadow-[#1CA7EC]/20"
+              >
+                {t("Book Consultation", "परामर्श बुक करें")}
+              </button>
+              <Link
+                href="/doctors"
+                className="px-6 py-3 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-sm transition-all flex items-center gap-2 shadow-sm"
+              >
+                <span>{t("Meet the Directors", "विशेषज्ञों से मिलें")}</span>
+                <ArrowRight className="w-4 h-4 text-[#1CA7EC]" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="relative p-8 rounded-3xl bg-[#F0F9FF] border border-[#1CA7EC]/30 flex flex-col items-center text-center space-y-4 shadow-sm">
+              <AcordLogo size={140} showText={false} />
+              <div className="space-y-1">
+                <span className="font-display text-2xl tracking-wider text-[#1F2F98]">A • C • O • R • D</span>
+                <p className="text-xs text-[#1CA7EC] font-semibold">Autoimmunity • Care • Outcome • Research • Dermatology</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Pillars / Values */}
+        <div className="space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              {t("Our Guiding Clinical Values", "हमारे मार्गदर्शक सिद्धांत")}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600">
+              {t("Uncompromising scientific standards with compassionate patient communication.", "सच्चा वैज्ञानिक दृष्टिकोण एवं पूर्ण नैतिक चिकित्सा।")}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-3xl bg-[#F8FAFC] border border-slate-200 hover:border-[#1CA7EC]/60 transition-all space-y-3 shadow-sm hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-[#1CA7EC] shadow-sm">
+                <Award className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">{t("Tier-1 Academic Pedigree", "सर्वोच्च शैक्षणिक योग्यता")}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {t("Trained directly at PGIMER Chandigarh (AIR 1 DM) and AIIMS, bringing international protocols to Gorakhpur and Bhagalpur.", "पीजीआईएमईआर चंडीगढ़ (AIR 1 DM) एवं एम्स से प्रशिक्षित डॉक्टरों द्वारा प्रामाणिक इलाज।")}
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[#F8FAFC] border border-slate-200 hover:border-[#1CA7EC]/60 transition-all space-y-3 shadow-sm hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-[#1CA7EC] shadow-sm">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">{t("Zero-Prescription Kickbacks", "पूर्ण नैतिक एवं पारदर्शी चिकित्सा")}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {t("We strictly practice rational drug prescriptions with no unnecessary investigations or duplicate testing.", "बिना किसी अनावश्यक जांच या फालतू दवाओं के केवल प्रमाण-आधारित वैज्ञानिक उपचार।")}
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[#F8FAFC] border border-slate-200 hover:border-[#1CA7EC]/60 transition-all space-y-3 shadow-sm hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-[#1CA7EC] shadow-sm">
+                <HeartHandshake className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">{t("Integrated Dual-Specialty Care", "रुमेटोलॉजी व त्वचा का समन्वय")}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {t("Many autoimmune diseases simultaneously attack skin and joints (Psoriasis, Lupus, Scleroderma). Here, both specialists consult synchronously.", "सोरायसिस, ल्यूपस जैसी बीमारियों में त्वचा एवं जोड़ों दोनों का एक ही छत के नीचे समन्वित इलाज।")}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Doctor Founders Grid */}
+        <div className="space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              {t("Founding Specialists", "संस्थापक विशेषज्ञ")}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600">
+              {t("Recognised clinical leaders serving Purvanchal, Bihar, and Jharkhand.", "पूर्वांचल एवं बिहार में विश्वसनीय सुपर-स्पेशलिस्ट डॉक्टर।")}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {DOCTORS.map((doc) => (
+              <div key={doc.id} className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6 flex flex-col justify-between shadow-sm hover:shadow-md">
+                <div className="space-y-4">
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 relative">
+                    <img src={doc.image} alt={doc.name} className="w-full h-full object-cover object-top" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                      <span className="px-2.5 py-1 rounded-lg bg-[#1F2F98] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
+                        {doc.specialty === "rheumatology" ? "Rheumatology & Immunology" : "Dermatology & Aesthetics"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{isHindi ? doc.nameHi : doc.name}</h3>
+                    <p className="text-xs sm:text-sm text-[#1CA7EC] font-semibold">{isHindi ? doc.roleHi : doc.role}</p>
+                    <p className="text-xs text-slate-500 font-mono mt-0.5">{doc.degrees}</p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {isHindi ? doc.bioHi : doc.bio}
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex gap-3">
+                  <button
+                    onClick={() => openBooking({ specialty: doc.specialty, doctor: doc.id })}
+                    className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white font-bold text-xs hover:opacity-95 transition-all shadow-sm"
+                  >
+                    {t("Book Appointment", "परामर्श बुक करें")}
+                  </button>
+                  <Link
+                    href={`/doctors/${doc.slug}`}
+                    className="py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors flex items-center gap-1"
+                  >
+                    <span>{t("Profile", "विवरण")}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#1CA7EC]" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Clinic Branches */}
+        <div className="p-8 rounded-3xl bg-[#F0F9FF] border border-[#1CA7EC]/30 space-y-6">
+          <div className="flex items-center gap-3">
+            <Building className="w-6 h-6 text-[#1CA7EC]" />
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{t("Clinic Super-Speciality Centres", "हमारे प्रमुख केंद्र")}</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {CLINIC_INFO.branches.map((b) => (
+              <div key={b.id} className="p-5 rounded-2xl bg-white border border-slate-200 space-y-2 shadow-sm">
+                <span className="text-xs font-bold text-[#1F2F98] uppercase tracking-wider">{b.city} Flagship</span>
+                <h4 className="text-base font-bold text-slate-900">{b.city}, {b.state}</h4>
+                <p className="text-xs text-slate-600">{b.address}</p>
+                <p className="text-xs text-[#1CA7EC] font-mono font-bold pt-1">Ph: {b.phoneDisplay || b.phone}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

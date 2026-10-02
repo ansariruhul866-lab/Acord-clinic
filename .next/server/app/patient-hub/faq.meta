@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/patient-hub/layout,_N_T_/patient-hub/faq/layout,_N_T_/patient-hub/faq/page,_N_T_/patient-hub/faq"
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/898408aacc9c80371d4d36d65118fc162c6d567dbaeec66c8796d568c8ec35fa/$/patient-hub/faq",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/patient-hub/faq/page"
+    },
+    "isFallback": false
+  }
+}
