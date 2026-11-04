@@ -86,7 +86,9 @@ export const Navbar = () => {
             onMouseEnter={() => setRheumMegaOpen(true)}
             onMouseLeave={() => setRheumMegaOpen(false)}
           >
-            <button
+            <Link
+              href="/rheumatology"
+              onClick={() => setRheumMegaOpen(false)}
               className={`px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
                 pathname.startsWith("/rheumatology") || rheumMegaOpen
                   ? "text-[#1CA7EC] bg-[#1CA7EC]/10 font-bold"
@@ -95,7 +97,7 @@ export const Navbar = () => {
             >
               <span>{t("Rheumatology", "रूमेटोलॉजी")}</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${rheumMegaOpen ? "rotate-180 text-[#1F2F98]" : ""}`} />
-            </button>
+            </Link>
 
             {rheumMegaOpen && (
               <div className="absolute top-[calc(100%+8px)] left-0 w-[680px] rounded-3xl bg-white border border-slate-200 shadow-[0_30px_70px_-10px_rgba(15,23,42,0.22),0_0_1px_rgba(0,0,0,0.1)] p-6 grid grid-cols-12 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
@@ -181,7 +183,9 @@ export const Navbar = () => {
             onMouseEnter={() => setDermMegaOpen(true)}
             onMouseLeave={() => setDermMegaOpen(false)}
           >
-            <button
+            <Link
+              href="/dermatology"
+              onClick={() => setDermMegaOpen(false)}
               className={`px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
                 pathname.startsWith("/dermatology") || dermMegaOpen
                   ? "text-[#1CA7EC] bg-[#1CA7EC]/10 font-bold"
@@ -190,7 +194,7 @@ export const Navbar = () => {
             >
               <span>{t("Dermatology & Hair", "त्वचा एवं बाल")}</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dermMegaOpen ? "rotate-180 text-[#1CA7EC]" : ""}`} />
-            </button>
+            </Link>
 
             {dermMegaOpen && (
               <div className="absolute top-[calc(100%+8px)] left-0 w-[680px] rounded-3xl bg-white border border-slate-200 shadow-[0_30px_70px_-10px_rgba(15,23,42,0.22),0_0_1px_rgba(0,0,0,0.1)] p-6 grid grid-cols-12 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
