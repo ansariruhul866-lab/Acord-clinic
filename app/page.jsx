@@ -55,12 +55,12 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 overflow-hidden">
       {/* SECTION 1: MINIMALIST & PREMIUM LIGHT HERO */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-16 bg-gradient-to-b from-[#F0F9FF]/80 via-white to-[#F8FAFC] isolate z-0">
+      <section className="relative flex items-center justify-center px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16 bg-gradient-to-b from-[#F0F9FF]/80 via-white to-[#F8FAFC] isolate z-0">
         {/* Subtle luminous ambient glows with brand colors */}
         <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#1CA7EC]/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 w-[450px] h-[450px] bg-[#4ADEDE]/15 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+        <div className="relative max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Column */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left z-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#1CA7EC]/30 shadow-sm text-[#1F2F98] text-xs font-bold tracking-wide">

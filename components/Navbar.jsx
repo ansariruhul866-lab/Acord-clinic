@@ -67,10 +67,10 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 py-2.5 shadow-sm"
-          : "bg-white/90 backdrop-blur-md border-b border-slate-100 py-3.5"
+          ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 py-2 sm:py-2.5 shadow-sm"
+          : "bg-white/95 backdrop-blur-md border-b border-slate-100 py-2.5 sm:py-3.5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -379,7 +379,7 @@ export const Navbar = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-full bg-white border-b border-slate-200 p-6 space-y-5 shadow-2xl max-h-[85vh] overflow-y-auto z-50">
+        <div className="lg:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 p-6 space-y-5 shadow-2xl max-h-[85vh] overflow-y-auto z-50">
           {/* Mobile Language Switcher */}
           <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">

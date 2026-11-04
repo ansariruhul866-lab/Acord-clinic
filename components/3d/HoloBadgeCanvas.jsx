@@ -31,16 +31,16 @@ export const HoloBadgeCanvas = () => {
       </div>
 
       {/* Interactive Variant Tabs */}
-      <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/90 border border-[#13BEB5]/30 shadow-md mt-4 z-20 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-center gap-1 p-1 rounded-full bg-white/90 border border-[#13BEB5]/30 shadow-sm mt-3 z-20 backdrop-blur-md">
         {variants.map((v) => {
           const isSelected = selectedVariant === v.id;
           return (
             <button
               key={v.id}
               onClick={() => setSelectedVariant(v.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1.5 ${
                 isSelected
-                  ? "bg-gradient-to-r from-[#1F2F98] to-[#13BEB5] text-white shadow-md shadow-[#13BEB5]/25"
+                  ? "bg-gradient-to-r from-[#1F2F98] to-[#13BEB5] text-white shadow-sm"
                   : "text-slate-600 hover:text-[#114E3F] hover:bg-slate-100"
               }`}
             >

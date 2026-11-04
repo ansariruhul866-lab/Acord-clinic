@@ -104,11 +104,12 @@ export function AcordHoloCard({
   return (
     <div
       ref={hostRef}
-      className={`relative w-full max-w-[380px] sm:max-w-[430px] h-[540px] sm:h-[580px] mx-auto select-none bg-[#eaf7fe] rounded-3xl overflow-hidden shadow-2xl shadow-[#13BEB5]/25 border border-[#13BEB5]/30 ${className}`}
+      className={`relative w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[400px] h-[390px] sm:h-[460px] lg:h-[510px] mx-auto select-none bg-[#eaf7fe] rounded-3xl overflow-hidden shadow-xl shadow-[#13BEB5]/20 border border-[#13BEB5]/30 touch-pan-y ${className}`}
       role="region"
       aria-label="Interactive ACORD Clinics holographic medical card"
       style={{
         background: "#eaf7fe",
+        touchAction: "pan-y",
         ...style,
       }}
     >
@@ -127,17 +128,18 @@ export function AcordHoloCard({
             border: 0,
             opacity: ready ? 1 : 0,
             pointerEvents: ready ? "auto" : "none",
+            touchAction: "pan-y",
           }}
         />
       ) : null}
 
       {/* Instant Static Poster / Low-End Fallback Card */}
       {(!mounted || !ready) && (
-        <div className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 rounded-3xl bg-[#eaf7fe] text-slate-800 shadow-sm z-0">
-          <div className="flex items-center justify-between border-b border-[#13BEB5]/20 pb-3">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#13BEB5] animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#114E3F]">
+        <div className="absolute inset-0 w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-3xl bg-[#eaf7fe] text-slate-800 shadow-sm z-0">
+          <div className="flex items-center justify-between border-b border-[#13BEB5]/20 pb-2">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#13BEB5] animate-pulse" />
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#114E3F]">
                 {safeVariant === "dr-aakash"
                   ? "Rheumatology & Immunology"
                   : safeVariant === "dr-ankita"
@@ -145,13 +147,13 @@ export function AcordHoloCard({
                   : "ACORD Clinics Super-Speciality"}
               </span>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#1F2F98] text-[10px] font-bold">
+            <span className="px-1.5 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#1F2F98] text-[9px] font-bold">
               3D Medical Badge
             </span>
           </div>
 
-          <div className="flex flex-col items-center text-center my-auto space-y-3 py-4">
-            <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-[#1F2F98] via-[#13BEB5] to-[#89EAD7] shadow-lg overflow-hidden flex items-center justify-center">
+          <div className="flex flex-col items-center text-center my-auto space-y-2 py-2">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-tr from-[#1F2F98] via-[#13BEB5] to-[#89EAD7] shadow-md overflow-hidden flex items-center justify-center">
               {safeVariant === "dr-aakash" ? (
                 <img
                   src="/images/dr-aakash-singh.jpg"
@@ -173,45 +175,45 @@ export function AcordHoloCard({
               )}
             </div>
 
-            <h3 className="text-2xl font-black tracking-tight text-[#1F2F98]">
+            <h3 className="text-lg sm:text-xl font-black tracking-tight text-[#1F2F98]">
               {safeVariant === "dr-aakash"
                 ? "DR. AAKASH SINGH"
                 : safeVariant === "dr-ankita"
                 ? "DR. ANKITA PUNDIR"
                 : "ACORD CLINICS"}
             </h3>
-            <p className="text-xs text-[#114E3F] font-semibold max-w-[280px] leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-[#114E3F] font-semibold max-w-[260px] leading-snug">
               {safeVariant === "dr-aakash"
                 ? "MD (Med), DM (Rheumatology & Clinical Immunology, AIR 1 PGIMER)"
                 : safeVariant === "dr-ankita"
                 ? "MBBS, MD (Dermatology, NEET PG AIR 1488, S. Korea Fellow)"
                 : "Autoimmunity Centre Of excellence in Rheumatology & Dermatology"}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-[10px] font-bold">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 pt-0.5 text-[9px] sm:text-[10px] font-bold">
               {safeVariant === "dr-aakash" ? (
                 <>
-                  <span className="px-2.5 py-1 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
                     Arthritis & SLE Care
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
                     Biologics Infusion
                   </span>
                 </>
               ) : safeVariant === "dr-ankita" ? (
                 <>
-                  <span className="px-2.5 py-1 rounded-full bg-[#E8715A]/10 text-[#E8715A] border border-[#E8715A]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#E8715A]/10 text-[#E8715A] border border-[#E8715A]/30">
                     Vitiligo Grafting Surgery
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
                     Hair FUE & Lasers
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="px-2.5 py-1 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
                     Rheumatology & Biologics
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                  <span className="px-2 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
                     Dermatology & Hair FUE
                   </span>
                 </>
@@ -219,19 +221,19 @@ export function AcordHoloCard({
             </div>
           </div>
 
-          <div className="pt-3 border-t border-[#13BEB5]/20 space-y-2">
+          <div className="pt-2 border-t border-[#13BEB5]/20 space-y-1.5">
             <button
               onClick={() =>
                 openBooking({
                   specialty: safeVariant.includes("dr-ankita") ? "dermatology" : "rheumatology",
                 })
               }
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#1F2F98] to-[#13BEB5] text-white font-bold text-xs shadow-md shadow-[#13BEB5]/20 hover:opacity-90 transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-2 rounded-xl bg-gradient-to-r from-[#1F2F98] to-[#13BEB5] text-white font-bold text-xs shadow-md shadow-[#13BEB5]/20 hover:opacity-90 transition-all flex items-center justify-center gap-1.5"
             >
               <Calendar className="w-3.5 h-3.5" />
               <span>{t("Book Consultation", "परामर्श बुक करें")}</span>
             </button>
-            <p className="text-center text-[10px] text-slate-500 font-mono">
+            <p className="text-center text-[9px] text-slate-500 font-mono">
               Gorakhpur: +91 77029 41735 · Bhagalpur: +91 79034 68113
             </p>
           </div>

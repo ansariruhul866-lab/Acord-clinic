@@ -234,14 +234,14 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="font-sans antialiased bg-white text-slate-900 min-h-screen flex flex-col selection:bg-[#1CA7EC]/20 selection:text-[#1F2F98] overflow-x-hidden w-full max-w-full">
+      <body className="font-sans antialiased bg-white text-slate-900 min-h-screen flex flex-col selection:bg-[#1CA7EC]/20 selection:text-[#1F2F98] overflow-x-hidden w-full">
         <ReducedEffectsProvider>
           <LanguageProvider>
             <ThemeProvider>
               <BookingProvider>
-                <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
+                <div className="flex flex-col min-h-screen w-full">
                   <Navbar />
-                  <main className="flex-1 w-full max-w-full overflow-x-hidden pt-16 sm:pt-20">
+                  <main className="flex-1 w-full">
                     {children}
                   </main>
                   <Footer />
