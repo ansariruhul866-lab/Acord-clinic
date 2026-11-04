@@ -6,7 +6,7 @@ import { useBooking } from "@/lib/booking-context";
 import { Sparkles, ShieldCheck } from "lucide-react";
 
 export const HoloBadgeCanvas = () => {
-  const { t } = useLanguage();
+  const { t, isHindi } = useLanguage();
   const { openBooking } = useBooking();
   const [selectedVariant, setSelectedVariant] = useState("clinic");
 
@@ -49,7 +49,7 @@ export const HoloBadgeCanvas = () => {
                   isSelected ? "bg-[#89EAD7] animate-pulse" : "bg-slate-300"
                 }`}
               />
-              <span>{v.label}</span>
+              <span>{isHindi ? v.labelHi : v.label}</span>
             </button>
           );
         })}

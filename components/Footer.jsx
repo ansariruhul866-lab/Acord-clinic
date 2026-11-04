@@ -91,11 +91,11 @@ export const Footer = () => {
               {t("Clinic Resources", "क्लिनिक रिसोर्सेज")}
             </h3>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/doctors" className="hover:text-[#1CA7EC] transition-colors">Specialist Doctors</Link></li>
-              <li><Link href="/technology" className="hover:text-[#1CA7EC] transition-colors">Medical Technology</Link></li>
-              <li><Link href="/results" className="hover:text-[#1CA7EC] transition-colors">Before & After Results</Link></li>
-              <li><Link href="/patient-hub" className="hover:text-[#1CA7EC] transition-colors">Patient Hub & FAQs</Link></li>
-              <li><Link href="/about" className="hover:text-[#1CA7EC] transition-colors">About ACORD Concept</Link></li>
+              <li><Link href="/doctors" className="hover:text-[#1CA7EC] transition-colors">{t("Specialist Doctors", "विशेषज्ञ चिकित्सक")}</Link></li>
+              <li><Link href="/technology" className="hover:text-[#1CA7EC] transition-colors">{t("Medical Technology", "चिकित्सा उपकरण एवं तकनीक")}</Link></li>
+              <li><Link href="/results" className="hover:text-[#1CA7EC] transition-colors">{t("Before & After Results", "उपचार परिणाम")}</Link></li>
+              <li><Link href="/patient-hub" className="hover:text-[#1CA7EC] transition-colors">{t("Patient Hub & FAQs", "रोगी मार्गदर्शिका एवं प्रश्न")}</Link></li>
+              <li><Link href="/about" className="hover:text-[#1CA7EC] transition-colors">{t("About ACORD Concept", "एकॉर्ड के बारे में")}</Link></li>
             </ul>
           </div>
 
@@ -105,9 +105,12 @@ export const Footer = () => {
             </h3>
 
             <div className="p-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1 text-xs">
-              <div className="font-bold text-slate-900">Gorakhpur Branch (UP)</div>
+              <div className="font-bold text-slate-900">{t("Gorakhpur Branch (UP)", "गोरखपुर शाखा (उत्तर प्रदेश)")}</div>
               <p className="text-slate-500 text-[11px]">
-                2nd Floor, Lotus Tower, Thana Chowk, Opp. V Bazar, near Medical College Road, Basharatpur 273003
+                {t(
+                  "2nd Floor, Lotus Tower, Thana Chowk, Opp. V Bazar, near Medical College Road, Basharatpur 273003",
+                  "द्वितीय तल, लोटस टॉवर, थाना चौक, वी-बाजार के सामने, मेडिकल कॉलेज रोड के पास, बशारतपुर, शाहपुर 273003"
+                )}
               </p>
               <div className="pt-1 font-mono text-[#1F2F98] font-bold flex items-center gap-1">
                 <Phone className="w-3 h-3 text-[#1CA7EC]" />
@@ -116,9 +119,12 @@ export const Footer = () => {
             </div>
 
             <div className="p-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1 text-xs">
-              <div className="font-bold text-slate-900">Bhagalpur Branch (Bihar)</div>
+              <div className="font-bold text-slate-900">{t("Bhagalpur Branch (Bihar)", "भागलपुर शाखा (बिहार)")}</div>
               <p className="text-slate-500 text-[11px]">
-                Jai Mata Di Sweets Building, Tulsinagar Colony, Bank Colony, Bhagalpur 812001
+                {t(
+                  "Jai Mata Di Sweets Building, Tulsinagar Colony, Bank Colony, Bhagalpur 812001",
+                  "जय माता दी स्वीट्स बिल्डिंग, तुलसीनगर कॉलोनी, बैंक कॉलोनी, भागलपुर, बिहार 812001"
+                )}
               </p>
               <div className="pt-1 font-mono text-[#1F2F98] font-bold flex items-center gap-1">
                 <Phone className="w-3 h-3 text-[#1CA7EC]" />
@@ -143,13 +149,13 @@ export const Footer = () => {
         </div>
 
         <div className="pt-4 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} ACORD Clinics. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} {t("ACORD Clinics. All Rights Reserved.", "एकॉर्ड क्लिनिक्स। सर्वाधिकार सुरक्षित।")}</p>
           <div className="flex items-center gap-4 text-[11px]">
-            <Link href="/privacy-policy" className="hover:text-slate-800">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="hover:text-slate-800">{t("Privacy Policy", "गोपनीयता नीति")}</Link>
             <span>·</span>
-            <Link href="/terms" className="hover:text-slate-800">Terms</Link>
+            <Link href="/terms" className="hover:text-slate-800">{t("Terms", "नियम एवं शर्तें")}</Link>
             <span>·</span>
-            <Link href="/medical-disclaimer" className="hover:text-slate-800">Medical Disclaimer</Link>
+            <Link href="/medical-disclaimer" className="hover:text-slate-800">{t("Medical Disclaimer", "चिकित्सा अस्वीकरण")}</Link>
           </div>
         </div>
       </div>

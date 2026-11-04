@@ -32,27 +32,31 @@ export default function DoctorProfilePage({ params }) {
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <Link href="/doctors" className="hover:text-[#1CA7EC]">Doctors</Link>
+          <Link href="/doctors" className="hover:text-[#1CA7EC]">{t("Doctors", "चिकित्सक")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">{doctor.name}</span>
+          <span className="text-[#1F2F98] font-semibold">{isHindi ? doctor.nameHi : doctor.name}</span>
         </div>
 
         {/* Doctor Header Banner */}
         <div className="rounded-3xl bg-white border border-slate-200 p-6 sm:p-10 space-y-6 shadow-sm relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="w-44 sm:w-56 aspect-[3/4] rounded-2xl overflow-hidden bg-slate-100 border-2 border-[#1CA7EC] shadow-md shrink-0">
+            <div className="w-48 sm:w-64 aspect-[4/5] rounded-2xl overflow-hidden bg-slate-100 border-2 border-[#1CA7EC] shadow-md shrink-0">
               <img
                 src={doctor.image}
                 alt={doctor.name}
-                className="w-full h-full object-cover object-top"
+                className={`w-full h-full object-cover ${
+                  doctor.id === "dr-ankita-pundir" ? "object-[center_30%]" : "object-[center_top]"
+                }`}
               />
             </div>
 
             <div className="space-y-3 text-center md:text-left flex-1">
               <span className="px-3 py-1 rounded-full bg-[#F0F9FF] border border-[#1CA7EC]/30 text-[#1F2F98] text-xs font-bold uppercase tracking-wider inline-block">
-                {doctor.specialty === "rheumatology" ? "Rheumatology & Clinical Immunology" : "Dermatology & Dermatosurgery"}
+                {doctor.specialty === "rheumatology"
+                  ? t("Rheumatology & Clinical Immunology", "रूमेटोलॉजी एवं क्लिनिकल इम्यूनोलॉजी")
+                  : t("Dermatology & Dermatosurgery", "डर्मेटोलॉजी एवं डर्मेटोसर्जरी")}
               </span>
 
               <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -64,7 +68,9 @@ export default function DoctorProfilePage({ params }) {
               </p>
 
               <p className="text-xs text-slate-500 font-mono">{doctor.degrees}</p>
-              <p className="text-xs text-[#1F2F98] font-semibold">{doctor.experience}</p>
+              <p className="text-xs text-[#1F2F98] font-semibold">
+                {isHindi ? "10+ वर्ष का समर्पित अनुभव" : doctor.experience}
+              </p>
 
               {doctor.ranks && (
                 <div className="flex flex-wrap gap-2 pt-1 justify-center md:justify-start">

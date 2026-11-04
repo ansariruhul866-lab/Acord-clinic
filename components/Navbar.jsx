@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import AcordLogo from "@/components/AcordLogo";
 import { useLanguage } from "@/lib/language-context";
 import { useBooking } from "@/lib/booking-context";
-import { GlobalSearchModal } from "@/components/GlobalSearchModal";
 import { CLINIC_INFO, DOCTORS } from "@/lib/data";
 import {
   ChevronDown,
@@ -80,7 +79,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-semibold text-slate-700">
+        <nav className="hidden lg:flex items-center gap-1.5 xl:gap-3 text-xs font-semibold text-slate-700">
           {/* Rheumatology Mega Menu */}
           <div
             className="relative"
@@ -151,14 +150,17 @@ export const Navbar = () => {
                       />
                       <div>
                         <span className="text-[10px] font-bold text-[#1F2F98] uppercase tracking-wider block">
-                          Department Lead
+                          {t("Department Lead", "विभागाध्यक्ष")}
                         </span>
-                        <h4 className="font-bold text-slate-900 text-sm">{drAakash.name}</h4>
+                        <h4 className="font-bold text-slate-900 text-sm">{isHindi ? drAakash.nameHi : drAakash.name}</h4>
                         <span className="text-[10px] text-[#1CA7EC] font-mono font-semibold block">AIR 1, PGIMER Chandigarh</span>
                       </div>
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
-                      AIIMS & JIPMER trained; Specialises in targeted biologics & severe autoimmunity.
+                      {t(
+                        "AIIMS & JIPMER trained; Specialises in targeted biologics & severe autoimmunity.",
+                        "एम्स एवं जिपमर प्रशिक्षित; बायोलॉजिकल दवाएं व गंभीर ऑटोइम्यूनिटी विशेषज्ञ।"
+                      )}
                     </p>
                   </div>
                   <button
@@ -243,14 +245,17 @@ export const Navbar = () => {
                       />
                       <div>
                         <span className="text-[10px] font-bold text-[#1CA7EC] uppercase tracking-wider block">
-                          Department Lead
+                          {t("Department Lead", "विभागाध्यक्ष")}
                         </span>
-                        <h4 className="font-bold text-slate-900 text-sm">{drAnkita.name}</h4>
+                        <h4 className="font-bold text-slate-900 text-sm">{isHindi ? drAnkita.nameHi : drAnkita.name}</h4>
                         <span className="text-[10px] text-[#1CA7EC] font-mono font-semibold block">NEET PG AIR 1488 · AIIMS 456</span>
                       </div>
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
-                      South Korea, Chandigarh & Mumbai Fellowships; Specialist in vitiligo grafting & lasers.
+                      {t(
+                        "South Korea, Chandigarh & Mumbai Fellowships; Specialist in vitiligo grafting & lasers.",
+                        "दक्षिण कोरिया, चंडीगढ़ एवं मुंबई से फेलोशिप; विटिलिगो सर्जरी व लेजर विशेषज्ञ।"
+                      )}
                     </p>
                   </div>
                   <button
@@ -312,26 +317,43 @@ export const Navbar = () => {
         </nav>
 
         {/* Right CTA Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <GlobalSearchModal />
+        <div className="flex items-center gap-2.5 sm:gap-3.5">
+          {/* Bilingual Language Switcher (Segmented Pill) */}
+          <div className="flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs shadow-inner">
+            <button
+              onClick={() => setLang("en")}
+              className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+                lang === "en"
+                  ? "bg-[#1F2F98] text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+              title="Switch to English"
+              aria-label="Switch to English"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+                lang === "hi"
+                  ? "bg-[#1CA7EC] text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+              title="हिंदी में बदलें"
+              aria-label="हिंदी में बदलें"
+            >
+              हिंदी
+            </button>
+          </div>
 
-          {/* Bilingual Language Switcher */}
-          <button
-            onClick={() => setLang(lang === "en" ? "hi" : "en")}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs text-slate-800 font-semibold transition-all"
-            title="Switch Language"
-          >
-            <Globe className="w-3.5 h-3.5 text-[#1CA7EC]" />
-            <span className="uppercase text-[11px] tracking-wider">{lang === "en" ? "हिंदी" : "EN"}</span>
-          </button>
-
-          {/* Quick Call */}
+          {/* Quick Call Icon Button */}
           <a
             href={`tel:${primaryBranch.phone}`}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs text-slate-800 transition-all font-mono font-bold"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 hover:bg-[#1CA7EC]/10 hover:border-[#1CA7EC]/40 border border-slate-200 text-slate-800 transition-all shadow-sm group"
+            title={`${t("Call ACORD Clinics", "कॉल करें")}: ${primaryBranch.phoneDisplay || primaryBranch.phone}`}
+            aria-label="Call ACORD Clinics"
           >
-            <Phone className="w-3.5 h-3.5 text-[#1CA7EC]" />
-            <span>{primaryBranch.phoneDisplay?.split("/")[0] || primaryBranch.phone}</span>
+            <Phone className="w-4 h-4 text-[#1CA7EC] group-hover:scale-110 transition-transform" />
           </a>
 
           {/* Book Button */}
@@ -358,6 +380,36 @@ export const Navbar = () => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-full bg-white border-b border-slate-200 p-6 space-y-5 shadow-2xl max-h-[85vh] overflow-y-auto z-50">
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <Globe className="w-4 h-4 text-[#1CA7EC]" />
+              <span>{t("Select Language", "भाषा चुनें")}:</span>
+            </span>
+            <div className="flex items-center p-0.5 rounded-full bg-white border border-slate-200 text-xs shadow-sm">
+              <button
+                onClick={() => setLang("en")}
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                  lang === "en"
+                    ? "bg-[#1F2F98] text-white shadow-sm"
+                    : "text-slate-600"
+                }`}
+              >
+                English
+              </button>
+              <button
+                onClick={() => setLang("hi")}
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                  lang === "hi"
+                    ? "bg-[#1CA7EC] text-white shadow-sm"
+                    : "text-slate-600"
+                }`}
+              >
+                हिंदी
+              </button>
+            </div>
+          </div>
+
           <div className="flex flex-col space-y-2.5 text-sm font-semibold">
             <Link
               href="/rheumatology"

@@ -34,20 +34,20 @@ export default function ConditionDetailPage({ params }) {
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <Link href="/rheumatology" className="hover:text-[#1CA7EC]">Rheumatology</Link>
+          <Link href="/rheumatology" className="hover:text-[#1CA7EC]">{t("Rheumatology", "रूमेटोलॉजी")}</Link>
           <span>/</span>
-          <Link href="/rheumatology/conditions" className="hover:text-[#1CA7EC]">Conditions</Link>
+          <Link href="/rheumatology/conditions" className="hover:text-[#1CA7EC]">{t("Conditions", "बीमारियां")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">{condition.title.split("(")[0]}</span>
+          <span className="text-[#1F2F98] font-semibold">{(isHindi ? condition.titleHi : condition.title).split("(")[0]}</span>
         </div>
 
         {/* Hero Section */}
         <div className="rounded-3xl bg-white border border-slate-200 p-6 sm:p-10 space-y-6 shadow-sm relative overflow-hidden">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F0F9FF] text-[#1F2F98] text-xs font-bold uppercase tracking-wider border border-[#1CA7EC]/20">
             <Activity className="w-4 h-4 text-[#1CA7EC]" />
-            <span>{condition.category || "Rheumatology"} · Expert Guide</span>
+            <span>{condition.category || "Rheumatology"} · {t("Expert Guide", "विशेषज्ञ मार्गदर्शिका")}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
@@ -75,7 +75,7 @@ export default function ConditionDetailPage({ params }) {
               className="py-3 px-6 rounded-2xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/40 text-[#128C7E] font-bold text-xs transition-all flex items-center gap-2"
             >
               <MessageCircle className="w-4 h-4 fill-current" />
-              <span>WhatsApp Us</span>
+              <span>{t("WhatsApp Us", "व्हाट्सएप करें")}</span>
             </a>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function ConditionDetailPage({ params }) {
           <div className="p-6 sm:p-8 rounded-3xl bg-[#F8FAFC] border border-slate-200 space-y-6 shadow-sm">
             <div className="space-y-1">
               <span className="text-xs font-bold uppercase tracking-wider text-[#1F2F98]">
-                Evidence-Based Protocols
+                {t("Evidence-Based Protocols", "प्रमाण-आधारित उपचार विधि")}
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                 {t("Treatment Options & Biological Therapies", "उपचार विकल्प एवं बायोलॉजिकल थेरेपी")}
@@ -174,9 +174,9 @@ export default function ConditionDetailPage({ params }) {
               className="w-16 h-16 rounded-2xl object-cover border-2 border-[#1CA7EC]"
             />
             <div>
-              <div className="font-bold text-base sm:text-lg text-slate-900">{doctor.name}</div>
-              <div className="text-xs text-[#1CA7EC] font-semibold">{doctor.role}</div>
-              <div className="text-[11px] text-slate-500">Gorakhpur & Bhagalpur Branches</div>
+              <div className="font-bold text-base sm:text-lg text-slate-900">{isHindi ? doctor.nameHi : doctor.name}</div>
+              <div className="text-xs text-[#1CA7EC] font-semibold">{isHindi ? doctor.roleHi : doctor.role}</div>
+              <div className="text-[11px] text-slate-500">{t("Gorakhpur & Bhagalpur Branches", "गोरखपुर एवं भागलपुर शाखा")}</div>
             </div>
           </div>
 

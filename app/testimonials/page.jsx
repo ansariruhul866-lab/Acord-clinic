@@ -23,16 +23,16 @@ export default function TestimonialsPage() {
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">Patient Testimonials & Reviews</span>
+          <span className="text-[#1F2F98] font-semibold">{t("Patient Testimonials & Reviews", "मरीजों के अनुभव एवं समीक्षाएं")}</span>
         </div>
 
         {/* Hero */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-wider">
             <Star className="w-3.5 h-3.5 fill-current text-amber-500" />
-            <span>4.9 ★ Rated by Patients</span>
+            <span>{t("4.9 ★ Rated by Patients", "मरीजों द्वारा 4.9 ★ रेटिंग")}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             {t("Real Stories from Real Patients", "मरीजों के वास्तविक अनुभव एवं समीक्षाएं")}
@@ -46,17 +46,22 @@ export default function TestimonialsPage() {
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            {categories.map((cat) => (
+            {[
+              { id: "All", labelEn: "All", labelHi: "सभी" },
+              { id: "Rheumatology", labelEn: "Rheumatology", labelHi: "रूमेटोलॉजी" },
+              { id: "Dermatology", labelEn: "Dermatology", labelHi: "डर्मेटोलॉजी" },
+              { id: "Hair Restoration", labelEn: "Hair Restoration", labelHi: "हेयर ट्रांसप्लांट" },
+            ].map((cat) => (
               <button
-                key={cat}
-                onClick={() => setFilter(cat)}
+                key={cat.id}
+                onClick={() => setFilter(cat.id)}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                  filter === cat
+                  filter === cat.id
                     ? "bg-[#1F2F98] text-white shadow-md shadow-[#1CA7EC]/20"
                     : "bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200"
                 }`}
               >
-                {cat}
+                {isHindi ? cat.labelHi : cat.labelEn}
               </button>
             ))}
           </div>

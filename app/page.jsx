@@ -163,22 +163,32 @@ export default function HomePage() {
               <Star className="w-4 h-4 fill-amber-500" />
               <span>4.9 / 5.0</span>
             </div>
-            <p className="text-xs text-slate-600 font-medium">1,000+ Verified Google Reviews</p>
+            <p className="text-xs text-slate-600 font-medium">
+              {t("1,000+ Verified Google Reviews", "1,000+ प्रमाणित गूगल समीक्षाएं")}
+            </p>
           </div>
 
           <div className="space-y-1">
             <div className="text-[#1F2F98] font-black text-xl">AIR-1 PGIMER</div>
-            <p className="text-xs text-slate-600 font-medium">Dr. Aakash Singh (Rheumatology)</p>
+            <p className="text-xs text-slate-600 font-medium">
+              {t("Dr. Aakash Singh (Rheumatology)", "डॉ. आकाश सिंह (रूमेटोलॉजी)")}
+            </p>
           </div>
 
           <div className="space-y-1">
             <div className="text-[#1CA7EC] font-black text-xl">NEET AIR 1488</div>
-            <p className="text-xs text-slate-600 font-medium">Dr. Ankita Pundir (MD Dermatology)</p>
+            <p className="text-xs text-slate-600 font-medium">
+              {t("Dr. Ankita Pundir (MD Dermatology)", "डॉ. अंकिता पुंडीर (डर्मेटोलॉजी)")}
+            </p>
           </div>
 
           <div className="space-y-1">
-            <div className="text-[#1AA7EC] font-black text-xl">In-House Cold-Chain</div>
-            <p className="text-xs text-slate-600 font-medium">Biologics & Laser Suites</p>
+            <div className="text-[#1AA7EC] font-black text-xl">
+              {t("In-House Cold-Chain", "इन-हाउस कोल्ड-चेन")}
+            </div>
+            <p className="text-xs text-slate-600 font-medium">
+              {t("Biologics & Laser Suites", "बायोलॉजिक्स एवं लेजर सुइट्स")}
+            </p>
           </div>
         </div>
       </section>
@@ -203,14 +213,21 @@ export default function HomePage() {
               className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-[#1CA7EC] hover:shadow-lg transition-all flex flex-col justify-between group"
             >
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1CA7EC]">01 · Top-Left</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">Skin & Aesthetics</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1CA7EC]">
+                  {t("01 · Top-Left", "01 · प्रथम द्वार (त्वचा)")}
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">
+                  {t("Skin & Aesthetics", "त्वचा एवं सौंदर्य")}
+                </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Medifacials, BOTOX®, Fillers, Thread Lifts, and Pigmentation Clearing.
+                  {t(
+                    "Medifacials, BOTOX®, Fillers, Thread Lifts, and Pigmentation Clearing.",
+                    "मेडीफेशियल्स, बोटॉक्स, फिलर्स, थ्रेड लिफ्ट और झाइयां व दाग-धब्बे मिटाने की लेजर तकनीक।"
+                  )}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-[#1CA7EC] flex items-center justify-between">
-                <span>Explore Dermatology</span>
+                <span>{t("Explore Dermatology", "त्वचा रोग विभाग")}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -221,14 +238,21 @@ export default function HomePage() {
               className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-[#1F2F98] hover:shadow-lg transition-all flex flex-col justify-between group"
             >
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1F2F98]">02 · Top-Right</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">Joints & Arthritis</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1F2F98]">
+                  {t("02 · Top-Right", "02 · द्वितीय द्वार (गठिया)")}
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">
+                  {t("Joints & Arthritis", "जोड़ एवं गठिया")}
+                </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Targeted biologicals, MSK ultrasound guided joint injections, and Rheumatoid arthritis.
+                  {t(
+                    "Targeted biologicals, MSK ultrasound guided joint injections, and Rheumatoid arthritis.",
+                    "टारगेटेड बायोलॉजिकल दवाएं, अल्ट्रासाउंड गाइडेड इंजेक्शन एवं आर्थराइटिस केयर।"
+                  )}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-[#1F2F98] flex items-center justify-between">
-                <span>Explore Rheumatology</span>
+                <span>{t("Explore Rheumatology", "रूमेटोलॉजी विभाग")}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -239,14 +263,21 @@ export default function HomePage() {
               className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-[#4ADEDE] hover:shadow-lg transition-all flex flex-col justify-between group"
             >
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1AA7EC]">03 · Bottom-Left</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">Hair & Lasers</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1AA7EC]">
+                  {t("03 · Bottom-Left", "03 · तृतीय द्वार (बाल/लेजर)")}
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">
+                  {t("Hair & Lasers", "बाल एवं लेजर")}
+                </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Micro FUE Hair Transplants, QR678® bio-peptides, and Diode Laser Hair Reduction.
+                  {t(
+                    "Micro FUE Hair Transplants, QR678® bio-peptides, and Diode Laser Hair Reduction.",
+                    "माइक्रो FUE हेयर ट्रांसप्लांट, QR678® बायो-पेप्टाइड्स एवं डायोड लेजर।"
+                  )}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-[#1AA7EC] flex items-center justify-between">
-                <span>Explore Hair & Lasers</span>
+                <span>{t("Explore Hair & Lasers", "हेयर एवं लेजर विभाग")}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -257,14 +288,21 @@ export default function HomePage() {
               className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-[#1CA7EC] hover:shadow-lg transition-all flex flex-col justify-between group"
             >
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1CA7EC]">04 · Bottom-Right</span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">Lupus & Autoimmunity</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1CA7EC]">
+                  {t("04 · Bottom-Right", "04 · चतुर्थ द्वार (इम्यूनोलॉजी)")}
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 mt-1 group-hover:text-[#1F2F98] transition-colors">
+                  {t("Lupus & Autoimmunity", "ल्यूपस एवं ऑटोइम्यून")}
+                </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  SLE, Vasculitis, Scleroderma, and in-house diagnostic tissue biopsy.
+                  {t(
+                    "SLE, Vasculitis, Scleroderma, and in-house diagnostic tissue biopsy.",
+                    "SLE, वैस्कुलाइटिस, स्क्लेरोडर्मा एवं इन-हाउस बायोप्सी व सटीक जांच।"
+                  )}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-[#1CA7EC] flex items-center justify-between">
-                <span>Explore Autoimmunity</span>
+                <span>{t("Explore Autoimmunity", "ऑटोइम्यूनिटी विभाग")}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -299,11 +337,15 @@ export default function HomePage() {
                     <img
                       src={doc.posterImage}
                       alt={doc.name}
-                      className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-[#1CA7EC] shadow-md shrink-0"
+                      className={`w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-[#1CA7EC] shadow-md shrink-0 ${
+                        doc.id === "dr-ankita-pundir" ? "object-[center_30%]" : "object-[center_top]"
+                      }`}
                     />
                     <div className="space-y-1">
                       <span className="px-2.5 py-0.5 rounded-full bg-[#F0F9FF] text-[#1F2F98] text-[10px] font-bold uppercase tracking-wider border border-[#1CA7EC]/20">
-                        {doc.specialty === "rheumatology" ? "Rheumatology & Immunology" : "Dermatology & Dermatosurgery"}
+                        {doc.specialty === "rheumatology"
+                          ? t("Rheumatology & Immunology", "रूमेटोलॉजी एवं इम्यूनोलॉजी")
+                          : t("Dermatology & Dermatosurgery", "डर्मेटोलॉजी एवं डर्मेटोसर्जरी")}
                       </span>
                       <h3 className="text-2xl font-bold text-slate-900">
                         {isHindi ? doc.nameHi : doc.name}
@@ -321,7 +363,7 @@ export default function HomePage() {
 
                   <div className="space-y-1.5">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-[#1F2F98]">
-                      Credentials & Experience:
+                      {t("Credentials & Experience:", "डिग्री एवं विशिष्ट अनुभव:")}
                     </span>
                     <ul className="space-y-1 text-xs text-slate-600">
                       {(isHindi ? doc.fellowshipsHi : doc.fellowships).slice(0, 3).map((fel, i) => (
@@ -375,13 +417,13 @@ export default function HomePage() {
                 className="p-6 rounded-3xl bg-[#F8FAFC] border border-slate-200 hover:border-[#1CA7EC]/60 transition-all space-y-3 shadow-sm hover:shadow-md"
               >
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#1CA7EC]">
-                  {tech.category}
+                  {isHindi && tech.categoryHi ? tech.categoryHi : tech.category}
                 </span>
                 <h3 className="text-lg font-bold text-slate-900">
                   {isHindi ? tech.titleHi : tech.title}
                 </h3>
                 <div className="p-2 rounded-xl bg-white border border-slate-200 font-mono text-[11px] text-slate-700">
-                  {tech.spec}
+                  {isHindi && tech.specHi ? tech.specHi : tech.spec}
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   {isHindi ? tech.descHi : tech.desc}
@@ -457,7 +499,7 @@ export default function HomePage() {
             <input
               type="text"
               required
-              placeholder="Your Name"
+              placeholder={t("Your Name", "आपका नाम")}
               value={quickName}
               onChange={(e) => setQuickName(e.target.value)}
               className="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-[#1CA7EC]"
@@ -465,7 +507,7 @@ export default function HomePage() {
             <input
               type="tel"
               required
-              placeholder="Mobile Phone"
+              placeholder={t("Mobile Phone", "मोबाइल नंबर")}
               value={quickPhone}
               onChange={(e) => setQuickPhone(e.target.value)}
               className="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-[#1CA7EC]"
@@ -475,16 +517,16 @@ export default function HomePage() {
               onChange={(e) => setQuickBranch(e.target.value)}
               className="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-[#1CA7EC]"
             >
-              <option value="gorakhpur">Gorakhpur</option>
-              <option value="bhagalpur">Bhagalpur</option>
+              <option value="gorakhpur">{t("Gorakhpur Branch", "गोरखपुर शाखा")}</option>
+              <option value="bhagalpur">{t("Bhagalpur Branch", "भागलपुर शाखा")}</option>
             </select>
             <select
               value={quickSpecialty}
               onChange={(e) => setQuickSpecialty(e.target.value)}
               className="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-[#1CA7EC]"
             >
-              <option value="rheumatology">Rheumatology</option>
-              <option value="dermatology">Dermatology</option>
+              <option value="rheumatology">{t("Rheumatology & Joints", "रूमेटोलॉजी (गठिया)")}</option>
+              <option value="dermatology">{t("Dermatology & Skin", "डर्मेटोलॉजी (त्वचा/बाल)")}</option>
             </select>
             <button
               type="submit"

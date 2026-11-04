@@ -10,7 +10,7 @@ import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 export default function DermatologyPage() {
   const { t, isHindi } = useLanguage();
   const { openBooking } = useBooking();
-  const drAnkita = DOCTORS.find((d) => d.id === "dr-ankita");
+  const drAnkita = DOCTORS.find((d) => d.id === "dr-ankita" || d.slug === "dr-ankita-pundir") || DOCTORS[1];
   const dermTreatments = TREATMENTS.filter((t) => t.category === "dermatology" || t.category === "aesthetics" || t.category === "trichology");
 
   return (
@@ -59,8 +59,8 @@ export default function DermatologyPage() {
           <div className="lg:col-span-5">
             {drAnkita && (
               <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-sm">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
-                  <img src={drAnkita.image} alt={drAnkita.name} className="w-full h-full object-cover object-top" />
+                <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+                  <img src={drAnkita.image} alt={drAnkita.name} className="w-full h-full object-cover object-[center_30%]" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">{isHindi ? drAnkita.nameHi : drAnkita.name}</h3>

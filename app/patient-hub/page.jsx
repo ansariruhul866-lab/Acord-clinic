@@ -13,16 +13,16 @@ export default function PatientHubPage() {
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">Patient Education Hub</span>
+          <span className="text-[#1F2F98] font-semibold">{t("Patient Education Hub", "रोगी शिक्षा केंद्र")}</span>
         </div>
 
         {/* Hero */}
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1CA7EC]/10 border border-[#1CA7EC]/30 text-[#1F2F98] text-xs font-semibold uppercase tracking-wider">
             <BookOpen className="w-3.5 h-3.5 text-[#1CA7EC]" />
-            <span>Doctor-Authored Medical Articles</span>
+            <span>{t("Doctor-Authored Medical Articles", "विशेषज्ञ डॉक्टरों द्वारा लिखित लेख")}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             {t("Patient Hub & Clinical Insights", "रोगी शिक्षा, ब्लॉग एवं स्वास्थ्य मार्गदर्शिका")}
@@ -49,7 +49,7 @@ export default function PatientHubPage() {
                     <span className="px-2.5 py-0.5 rounded-full bg-[#F0F9FF] text-[#1F2F98] text-[11px] font-bold uppercase tracking-wider border border-[#1CA7EC]/20">
                       {art.specialty}
                     </span>
-                    <span className="text-[11px] text-slate-400 font-mono">{art.readTime}</span>
+                    <span className="text-[11px] text-slate-400 font-mono">{isHindi ? t(art.readTime, "५ मिनट पठन") : art.readTime}</span>
                   </div>
 
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-[#1F2F98] transition-colors line-clamp-2">
@@ -61,7 +61,7 @@ export default function PatientHubPage() {
                 </div>
 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1CA7EC]">
-                  <span>By {art.author}</span>
+                  <span>{t(`By ${art.author}`, `द्वारा: ${art.author.includes("Aakash") ? "डॉ. आकाश सिंह" : "डॉ. अंकिता पुंडीर"}`)}</span>
                   <div className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     <span>{t("Read Guide", "पूरा पढ़ें")}</span>
                     <ArrowRight className="w-3.5 h-3.5" />

@@ -20,17 +20,17 @@ export default function FAQHubPage() {
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <Link href="/patient-hub" className="hover:text-[#1CA7EC]">Patient Hub</Link>
+          <Link href="/patient-hub" className="hover:text-[#1CA7EC]">{t("Patient Hub", "रोगी शिक्षा केंद्र")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">FAQs</span>
+          <span className="text-[#1F2F98] font-semibold">{t("FAQs", "सवाल-जवाब")}</span>
         </div>
 
         <div className="space-y-3 text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1CA7EC]/10 border border-[#1CA7EC]/30 text-[#1F2F98] text-xs font-semibold uppercase tracking-wider">
             <HelpCircle className="w-3.5 h-3.5 text-[#1CA7EC]" />
-            <span>Patient Information</span>
+            <span>{t("Patient Information", "रोगी जानकारी")}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             {t("Frequently Asked Questions", "अक्सर पूछे जाने वाले प्रश्न")}

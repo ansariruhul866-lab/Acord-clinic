@@ -10,7 +10,7 @@ import SymptomFinder from "@/components/SymptomFinder";
 export default function RheumatologyPage() {
   const { t, isHindi } = useLanguage();
   const { openBooking } = useBooking();
-  const drAakash = DOCTORS.find((d) => d.id === "dr-aakash");
+  const drAakash = DOCTORS.find((d) => d.id === "dr-aakash" || d.slug === "dr-aakash-singh") || DOCTORS[0];
   const rheumConditions = RHEUMATOLOGY_CONDITIONS || CONDITIONS.filter((c) => c.category === "rheumatology");
 
   return (
@@ -18,9 +18,9 @@ export default function RheumatologyPage() {
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">Rheumatology & Immunology</span>
+          <span className="text-[#1F2F98] font-semibold">{t("Rheumatology & Immunology", "रूमेटोलॉजी एवं इम्यूनोलॉजी")}</span>
         </div>
 
         {/* Hero Section */}
@@ -59,8 +59,8 @@ export default function RheumatologyPage() {
           <div className="lg:col-span-5">
             {drAakash && (
               <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-sm">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
-                  <img src={drAakash.image} alt={drAakash.name} className="w-full h-full object-cover object-top" />
+                <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+                  <img src={drAakash.image} alt={drAakash.name} className="w-full h-full object-cover object-[center_top]" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">{isHindi ? drAakash.nameHi : drAakash.name}</h3>

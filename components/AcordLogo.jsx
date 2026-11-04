@@ -5,10 +5,11 @@ export const AcordLogo = ({
   className = "",
   size = 60,
   showText = true,
+  showSubtitle = false,
   variant = "default", // 'default' | 'light' | 'dark'
 }) => {
   return (
-    <div className={`inline-flex items-center gap-3 select-none ${className}`}>
+    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
       {/* Official Circular Four-Quadrant Logo Image without artificial outline */}
       <div
         className="relative flex items-center justify-center transition-transform duration-300 hover:scale-105 shrink-0"
@@ -29,7 +30,7 @@ export const AcordLogo = ({
 
       {showText && (
         <div className="flex flex-col justify-center leading-tight">
-          <div className="flex items-center gap-1.5 mb-0.5">
+          <div className="flex items-center gap-1.5">
             <span className="font-display tracking-wider text-2xl md:text-3xl font-black text-slate-900 leading-none">
               <span className="text-[#1CA7EC]">A</span>
               <span className="text-[#1F2F98]">C</span>
@@ -41,9 +42,11 @@ export const AcordLogo = ({
               CLINICS
             </span>
           </div>
-          <span className="text-xs md:text-sm text-slate-600 font-medium tracking-tight leading-snug">
-            Rheumatology · Immunology · Dermatology
-          </span>
+          {showSubtitle && (
+            <span className="text-xs md:text-sm text-slate-600 font-medium tracking-tight leading-snug mt-0.5">
+              Rheumatology · Immunology · Dermatology
+            </span>
+          )}
         </div>
       )}
     </div>

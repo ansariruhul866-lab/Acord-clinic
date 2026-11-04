@@ -53,7 +53,11 @@ export const BeforeAfterSlider = () => {
                     : "bg-white text-slate-600 hover:text-slate-900 hover:border-[#1CA7EC] border border-slate-200 shadow-sm"
                 }`}
               >
-                {cat === "All" ? t("All Cases", "सभी परिणाम") : cat}
+                {cat === "All"
+                  ? t("All Results", "सभी परिणाम")
+                  : cat === "Dermatology"
+                  ? t("Dermatology & Skin", "त्वचा एवं विटिलिगो")
+                  : t("Hair Restoration", "हेयर ट्रांसप्लांट")}
               </button>
             ))}
           </div>
@@ -115,9 +119,11 @@ export const BeforeAfterSlider = () => {
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[#1CA7EC]">{item.procedure}</span>
+                    <span className="font-semibold text-[#1CA7EC]">
+                      {isHindi && item.procedureHi ? item.procedureHi : item.procedure}
+                    </span>
                     <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono text-[10px]">
-                      {item.timeframe}
+                      {isHindi && item.timeframeHi ? item.timeframeHi : item.timeframe}
                     </span>
                   </div>
                   <h3 className="font-bold text-base text-slate-900">

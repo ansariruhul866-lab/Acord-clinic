@@ -23,11 +23,11 @@ export default function BlogArticleDetailPage({ params }) {
       <div className="max-w-4xl mx-auto space-y-10">
         {/* Breadcrumb */}
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <Link href="/patient-hub" className="hover:text-[#1CA7EC]">Patient Hub</Link>
+          <Link href="/patient-hub" className="hover:text-[#1CA7EC]">{t("Patient Hub", "रोगी शिक्षा केंद्र")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">{article.title.slice(0, 30)}...</span>
+          <span className="text-[#1F2F98] font-semibold">{(isHindi ? article.titleHi : article.title).slice(0, 30)}...</span>
         </div>
 
         {/* Article Header */}
@@ -41,15 +41,15 @@ export default function BlogArticleDetailPage({ params }) {
           <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-2">
             <span className="flex items-center gap-1.5 text-slate-900 font-medium">
               <User className="w-3.5 h-3.5 text-[#1CA7EC]" />
-              <span>{article.author}</span>
+              <span>{isHindi ? (article.author.includes("Aakash") ? "डॉ. आकाश सिंह" : "डॉ. अंकिता पुंडीर") : article.author}</span>
             </span>
             <span>·</span>
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-[#1CA7EC]" />
-              <span>{article.readTime}</span>
+              <span>{isHindi ? t(article.readTime, "५ मिनट पठन") : article.readTime}</span>
             </span>
             <span>·</span>
-            <span>{article.date}</span>
+            <span>{isHindi ? t(article.date, "अक्टूबर २०२६") : article.date}</span>
           </div>
         </div>
 

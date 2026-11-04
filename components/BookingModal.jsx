@@ -168,7 +168,9 @@ export const BookingModal = () => {
                         {isHindi ? doc.nameHi : doc.name}
                       </div>
                       <div className="text-xs text-[#1CA7EC] font-semibold">{doc.degrees.split("(")[0]}</div>
-                      <div className="text-[11px] text-slate-500 line-clamp-1">{doc.role}</div>
+                      <div className="text-[11px] text-slate-500 line-clamp-1">
+                        {isHindi ? doc.roleHi : doc.role}
+                      </div>
                     </div>
                   </button>
                 ))}
@@ -237,21 +239,21 @@ export const BookingModal = () => {
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {[
-                  "Morning (10:00 AM - 1:00 PM)",
-                  "Afternoon (2:00 PM - 5:00 PM)",
-                  "Evening (5:00 PM - 7:00 PM)",
+                  { en: "Morning (10:00 AM - 1:00 PM)", hi: "सुबह (10:00 AM - 1:00 PM)" },
+                  { en: "Afternoon (2:00 PM - 5:00 PM)", hi: "दोपहर (2:00 PM - 5:00 PM)" },
+                  { en: "Evening (5:00 PM - 7:00 PM)", hi: "शाम (5:00 PM - 7:00 PM)" },
                 ].map((slot) => (
                   <button
-                    key={slot}
+                    key={slot.en}
                     type="button"
-                    onClick={() => setSelectedSlot(slot)}
+                    onClick={() => setSelectedSlot(slot.en)}
                     className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all ${
-                      selectedSlot === slot
+                      selectedSlot === slot.en
                         ? "bg-[#F0F9FF] border-[#1CA7EC] text-[#1F2F98] ring-1 ring-[#1CA7EC]"
                         : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                     }`}
                   >
-                    {slot}
+                    {isHindi ? slot.hi : slot.en}
                   </button>
                 ))}
               </div>
@@ -286,7 +288,7 @@ export const BookingModal = () => {
               <input
                 type="text"
                 required
-                placeholder="e.g. Ramesh Kumar"
+                placeholder={t("e.g. Ramesh Kumar", "जैसे: रमेश कुमार")}
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs font-medium focus:outline-none focus:border-[#1CA7EC]"
@@ -314,7 +316,7 @@ export const BookingModal = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Gorakhpur / Bhagalpur"
+                  placeholder={t("e.g. Gorakhpur / Bhagalpur", "जैसे: गोरखपुर / भागलपुर")}
                   value={patientCity}
                   onChange={(e) => setPatientCity(e.target.value)}
                   className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs font-medium focus:outline-none focus:border-[#1CA7EC]"
@@ -328,7 +330,7 @@ export const BookingModal = () => {
               </label>
               <textarea
                 rows={2}
-                placeholder="Brief symptoms..."
+                placeholder={t("Brief symptoms or concerns...", "लक्षण या समस्या का संक्षिप्त विवरण...")}
                 value={symptomNote}
                 onChange={(e) => setSymptomNote(e.target.value)}
                 className="w-full p-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs font-medium focus:outline-none focus:border-[#1CA7EC]"
@@ -338,11 +340,11 @@ export const BookingModal = () => {
             <div className="p-3.5 rounded-2xl bg-[#F0F9FF] border border-[#1CA7EC]/30 text-xs text-slate-700 flex flex-col gap-1">
               <div className="flex justify-between">
                 <span className="text-slate-500">{t("Specialist:", "डॉक्टर:")}</span>
-                <span className="font-bold text-slate-900">{doctorObj.name}</span>
+                <span className="font-bold text-slate-900">{isHindi ? doctorObj.nameHi : doctorObj.name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">{t("Branch:", "शाखा:")}</span>
-                <span className="font-bold text-slate-900">{branchObj.city} Clinic</span>
+                <span className="font-bold text-slate-900">{isHindi ? branchObj.cityHi : branchObj.city} {t("Clinic", "क्लिनिक")}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">{t("Date & Slot:", "तारीख व समय:")}</span>

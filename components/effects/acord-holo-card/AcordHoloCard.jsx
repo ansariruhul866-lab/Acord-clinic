@@ -104,11 +104,11 @@ export function AcordHoloCard({
   return (
     <div
       ref={hostRef}
-      className={`relative w-full max-w-[380px] sm:max-w-[430px] h-[540px] sm:h-[580px] mx-auto select-none bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 border border-slate-100 ${className}`}
+      className={`relative w-full max-w-[380px] sm:max-w-[430px] h-[540px] sm:h-[580px] mx-auto select-none bg-[#eaf7fe] rounded-3xl overflow-hidden shadow-2xl shadow-[#13BEB5]/25 border border-[#13BEB5]/30 ${className}`}
       role="region"
       aria-label="Interactive ACORD Clinics holographic medical card"
       style={{
-        background: "#FFFFFF",
+        background: "#eaf7fe",
         ...style,
       }}
     >
@@ -123,7 +123,7 @@ export function AcordHoloCard({
           onLoad={() => setReady(true)}
           className="absolute inset-0 w-full h-full border-0 transition-opacity duration-300 z-10"
           style={{
-            background: "#FFFFFF",
+            background: "#eaf7fe",
             border: 0,
             opacity: ready ? 1 : 0,
             pointerEvents: ready ? "auto" : "none",
@@ -133,12 +133,16 @@ export function AcordHoloCard({
 
       {/* Instant Static Poster / Low-End Fallback Card */}
       {(!mounted || !ready) && (
-        <div className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 rounded-3xl bg-white text-slate-800 shadow-sm z-0">
+        <div className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 rounded-3xl bg-[#eaf7fe] text-slate-800 shadow-sm z-0">
           <div className="flex items-center justify-between border-b border-[#13BEB5]/20 pb-3">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#13BEB5] animate-pulse" />
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#114E3F]">
-                ACORD Clinics Super-Speciality
+                {safeVariant === "dr-aakash"
+                  ? "Rheumatology & Immunology"
+                  : safeVariant === "dr-ankita"
+                  ? "Dermatology & Aesthetics"
+                  : "ACORD Clinics Super-Speciality"}
               </span>
             </div>
             <span className="px-2 py-0.5 rounded-full bg-[#13BEB5]/10 text-[#1F2F98] text-[10px] font-bold">
@@ -147,26 +151,71 @@ export function AcordHoloCard({
           </div>
 
           <div className="flex flex-col items-center text-center my-auto space-y-3 py-4">
-            <div className="w-32 h-32 rounded-full p-2 bg-gradient-to-tr from-[#13BEB5] via-[#21C6C2] to-[#89EAD7] shadow-lg flex items-center justify-center">
-              <img
-                src="/images/acord-logo.png"
-                alt="ACORD Clinics Emblem"
-                className="w-full h-full object-contain rounded-full"
-              />
+            <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-[#1F2F98] via-[#13BEB5] to-[#89EAD7] shadow-lg overflow-hidden flex items-center justify-center">
+              {safeVariant === "dr-aakash" ? (
+                <img
+                  src="/images/dr-aakash-singh.jpg"
+                  alt="Dr. Aakash Singh"
+                  className="w-full h-full object-cover object-[center_top] rounded-full scale-105"
+                />
+              ) : safeVariant === "dr-ankita" ? (
+                <img
+                  src="/images/dr-ankita-pundir.png"
+                  alt="Dr. Ankita Pundir"
+                  className="w-full h-full object-cover object-[center_30%] rounded-full scale-105"
+                />
+              ) : (
+                <img
+                  src="/images/acord-logo.png"
+                  alt="ACORD Clinics Emblem"
+                  className="w-full h-full object-contain rounded-full p-2 bg-white"
+                />
+              )}
             </div>
+
             <h3 className="text-2xl font-black tracking-tight text-[#1F2F98]">
-              ACORD CLINICS
+              {safeVariant === "dr-aakash"
+                ? "DR. AAKASH SINGH"
+                : safeVariant === "dr-ankita"
+                ? "DR. ANKITA PUNDIR"
+                : "ACORD CLINICS"}
             </h3>
             <p className="text-xs text-[#114E3F] font-semibold max-w-[280px] leading-relaxed">
-              Autoimmunity Centre Of excellence in Rheumatology & Dermatology
+              {safeVariant === "dr-aakash"
+                ? "MD (Med), DM (Rheumatology & Clinical Immunology, AIR 1 PGIMER)"
+                : safeVariant === "dr-ankita"
+                ? "MBBS, MD (Dermatology, NEET PG AIR 1488, S. Korea Fellow)"
+                : "Autoimmunity Centre Of excellence in Rheumatology & Dermatology"}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-[10px] font-bold">
-              <span className="px-2.5 py-1 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
-                Rheumatology & Biologics
-              </span>
-              <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
-                Dermatology & Hair FUE
-              </span>
+              {safeVariant === "dr-aakash" ? (
+                <>
+                  <span className="px-2.5 py-1 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
+                    Arthritis & SLE Care
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                    Biologics Infusion
+                  </span>
+                </>
+              ) : safeVariant === "dr-ankita" ? (
+                <>
+                  <span className="px-2.5 py-1 rounded-full bg-[#E8715A]/10 text-[#E8715A] border border-[#E8715A]/30">
+                    Vitiligo Grafting Surgery
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                    Hair FUE & Lasers
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="px-2.5 py-1 rounded-full bg-[#7B4FBF]/10 text-[#7B4FBF] border border-[#7B4FBF]/30">
+                    Rheumatology & Biologics
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-[#13BEB5]/10 text-[#13BEB5] border border-[#13BEB5]/30">
+                    Dermatology & Hair FUE
+                  </span>
+                </>
+              )}
             </div>
           </div>
 

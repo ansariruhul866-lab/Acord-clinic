@@ -35,18 +35,18 @@ export default function BranchDetailPage({ params }) {
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <Link href="/locations" className="hover:text-[#1CA7EC]">Locations</Link>
+          <Link href="/locations" className="hover:text-[#1CA7EC]">{t("Locations", "शाखाएं")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">{branch.city} Branch</span>
+          <span className="text-[#1F2F98] font-semibold">{isHindi && branch.cityHi ? branch.cityHi : branch.city} {t("Branch", "शाखा")}</span>
         </div>
 
         {/* Hero */}
         <div className="rounded-3xl bg-white border border-slate-200 p-6 sm:p-10 space-y-6 shadow-sm relative overflow-hidden">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F0F9FF] text-[#1F2F98] text-xs font-bold uppercase tracking-wider border border-[#1CA7EC]/20">
             <Building2 className="w-4 h-4 text-[#1CA7EC]" />
-            <span>Super-Speciality Clinic · {branch.state || "India"}</span>
+            <span>{t("Super-Speciality Clinic", "सुपर-स्पेशलिटी क्लिनिक")} · {branch.state || "India"}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
@@ -60,7 +60,7 @@ export default function BranchDetailPage({ params }) {
           <div className="space-y-2 text-xs sm:text-sm text-slate-600">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[#1CA7EC]" />
-              <span><b>Clinic Hours:</b> {isHindi && branch.hoursHi ? branch.hoursHi : (branch.hours || branch.timings)}</span>
+              <span><b>{t("Clinic Hours:", "क्लिनिक समय:")}</b> {isHindi && branch.hoursHi ? branch.hoursHi : (branch.hours || branch.timings)}</span>
             </div>
             <div className="flex items-center gap-2 font-mono text-[#1F2F98] font-bold text-sm sm:text-base">
               <Phone className="w-4 h-4 text-[#1CA7EC]" />
@@ -76,7 +76,7 @@ export default function BranchDetailPage({ params }) {
               className="py-3 px-6 rounded-2xl bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white font-bold text-xs shadow-md shadow-[#1CA7EC]/20 hover:opacity-95 transition-all flex items-center gap-2"
             >
               <Calendar className="w-4 h-4" />
-              <span>{t(`Book Appointment at ${branch.city}`, `अपॉइंटमेंट बुक करें`)}</span>
+              <span>{t(`Book Appointment at ${branch.city}`, `${isHindi && branch.cityHi ? branch.cityHi : branch.city} में अपॉइंटमेंट बुक करें`)}</span>
             </button>
             <a
               href={`https://wa.me/${branch.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
@@ -87,7 +87,7 @@ export default function BranchDetailPage({ params }) {
               className="py-3 px-6 rounded-2xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/40 text-[#128C7E] font-bold text-xs transition-all flex items-center gap-2"
             >
               <MessageCircle className="w-4 h-4 fill-current" />
-              <span>WhatsApp Branch</span>
+              <span>{t("WhatsApp Branch", "व्हाट्सएप संपर्क")}</span>
             </a>
             {branch.mapDirectionsUrl && (
               <a
@@ -134,8 +134,8 @@ export default function BranchDetailPage({ params }) {
                   className="w-14 h-14 rounded-xl object-cover border border-[#1CA7EC]"
                 />
                 <div>
-                  <div className="font-bold text-slate-900 text-sm sm:text-base">{doc.name}</div>
-                  <div className="text-xs text-[#1CA7EC] font-semibold">{doc.role}</div>
+                  <div className="font-bold text-slate-900 text-sm sm:text-base">{isHindi ? doc.nameHi : doc.name}</div>
+                  <div className="text-xs text-[#1CA7EC] font-semibold">{isHindi ? doc.roleHi : doc.role}</div>
                   <button
                     onClick={() => openBooking({ branch: branch.id, doctor: doc.id, specialty: doc.specialty })}
                     className="text-xs text-[#1F2F98] underline mt-1 font-semibold hover:text-[#1CA7EC]"

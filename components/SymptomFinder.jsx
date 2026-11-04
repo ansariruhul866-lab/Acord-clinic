@@ -86,7 +86,7 @@ export const SymptomFinder = () => {
                   }`}
                 >
                   {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
-                  <span>{chip.label}</span>
+                  <span>{isHindi ? chip.labelHi || chip.label : chip.labelEn || chip.label}</span>
                 </button>
               );
             })}

@@ -15,16 +15,16 @@ export default function TechnologyPage() {
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">Technology & Devices</span>
+          <span className="text-[#1F2F98] font-semibold">{t("Technology & Devices", "तकनीक एवं उपकरण")}</span>
         </div>
 
         {/* Hero */}
         <div className="p-8 sm:p-12 rounded-3xl bg-[#F0F9FF] border border-[#1CA7EC]/30 space-y-6 shadow-sm">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#1CA7EC]/30 text-[#1F2F98] text-xs font-semibold uppercase tracking-wider shadow-sm">
             <Microscope className="w-3.5 h-3.5 text-[#1CA7EC]" />
-            <span>Advanced Clinical Infrastructure</span>
+            <span>{t("Advanced Clinical Infrastructure", "उन्नत क्लिनिकल इंफ्रास्ट्रक्चर")}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
@@ -56,7 +56,7 @@ export default function TechnologyPage() {
             >
               <div className="space-y-3">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#F0F9FF] text-[#1F2F98] text-[11px] font-bold uppercase tracking-wider border border-[#1CA7EC]/20">
-                  {tech.category}
+                  {isHindi && tech.categoryHi ? tech.categoryHi : tech.category}
                 </span>
 
                 <h2 className="text-lg sm:text-xl font-bold text-slate-900">
@@ -64,7 +64,7 @@ export default function TechnologyPage() {
                 </h2>
 
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs text-[#1F2F98] font-bold">
-                  {tech.spec}
+                  {isHindi && tech.specHi ? tech.specHi : tech.spec}
                 </div>
 
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -73,7 +73,7 @@ export default function TechnologyPage() {
               </div>
 
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1CA7EC]">
-                <span>Certified Clinical Device</span>
+                <span>{t("Certified Clinical Device", "प्रमाणित क्लिनिकल उपकरण")}</span>
                 <ShieldCheck className="w-4 h-4" />
               </div>
             </div>

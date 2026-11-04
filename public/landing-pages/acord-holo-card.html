@@ -27,7 +27,7 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: #FFFFFF !important;
+      background: #eaf7fe !important;
       color-scheme: light;
       overscroll-behavior: none;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -141,10 +141,6 @@
 
   <script type="module">
     import * as THREE from 'three';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-    import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
     // Parse variant from URL query (?variant=clinic | dr-aakash | dr-ankita)
     const urlParams = new URLSearchParams(window.location.search);
@@ -153,7 +149,7 @@
     // Setup scene, camera, renderer with generous vertical margins
     const container = document.getElementById('scene');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xFFFFFF);
+    scene.background = new THREE.Color(0xeaf7fe);
 
     const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 0, 5.1); // Ample breathing room so top/bottom are never cut
@@ -163,65 +159,27 @@
       alpha: true,
       powerPreference: 'high-performance'
     });
-    renderer.setClearColor(0xFFFFFF, 1.0);
+    renderer.setClearColor(0xeaf7fe, 1.0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1.5 : 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.toneMappingExposure = 1.0;
     container.appendChild(renderer.domElement);
 
-    // Post-processing: Render pass + Very Subtle Bloom
-    const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.08, // Very subtle strength to keep text 100% crisp and readable
-      0.3,
-      0.92
-    );
-    composer.addPass(bloomPass);
-
-    // Color Grade Finishing Pass
-    const FinishShader = {
-      uniforms: {
-        tDiffuse: { value: null },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D tDiffuse;
-        varying vec2 vUv;
-
-        void main() {
-          vec4 c = texture2D(tDiffuse, vUv);
-          gl_FragColor = vec4(c.rgb, 1.0);
-        }
-      `
-    };
-    const finishPass = new ShaderPass(FinishShader);
-    composer.addPass(finishPass);
-
-    // Balanced Stage Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    // Balanced Bright Stage Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.45);
     keyLight.position.set(3, 4, 5);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x89EAD7, 0.8);
+    const rimLight = new THREE.DirectionalLight(0x89EAD7, 0.9);
     rimLight.position.set(-3, -2, -3);
     scene.add(rimLight);
 
-    // Ambient Cell / Bubble Particles
-    const particleCount = 36;
+    // Ambient Cell / Bubble Particles (Glowing, rich teal & royal blue tones)
+    const particleCount = 45;
     const particleGeo = new THREE.BufferGeometry();
     const posArray = new Float32Array(particleCount * 3);
     const particleSpeeds = [];
@@ -239,22 +197,25 @@
     particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
     const pCanvas = document.createElement('canvas');
-    pCanvas.width = 64;
-    pCanvas.height = 64;
+    pCanvas.width = 128;
+    pCanvas.height = 128;
     const pCtx = pCanvas.getContext('2d');
-    const pGrad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 30);
-    pGrad.addColorStop(0, 'rgba(137, 234, 215, 0.85)');
-    pGrad.addColorStop(0.4, 'rgba(19, 190, 181, 0.4)');
-    pGrad.addColorStop(1, 'rgba(33, 198, 194, 0)');
+    const pGrad = pCtx.createRadialGradient(64, 64, 0, 64, 64, 62);
+    pGrad.addColorStop(0, 'rgba(19, 218, 200, 1.0)');      // Bright glowing core
+    pGrad.addColorStop(0.22, 'rgba(31, 47, 152, 0.88)');   // Deep royal blue ring
+    pGrad.addColorStop(0.48, 'rgba(15, 118, 110, 0.70)');  // Deep emerald body
+    pGrad.addColorStop(0.78, 'rgba(19, 190, 181, 0.35)');  // Outer luminous glow halo
+    pGrad.addColorStop(1, 'rgba(19, 190, 181, 0)');
     pCtx.fillStyle = pGrad;
-    pCtx.fillRect(0, 0, 64, 64);
+    pCtx.fillRect(0, 0, 128, 128);
     const pTexture = new THREE.CanvasTexture(pCanvas);
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.14,
+      size: 0.20,
       map: pTexture,
       transparent: true,
-      blending: THREE.AdditiveBlending,
+      opacity: 0.92,
+      blending: THREE.NormalBlending,
       depthWrite: false
     });
     const particleSystem = new THREE.Points(particleGeo, particleMat);
@@ -271,23 +232,31 @@
     logoImg.crossOrigin = 'anonymous';
     logoImg.src = '/images/acord-logo.png';
 
-    // Generate High-Contrast Front Canvas Texture matching Hero section
-    function createFrontCanvas(logo, vMode = variant) {
+    const drAakashImg = new Image();
+    drAakashImg.crossOrigin = 'anonymous';
+    drAakashImg.src = '/images/dr-aakash-singh.jpg';
+
+    const drAnkitaImg = new Image();
+    drAnkitaImg.crossOrigin = 'anonymous';
+    drAnkitaImg.src = '/images/dr-ankita-pundir.png';
+
+    // Generate High-Contrast Front Canvas Texture with Richer Depth
+    function createFrontCanvas(vMode = variant) {
       const c = document.createElement('canvas');
       c.width = 1024;
       c.height = 1500;
       const ctx = c.getContext('2d');
 
-      // 1. Solid Clean Background matching Hero (#F0F9FF -> #FFFFFF -> #F8FAFC)
+      // 1. Rich Card Background Texture with Medical Depth
       const grad = ctx.createLinearGradient(0, 0, 1024, 1500);
-      grad.addColorStop(0, '#F0F9FF');
-      grad.addColorStop(0.45, '#FFFFFF');
-      grad.addColorStop(1, '#F8FAFC');
+      grad.addColorStop(0, '#d9effb');
+      grad.addColorStop(0.45, '#eef6fc');
+      grad.addColorStop(1, '#cae7f8');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 1500);
 
-      // Subtle Background Wave Lines
-      ctx.strokeStyle = 'rgba(19, 190, 181, 0.18)';
+      // Subtle Background Wave Lines (Darker & Crisper)
+      ctx.strokeStyle = 'rgba(15, 118, 110, 0.28)';
       ctx.lineWidth = 2;
       for (let y = 100; y < 1450; y += 80) {
         ctx.beginPath();
@@ -296,17 +265,25 @@
         ctx.stroke();
       }
 
-      // 2. High-Contrast Outer Borders
-      ctx.strokeStyle = vMode === 'dr-aakash' ? '#1F2F98' : '#13BEB5';
+      // 2. High-Contrast Glowing Outer Borders
+      ctx.save();
+      ctx.shadowColor = vMode === 'dr-aakash' ? 'rgba(31, 47, 152, 0.45)' : 'rgba(19, 190, 181, 0.45)';
+      ctx.shadowBlur = 16;
+      ctx.strokeStyle = vMode === 'dr-aakash' ? '#1F2F98' : '#0F766E';
       ctx.lineWidth = 12;
       ctx.strokeRect(36, 36, 952, 1428);
+      ctx.restore();
 
-      ctx.strokeStyle = '#21C6C2';
+      ctx.save();
+      ctx.shadowColor = 'rgba(19, 190, 181, 0.6)';
+      ctx.shadowBlur = 12;
+      ctx.strokeStyle = '#13BEB5';
       ctx.lineWidth = 3;
       ctx.strokeRect(52, 52, 920, 1396);
+      ctx.restore();
 
       // Corner accent dots
-      ctx.fillStyle = '#13BEB5';
+      ctx.fillStyle = '#0F766E';
       ctx.fillRect(40, 40, 20, 20);
       ctx.fillRect(964, 40, 20, 20);
       ctx.fillRect(40, 1440, 20, 20);
@@ -314,44 +291,80 @@
 
       if (vMode === 'dr-aakash') {
         // DR. AAKASH SINGH
-        ctx.fillStyle = '#1F2F98';
+        ctx.fillStyle = '#172554';
         ctx.font = '900 24px "Plus Jakarta Sans"';
         ctx.letterSpacing = '5px';
         ctx.textAlign = 'center';
         ctx.fillText('DEPARTMENT OF RHEUMATOLOGY & IMMUNOLOGY', 512, 120);
 
-        if (logo && logo.complete && logo.naturalWidth > 0) {
+        // Circular Masked Portrait of Dr. Aakash Singh
+        const cx = 512;
+        const cy = 360;
+        const cr = 185;
+
+        // Outer Glow
+        ctx.save();
+        ctx.shadowColor = 'rgba(31, 47, 152, 0.12)';
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.restore();
+
+        if (drAakashImg && drAakashImg.complete && drAakashImg.naturalWidth > 0) {
           ctx.save();
-          ctx.shadowColor = 'rgba(31, 47, 152, 0.25)';
-          ctx.shadowBlur = 24;
-          ctx.drawImage(logo, 512 - 180, 160, 360, 360);
+          ctx.beginPath();
+          ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+
+          // Balanced framing centered directly on face
+          const sw = Math.round(drAakashImg.naturalWidth * 0.85); // 746
+          const sh = sw;
+          const sx = Math.round((drAakashImg.naturalWidth - sw) / 2);
+          const sy = Math.round(drAakashImg.naturalHeight * 0.02); // 20
+          ctx.drawImage(drAakashImg, sx, sy, sw, sh, cx - cr, cy - cr, cr * 2, cr * 2);
           ctx.restore();
         }
 
+        // Circular Frame Rings
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.strokeStyle = '#1F2F98';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr + 7, 0, Math.PI * 2);
+        ctx.strokeStyle = '#1CA7EC';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
         ctx.font = '900 68px "Plus Jakarta Sans"';
         ctx.letterSpacing = '2px';
-        ctx.fillStyle = '#0F172A';
-        ctx.fillText('DR. AAKASH SINGH', 512, 640);
+        ctx.fillStyle = '#020617';
+        ctx.fillText('DR. AAKASH SINGH', 512, 630);
 
         ctx.font = '800 26px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#7B4FBF';
-        ctx.fillText('MD (Medicine), DM (Clinical Immunology & Rheumatology)', 512, 690);
+        ctx.fillStyle = '#3B0764';
+        ctx.fillText('MD (Medicine), DM (Clinical Immunology & Rheumatology)', 512, 680);
 
         ctx.font = '800 23px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#114E3F';
-        ctx.fillText('AIR 1, PGIMER Chandigarh · AIIMS & JIPMER Alumnus', 512, 735);
+        ctx.fillStyle = '#064E3B';
+        ctx.fillText('AIR 1, PGIMER Chandigarh · AIIMS & JIPMER Alumnus', 512, 725);
 
         // Solid High-Contrast Pills
         const pills = [
-          { label: 'Arthritis & SLE Care', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 280, y: 830 },
-          { label: 'Biologics Infusion', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 744, y: 830 },
-          { label: 'MSK Ultrasound', color: '#172554', border: '#1F2F98', bg: '#DBEAFE', x: 280, y: 915 },
-          { label: 'Vasculitis Specialist', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 744, y: 915 }
+          { label: 'Arthritis & SLE Care', color: '#1E1B4B', border: '#6D28D9', bg: '#EDE9FE', x: 280, y: 820 },
+          { label: 'Biologics Infusion', color: '#042F2E', border: '#0F766E', bg: '#CCFBF1', x: 744, y: 820 },
+          { label: 'MSK Ultrasound', color: '#172554', border: '#1D4ED8', bg: '#DBEAFE', x: 280, y: 905 },
+          { label: 'Vasculitis Specialist', color: '#450A0A', border: '#DC2626', bg: '#FFE4E6', x: 744, y: 905 }
         ];
         pills.forEach(p => {
           ctx.fillStyle = p.bg;
           ctx.strokeStyle = p.border;
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.5;
           ctx.beginPath();
           ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
           ctx.fill();
@@ -363,55 +376,91 @@
         });
 
         ctx.font = '800 26px "Noto Sans Devanagari"';
-        ctx.fillStyle = '#0F172A';
-        ctx.fillText('जटिल गठिया एवं ल्यूपस के विशेषज्ञ परामर्श', 512, 1040);
+        ctx.fillStyle = '#020617';
+        ctx.fillText('जटिल गठिया एवं ल्यूपस के विशेषज्ञ परामर्श', 512, 1030);
 
-        ctx.fillStyle = '#1F2F98';
+        ctx.fillStyle = '#172554';
         ctx.font = '900 28px "Plus Jakarta Sans"';
-        ctx.fillText('Director & Lead Consultant', 512, 1150);
-        ctx.fillStyle = '#334155';
-        ctx.font = '700 22px "Plus Jakarta Sans"';
-        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1195);
+        ctx.fillText('Director & Lead Consultant', 512, 1140);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px "Plus Jakarta Sans"';
+        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1185);
 
       } else if (vMode === 'dr-ankita') {
         // DR. ANKITA PUNDIR
-        ctx.fillStyle = '#13BEB5';
+        ctx.fillStyle = '#0F766E';
         ctx.font = '900 24px "Plus Jakarta Sans"';
         ctx.letterSpacing = '5px';
         ctx.textAlign = 'center';
         ctx.fillText('DEPARTMENT OF DERMATOLOGY & AESTHETICS', 512, 120);
 
-        if (logo && logo.complete && logo.naturalWidth > 0) {
+        // Circular Masked Portrait of Dr. Ankita Pundir
+        const cx = 512;
+        const cy = 360;
+        const cr = 185;
+
+        // Outer Glow
+        ctx.save();
+        ctx.shadowColor = 'rgba(15, 118, 110, 0.12)';
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.restore();
+
+        if (drAnkitaImg && drAnkitaImg.complete && drAnkitaImg.naturalWidth > 0) {
           ctx.save();
-          ctx.shadowColor = 'rgba(19, 190, 181, 0.25)';
-          ctx.shadowBlur = 24;
-          ctx.drawImage(logo, 512 - 180, 160, 360, 360);
+          ctx.beginPath();
+          ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+
+          // Balanced framing centered directly on face matching Dr. Aakash scale
+          const sw = drAnkitaImg.naturalWidth; // 576
+          const sh = sw;
+          const sx = 0;
+          const sy = Math.round(drAnkitaImg.naturalHeight * 0.17); // 174
+          ctx.drawImage(drAnkitaImg, sx, sy, sw, sh, cx - cr, cy - cr, cr * 2, cr * 2);
           ctx.restore();
         }
 
+        // Circular Frame Rings
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.strokeStyle = '#0F766E';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr + 7, 0, Math.PI * 2);
+        ctx.strokeStyle = '#13BEB5';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
         ctx.font = '900 68px "Plus Jakarta Sans"';
         ctx.letterSpacing = '2px';
-        ctx.fillStyle = '#0F172A';
-        ctx.fillText('DR. ANKITA PUNDIR', 512, 640);
+        ctx.fillStyle = '#020617';
+        ctx.fillText('DR. ANKITA PUNDIR', 512, 630);
 
         ctx.font = '800 26px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#13BEB5';
-        ctx.fillText('MBBS, MD (Dermatology, Venereology & Leprosy)', 512, 690);
+        ctx.fillStyle = '#0F766E';
+        ctx.fillText('MBBS, MD (Dermatology, Venereology & Leprosy)', 512, 680);
 
         ctx.font = '800 23px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#1F2F98';
-        ctx.fillText('NEET PG AIR 1488 · AIIMS Rank 456 · S. Korea Fellow', 512, 735);
+        ctx.fillStyle = '#172554';
+        ctx.fillText('NEET PG AIR 1488 · AIIMS Rank 456 · S. Korea Fellow', 512, 725);
 
         const pills = [
-          { label: 'Vitiligo Grafting Surgery', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 280, y: 830 },
-          { label: 'FUE Hair Transplant', color: '#451A03', border: '#F59E2B', bg: '#FEF3C7', x: 744, y: 830 },
-          { label: 'Laser Aesthetics', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 280, y: 915 },
-          { label: 'Botox & Thread Lifts', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 744, y: 915 }
+          { label: 'Vitiligo Grafting Surgery', color: '#450A0A', border: '#DC2626', bg: '#FFE4E6', x: 280, y: 820 },
+          { label: 'FUE Hair Transplant', color: '#451A03', border: '#D97706', bg: '#FEF3C7', x: 744, y: 820 },
+          { label: 'Laser Aesthetics', color: '#042F2E', border: '#0F766E', bg: '#CCFBF1', x: 280, y: 905 },
+          { label: 'Botox & Thread Lifts', color: '#1E1B4B', border: '#6D28D9', bg: '#EDE9FE', x: 744, y: 905 }
         ];
         pills.forEach(p => {
           ctx.fillStyle = p.bg;
           ctx.strokeStyle = p.border;
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.5;
           ctx.beginPath();
           ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
           ctx.fill();
@@ -423,64 +472,64 @@
         });
 
         ctx.font = '800 26px "Noto Sans Devanagari"';
-        ctx.fillStyle = '#0F172A';
-        ctx.fillText('त्वचा, बाल एवं विटिलिगो सर्जरी की उन्नत तकनीक', 512, 1040);
+        ctx.fillStyle = '#020617';
+        ctx.fillText('त्वचा, बाल एवं विटिलिगो सर्जरी की उन्नत तकनीक', 512, 1030);
 
-        ctx.fillStyle = '#13BEB5';
+        ctx.fillStyle = '#0F766E';
         ctx.font = '900 28px "Plus Jakarta Sans"';
-        ctx.fillText('Director & Senior Dermatosurgeon', 512, 1150);
-        ctx.fillStyle = '#334155';
-        ctx.font = '700 22px "Plus Jakarta Sans"';
-        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1195);
+        ctx.fillText('Director & Senior Dermatosurgeon', 512, 1140);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px "Plus Jakarta Sans"';
+        ctx.fillText('ACORD Clinics Gorakhpur & Bhagalpur', 512, 1185);
 
       } else {
         // CLINIC DEFAULT EMBLEM
-        ctx.fillStyle = '#114E3F';
+        ctx.fillStyle = '#064E3B';
         ctx.font = '900 24px "Plus Jakarta Sans"';
         ctx.letterSpacing = '5px';
         ctx.textAlign = 'center';
         ctx.fillText('SUPER-SPECIALITY CENTRE OF EXCELLENCE', 512, 120);
 
-        if (logo && logo.complete && logo.naturalWidth > 0) {
+        if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
           ctx.save();
-          ctx.shadowColor = 'rgba(19, 190, 181, 0.25)';
+          ctx.shadowColor = 'rgba(15, 118, 110, 0.25)';
           ctx.shadowBlur = 24;
-          ctx.drawImage(logo, 512 - 200, 160, 400, 400);
+          ctx.drawImage(logoImg, 512 - 200, 160, 400, 400);
           ctx.restore();
         }
 
         ctx.font = '900 78px "Plus Jakarta Sans"';
         ctx.letterSpacing = '4px';
-        ctx.fillStyle = '#0F172A';
+        ctx.fillStyle = '#020617';
         ctx.fillText('ACORD CLINICS', 512, 670);
 
         // High contrast colored underline
         const uGrad = ctx.createLinearGradient(260, 0, 764, 0);
-        uGrad.addColorStop(0, '#13BEB5');
-        uGrad.addColorStop(0.5, '#1F2F98');
-        uGrad.addColorStop(1, '#21C6C2');
+        uGrad.addColorStop(0, '#0F766E');
+        uGrad.addColorStop(0.5, '#172554');
+        uGrad.addColorStop(1, '#13BEB5');
         ctx.fillStyle = uGrad;
         ctx.fillRect(260, 695, 504, 7);
 
-        ctx.font = '700 27px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 27px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#020617';
         ctx.letterSpacing = '1px';
         ctx.fillText('Autoimmunity Centre Of excellence in', 512, 760);
         ctx.font = '900 30px "Plus Jakarta Sans"';
-        ctx.fillStyle = '#1F2F98';
+        ctx.fillStyle = '#172554';
         ctx.fillText('Rheumatology & Dermatology', 512, 805);
 
         const pills = [
-          { label: 'Arthritis & SLE', color: '#1E1B4B', border: '#7B4FBF', bg: '#EDE9FE', x: 280, y: 890 },
-          { label: 'Cold-Chain Biologics', color: '#042F2E', border: '#13BEB5', bg: '#CCFBF1', x: 744, y: 890 },
-          { label: 'Vitiligo Surgery', color: '#450A0A', border: '#E8715A', bg: '#FFE4E6', x: 280, y: 975 },
-          { label: 'Lasers & Hair FUE', color: '#451A03', border: '#F59E2B', bg: '#FEF3C7', x: 744, y: 975 }
+          { label: 'Arthritis & SLE', color: '#1E1B4B', border: '#6D28D9', bg: '#EDE9FE', x: 280, y: 890 },
+          { label: 'Cold-Chain Biologics', color: '#042F2E', border: '#0F766E', bg: '#CCFBF1', x: 744, y: 890 },
+          { label: 'Vitiligo Surgery', color: '#450A0A', border: '#DC2626', bg: '#FFE4E6', x: 280, y: 975 },
+          { label: 'Lasers & Hair FUE', color: '#451A03', border: '#D97706', bg: '#FEF3C7', x: 744, y: 975 }
         ];
 
         pills.forEach(p => {
           ctx.fillStyle = p.bg;
           ctx.strokeStyle = p.border;
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.5;
           ctx.beginPath();
           ctx.roundRect(p.x - 200, p.y - 32, 400, 64, 32);
           ctx.fill();
@@ -492,20 +541,20 @@
         });
 
         ctx.font = '800 26px "Noto Sans Devanagari"';
-        ctx.fillStyle = '#0F172A';
+        ctx.fillStyle = '#020617';
         ctx.fillText('स्वास्थ्य और आत्मविश्वास की ओर सही मार्ग', 512, 1090);
 
-        ctx.fillStyle = '#1F2F98';
+        ctx.fillStyle = '#172554';
         ctx.font = '900 28px "Plus Jakarta Sans"';
         ctx.fillText('Gorakhpur (UP) · Bhagalpur (Bihar)', 512, 1190);
 
-        ctx.fillStyle = '#334155';
-        ctx.font = '700 22px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px "Plus Jakarta Sans"';
         ctx.fillText('Purvanchal · Bihar · Jharkhand Super-Speciality', 512, 1235);
       }
 
-      ctx.font = '800 20px "Plus Jakarta Sans"';
-      ctx.fillStyle = '#13BEB5';
+      ctx.font = '900 20px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#0F766E';
       ctx.fillText('✦ TAP OR DOUBLE-CLICK TO FLIP 180° ✦', 512, 1370);
 
       return c;
@@ -518,36 +567,44 @@
       c.height = 1500;
       const ctx = c.getContext('2d');
 
-      // 1. Clean Background matching Hero
+      // 1. Rich Card Background Texture with Medical Depth
       const grad = ctx.createLinearGradient(0, 0, 1024, 1500);
-      grad.addColorStop(0, '#F0F9FF');
-      grad.addColorStop(0.5, '#FFFFFF');
-      grad.addColorStop(1, '#F8FAFC');
+      grad.addColorStop(0, '#d9effb');
+      grad.addColorStop(0.5, '#eef6fc');
+      grad.addColorStop(1, '#cae7f8');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 1500);
 
-      // Borders
+      // Borders with Luminous Glow
+      ctx.save();
+      ctx.shadowColor = 'rgba(31, 47, 152, 0.45)';
+      ctx.shadowBlur = 16;
       ctx.strokeStyle = '#1F2F98';
       ctx.lineWidth = 12;
       ctx.strokeRect(36, 36, 952, 1428);
+      ctx.restore();
 
-      ctx.strokeStyle = '#13BEB5';
+      ctx.save();
+      ctx.shadowColor = 'rgba(19, 190, 181, 0.6)';
+      ctx.shadowBlur = 12;
+      ctx.strokeStyle = '#0F766E';
       ctx.lineWidth = 3;
       ctx.strokeRect(52, 52, 920, 1396);
+      ctx.restore();
 
       // Header
-      ctx.fillStyle = '#1F2F98';
+      ctx.fillStyle = '#172554';
       ctx.font = '900 48px "Plus Jakarta Sans"';
       ctx.textAlign = 'center';
       ctx.fillText('SCOPE OF SERVICES', 512, 120);
 
-      ctx.fillStyle = '#114E3F';
+      ctx.fillStyle = '#064E3B';
       ctx.font = '800 23px "Plus Jakarta Sans"';
       ctx.fillText('Super-Speciality Protocols & Advanced Therapeutics', 512, 165);
 
       // Department 1: Rheumatology & Immunology
-      ctx.fillStyle = '#F5F3FF';
-      ctx.strokeStyle = '#7B4FBF';
+      ctx.fillStyle = '#EDE9FE';
+      ctx.strokeStyle = '#6D28D9';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.roundRect(70, 205, 884, 380, 24);
@@ -555,12 +612,12 @@
       ctx.stroke();
 
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#4C1D95';
+      ctx.fillStyle = '#3B0764';
       ctx.font = '900 30px "Plus Jakarta Sans"';
       ctx.fillText('RHEUMATOLOGY & AUTOIMMUNITY', 110, 260);
 
-      ctx.fillStyle = '#0F172A';
-      ctx.font = '700 23px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#020617';
+      ctx.font = '800 23px "Plus Jakarta Sans"';
       const rheumBullets = [
         '• Inflammatory Arthritis (Rheumatoid, Ankylosing, Gout)',
         '• Lupus (SLE), Scleroderma, Myositis & CTDs',
@@ -573,20 +630,20 @@
       });
 
       // Department 2: Dermatology, Lasers & Hair
-      ctx.fillStyle = '#F0FDFA';
-      ctx.strokeStyle = '#0D9488';
+      ctx.fillStyle = '#CCFBF1';
+      ctx.strokeStyle = '#0F766E';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.roundRect(70, 610, 884, 380, 24);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = '#115E59';
+      ctx.fillStyle = '#042F2E';
       ctx.font = '900 30px "Plus Jakarta Sans"';
       ctx.fillText('DERMATOLOGY, LASERS & AESTHETICS', 110, 665);
 
-      ctx.fillStyle = '#0F172A';
-      ctx.font = '700 23px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#020617';
+      ctx.font = '800 23px "Plus Jakarta Sans"';
       const dermBullets = [
         '• Vitiligo Epidermal Cell Suspension & Grafting Surgery',
         '• Micro-FUE Hair Restoration & QR678® Bio-Peptides',
@@ -600,7 +657,7 @@
 
       // Direct Appointment Lines Box
       ctx.fillStyle = '#FFFFFF';
-      ctx.strokeStyle = '#1F2F98';
+      ctx.strokeStyle = '#172554';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.roundRect(70, 1015, 884, 180, 20);
@@ -608,20 +665,20 @@
       ctx.stroke();
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#1F2F98';
+      ctx.fillStyle = '#172554';
       ctx.font = '900 26px "Plus Jakarta Sans"';
       ctx.fillText('DIRECT CLINIC APPOINTMENT LINES', 512, 1060);
 
-      ctx.fillStyle = '#0F172A';
-      ctx.font = '800 25px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#020617';
+      ctx.font = '900 25px "Plus Jakarta Sans"';
       ctx.fillText('Gorakhpur: +91 77029 41735 / +91 91980 43636', 512, 1110);
       ctx.fillText('Bhagalpur: +91 79034 68113', 512, 1155);
 
       // Book Consultation CTA Button
       const btnGrad = ctx.createLinearGradient(200, 1225, 824, 1340);
-      btnGrad.addColorStop(0, '#1F2F98');
-      btnGrad.addColorStop(0.5, '#13BEB5');
-      btnGrad.addColorStop(1, '#0D9488');
+      btnGrad.addColorStop(0, '#172554');
+      btnGrad.addColorStop(0.5, '#0F766E');
+      btnGrad.addColorStop(1, '#064E3B');
       ctx.fillStyle = btnGrad;
       ctx.beginPath();
       ctx.roundRect(220, 1225, 584, 94, 47);
@@ -631,81 +688,17 @@
       ctx.font = '900 32px "Plus Jakarta Sans"';
       ctx.fillText('📅 BOOK CONSULTATION', 512, 1285);
 
-      ctx.font = '800 20px "Plus Jakarta Sans"';
-      ctx.fillStyle = '#13BEB5';
+      ctx.font = '900 20px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#0F766E';
       ctx.fillText('✦ DOUBLE-CLICK OR PRESS F TO FLIP BACK ✦', 512, 1380);
 
       return c;
     }
 
-    // Refined High-Contrast Foil Shader
-    const FoilHoloShader = {
-      uniforms: {
-        tColor: { value: null },
-        uTime: { value: 0 },
-        uPointer: { value: new THREE.Vector2(0.5, 0.5) },
-        uTeal: { value: new THREE.Color('#13BEB5') },
-        uAqua: { value: new THREE.Color('#21C6C2') },
-        uMint: { value: new THREE.Color('#89EAD7') },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        varying vec3 vNormalWorld;
-        varying vec3 vViewDir;
-
-        void main() {
-          vUv = uv;
-          vec4 worldPos = modelMatrix * vec4(position, 1.0);
-          vNormalWorld = normalize(mat3(modelMatrix) * normal);
-          vViewDir = normalize(cameraPosition - worldPos.xyz);
-          gl_Position = projectionMatrix * viewMatrix * worldPos;
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D tColor;
-        uniform float uTime;
-        uniform vec2 uPointer;
-        uniform vec3 uTeal;
-        uniform vec3 uAqua;
-        uniform vec3 uMint;
-
-        varying vec2 vUv;
-        varying vec3 vNormalWorld;
-        varying vec3 vViewDir;
-
-        void main() {
-          vec4 baseColor = texture2D(tColor, vUv);
-
-          // Subtle rim reflection that doesn't wash out text
-          float fresnel = pow(1.0 - max(dot(vNormalWorld, vViewDir), 0.0), 3.0);
-
-          // Pointer-reactive iridescent glint
-          vec2 pOffset = vUv - uPointer;
-          float pDist = length(pOffset);
-          float shimmer = sin(pDist * 16.0 - uTime * 1.2) * 0.5 + 0.5;
-
-          vec3 holo = mix(uTeal, uAqua, sin(vUv.x * 6.28 + uTime * 0.4) * 0.5 + 0.5);
-          holo = mix(holo, uMint, sin(vUv.y * 6.28 - uTime * 0.3) * 0.5 + 0.5);
-
-          // Preserve dark text and sharp contrast: only apply sheen to lighter areas
-          float lum = dot(baseColor.rgb, vec3(0.299, 0.587, 0.114));
-          vec3 finalRgb = baseColor.rgb;
-          if (lum > 0.55) {
-            finalRgb += holo * shimmer * 0.08 + uMint * fresnel * 0.12;
-          } else {
-            // Dark text stays razor sharp and deep
-            finalRgb = mix(baseColor.rgb, holo * 0.4, fresnel * 0.05);
-          }
-
-          gl_FragColor = vec4(finalRgb, baseColor.a);
-        }
-      `
-    };
-
     const cardGroup = new THREE.Group();
     scene.add(cardGroup);
 
-    const frontCanvas = createFrontCanvas(logoImg);
+    const frontCanvas = createFrontCanvas(variant);
     const frontTexture = new THREE.CanvasTexture(frontCanvas);
     frontTexture.colorSpace = THREE.SRGBColorSpace;
     frontTexture.anisotropy = 16;
@@ -715,36 +708,29 @@
     backTexture.colorSpace = THREE.SRGBColorSpace;
     backTexture.anisotropy = 16;
 
-    logoImg.onload = () => {
-      const refreshedFront = createFrontCanvas(logoImg);
+    function refreshFrontTexture() {
+      const refreshedFront = createFrontCanvas(variant);
       frontTexture.image = refreshedFront;
       frontTexture.needsUpdate = true;
-    };
+    }
 
-    const frontMat = new THREE.ShaderMaterial({
-      uniforms: {
-        ...THREE.UniformsUtils.clone(FoilHoloShader.uniforms),
-        tColor: { value: frontTexture }
-      },
-      vertexShader: FoilHoloShader.vertexShader,
-      fragmentShader: FoilHoloShader.fragmentShader
+    logoImg.onload = refreshFrontTexture;
+    drAakashImg.onload = refreshFrontTexture;
+    drAnkitaImg.onload = refreshFrontTexture;
+
+    const frontMat = new THREE.MeshBasicMaterial({
+      map: frontTexture,
+      toneMapped: false
     });
 
-    const backMat = new THREE.ShaderMaterial({
-      uniforms: {
-        ...THREE.UniformsUtils.clone(FoilHoloShader.uniforms),
-        tColor: { value: backTexture }
-      },
-      vertexShader: FoilHoloShader.vertexShader,
-      fragmentShader: FoilHoloShader.fragmentShader
+    const backMat = new THREE.MeshBasicMaterial({
+      map: backTexture,
+      toneMapped: false
     });
 
-    const edgeMat = new THREE.MeshStandardMaterial({
+    const edgeMat = new THREE.MeshBasicMaterial({
       color: 0x13BEB5,
-      metalness: 0.7,
-      roughness: 0.25,
-      emissive: 0x114E3F,
-      emissiveIntensity: 0.15
+      toneMapped: false
     });
 
     const frontPlaneGeo = new THREE.PlaneGeometry(CARD_W, CARD_H, 32, 32);
@@ -761,6 +747,33 @@
     const cardBoxGeo = new THREE.BoxGeometry(CARD_W, CARD_H, CARD_DEPTH);
     const cardBoxMesh = new THREE.Mesh(cardBoxGeo, edgeMat);
     cardGroup.add(cardBoxMesh);
+
+    // 3D Ambient Medical Holographic Glow Aura Plane
+    const glowCanvas = document.createElement('canvas');
+    glowCanvas.width = 256;
+    glowCanvas.height = 256;
+    const gCtx = glowCanvas.getContext('2d');
+    const gGrad = gCtx.createRadialGradient(128, 128, 20, 128, 128, 126);
+    gGrad.addColorStop(0, 'rgba(19, 190, 181, 0.45)');
+    gGrad.addColorStop(0.35, 'rgba(31, 47, 152, 0.28)');
+    gGrad.addColorStop(0.7, 'rgba(137, 234, 215, 0.16)');
+    gGrad.addColorStop(1, 'rgba(19, 190, 181, 0)');
+    gCtx.fillStyle = gGrad;
+    gCtx.fillRect(0, 0, 256, 256);
+    const glowTexture = new THREE.CanvasTexture(glowCanvas);
+
+    const glowMat = new THREE.MeshBasicMaterial({
+      map: glowTexture,
+      transparent: true,
+      opacity: 0.72,
+      depthWrite: false,
+      toneMapped: false,
+      blending: THREE.NormalBlending
+    });
+    const glowPlaneGeo = new THREE.PlaneGeometry(CARD_W * 1.34, CARD_H * 1.26);
+    const glowMesh = new THREE.Mesh(glowPlaneGeo, glowMat);
+    glowMesh.position.z = 0;
+    cardGroup.add(glowMesh);
 
     // Interaction controls
     let targetRotationX = 0;
@@ -856,7 +869,6 @@
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      composer.setSize(window.innerWidth, window.innerHeight);
     });
 
     let isTabVisible = !document.hidden;
@@ -878,10 +890,8 @@
       cardGroup.rotation.x = currentRotationX;
       cardGroup.rotation.y = currentRotationY;
 
-      frontMat.uniforms.uTime.value = elapsed;
-      frontMat.uniforms.uPointer.value = pointerPos;
-      backMat.uniforms.uTime.value = elapsed;
-      backMat.uniforms.uPointer.value = pointerPos;
+      // Subtle breathing glow aura on the card
+      glowMat.opacity = 0.68 + Math.sin(elapsed * 2.2) * 0.10;
 
       const pos = particleGeo.attributes.position.array;
       for (let i = 0; i < particleCount; i++) {
@@ -895,7 +905,7 @@
       }
       particleGeo.attributes.position.needsUpdate = true;
 
-      composer.render();
+      renderer.render(scene, camera);
     }
     animate();
   </script>

@@ -16,9 +16,9 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#1CA7EC]">Home</Link>
+          <Link href="/" className="hover:text-[#1CA7EC]">{t("Home", "होम")}</Link>
           <span>/</span>
-          <span className="text-[#1F2F98] font-semibold">About ACORD</span>
+          <span className="text-[#1F2F98] font-semibold">{t("About ACORD", "एकॉर्ड के बारे में")}</span>
         </div>
 
         {/* Hero Section */}
@@ -59,7 +59,12 @@ export default function AboutPage() {
               <AcordLogo size={140} showText={false} />
               <div className="space-y-1">
                 <span className="font-display text-2xl tracking-wider text-[#1F2F98]">A • C • O • R • D</span>
-                <p className="text-xs text-[#1CA7EC] font-semibold">Autoimmunity • Care • Outcome • Research • Dermatology</p>
+                <p className="text-xs text-[#1CA7EC] font-semibold">
+                  {t(
+                    "Autoimmunity • Care • Outcome • Research • Dermatology",
+                    "ऑटोइम्यूनिटी • केयर • आउटकम • रिसर्च • डर्मेटोलॉजी"
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -120,48 +125,72 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {DOCTORS.map((doc) => (
-              <div key={doc.id} className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6 flex flex-col justify-between shadow-sm hover:shadow-md">
-                <div className="space-y-4">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 relative">
-                    <img src={doc.image} alt={doc.name} className="w-full h-full object-cover object-top" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-lg bg-[#1F2F98] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
-                        {doc.specialty === "rheumatology" ? "Rheumatology & Immunology" : "Dermatology & Aesthetics"}
-                      </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[960px] mx-auto">
+            {DOCTORS.map((doc) => {
+              const isRheum = doc.specialty === "rheumatology";
+
+              return (
+                <div
+                  key={doc.id}
+                  className="relative rounded-3xl overflow-hidden border border-slate-200/90 shadow-lg hover:shadow-2xl transition-all duration-300 min-h-[540px] sm:min-h-[580px] lg:min-h-[600px] flex flex-col justify-end bg-slate-900 group cursor-pointer"
+                >
+                  {/* Doctor Image - 100% Full Opacity Always (Zero Dulling on Doctor's Face/Body) */}
+                  <div className="absolute inset-0 w-full h-full bg-slate-900 overflow-hidden">
+                    <img
+                      src={doc.image}
+                      alt={doc.name}
+                      className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
+                        doc.id === "dr-ankita-pundir"
+                          ? "object-[center_28%]"
+                          : "object-[center_top]"
+                      }`}
+                    />
+                    {/* Linear Gradient reaching ONLY the height of text - text & buttons get highlighted without dulling the doctor */}
+                    <div className="absolute inset-x-0 bottom-0 h-40 group-hover:h-[54%] bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent transition-all duration-500 ease-out pointer-events-none" />
+                  </div>
+
+                    <div className="relative z-10 p-5 sm:p-6 space-y-2.5 text-white">
+                      <div className="space-y-0.5">
+                        <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight drop-shadow-md">
+                          {isHindi ? doc.nameHi : doc.name}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs font-bold text-[#38BDF8] uppercase tracking-wider">
+                          {isHindi ? doc.roleHi : doc.role}
+                        </p>
+                        <p className="text-[11px] text-slate-300 font-mono opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-8 transition-all duration-300 overflow-hidden">
+                          {doc.degrees}
+                        </p>
+                      </div>
+
+                      <p className="text-xs text-slate-200 line-clamp-2 leading-relaxed opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-16 transition-all duration-500 overflow-hidden">
+                        {isHindi ? doc.bioHi : doc.bio}
+                      </p>
+
+                      <div className="pt-1 flex items-center gap-2.5">
+                        <Link
+                          href={`/doctors/${doc.slug}`}
+                          className="py-2.5 px-5 rounded-full bg-white text-slate-950 font-bold text-xs hover:bg-slate-100 transition-all shadow-md flex items-center gap-1.5 shrink-0"
+                        >
+                          <span>{t("View profile", "प्रोफाइल देखें")}</span>
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-900" />
+                        </Link>
+
+                        <div className="flex-1 opacity-0 max-w-0 pointer-events-none group-hover:opacity-100 group-hover:max-w-full group-hover:pointer-events-auto transition-all duration-300 overflow-hidden flex">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openBooking({ specialty: doc.specialty, doctor: doc.id });
+                            }}
+                            className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#1CA7EC] to-[#1F2F98] text-white font-bold text-xs hover:opacity-95 transition-all shadow-md whitespace-nowrap"
+                          >
+                            {t("Book Appointment", "परामर्श बुक करें")}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{isHindi ? doc.nameHi : doc.name}</h3>
-                    <p className="text-xs sm:text-sm text-[#1CA7EC] font-semibold">{isHindi ? doc.roleHi : doc.role}</p>
-                    <p className="text-xs text-slate-500 font-mono mt-0.5">{doc.degrees}</p>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    {isHindi ? doc.bioHi : doc.bio}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex gap-3">
-                  <button
-                    onClick={() => openBooking({ specialty: doc.specialty, doctor: doc.id })}
-                    className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white font-bold text-xs hover:opacity-95 transition-all shadow-sm"
-                  >
-                    {t("Book Appointment", "परामर्श बुक करें")}
-                  </button>
-                  <Link
-                    href={`/doctors/${doc.slug}`}
-                    className="py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors flex items-center gap-1"
-                  >
-                    <span>{t("Profile", "विवरण")}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#1CA7EC]" />
-                  </Link>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -174,10 +203,12 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {CLINIC_INFO.branches.map((b) => (
               <div key={b.id} className="p-5 rounded-2xl bg-white border border-slate-200 space-y-2 shadow-sm">
-                <span className="text-xs font-bold text-[#1F2F98] uppercase tracking-wider">{b.city} Flagship</span>
-                <h4 className="text-base font-bold text-slate-900">{b.city}, {b.state}</h4>
-                <p className="text-xs text-slate-600">{b.address}</p>
-                <p className="text-xs text-[#1CA7EC] font-mono font-bold pt-1">Ph: {b.phoneDisplay || b.phone}</p>
+                <span className="text-xs font-bold text-[#1F2F98] uppercase tracking-wider">
+                  {isHindi && b.cityHi ? b.cityHi : b.city} {t("Flagship", "फ्लैगशिप केंद्र")}
+                </span>
+                <h4 className="text-base font-bold text-slate-900">{isHindi && b.cityHi ? b.cityHi : b.city}, {b.state}</h4>
+                <p className="text-xs text-slate-600">{isHindi && b.addressHi ? b.addressHi : b.address}</p>
+                <p className="text-xs text-[#1CA7EC] font-mono font-bold pt-1">{t("Ph:", "फ़ोन:")} {b.phoneDisplay || b.phone}</p>
               </div>
             ))}
           </div>
