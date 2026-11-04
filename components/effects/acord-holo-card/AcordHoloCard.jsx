@@ -104,7 +104,7 @@ export function AcordHoloCard({
   return (
     <div
       ref={hostRef}
-      className={`relative w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[400px] h-[390px] sm:h-[460px] lg:h-[510px] mx-auto select-none bg-[#eaf7fe] rounded-3xl overflow-hidden shadow-xl shadow-[#13BEB5]/20 border border-[#13BEB5]/30 touch-pan-y ${className}`}
+      className={`relative w-full max-w-[315px] sm:max-w-[365px] lg:max-w-[400px] h-[430px] sm:h-[475px] lg:h-[515px] mx-auto select-none bg-[#eaf7fe] rounded-3xl overflow-hidden shadow-xl shadow-[#13BEB5]/20 border border-[#13BEB5]/30 touch-pan-y ${className}`}
       role="region"
       aria-label="Interactive ACORD Clinics holographic medical card"
       style={{

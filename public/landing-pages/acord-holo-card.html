@@ -58,29 +58,29 @@
 
     .hud-controls {
       left: 50%;
-      bottom: max(12px, env(safe-area-inset-bottom));
+      bottom: max(10px, env(safe-area-inset-bottom));
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       pointer-events: auto;
     }
 
     .hud-btn {
-      padding: 7px 15px;
+      padding: 6px 12px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.95);
       border: 1.5px solid #13BEB5;
       box-shadow: 0 4px 14px rgba(19, 190, 181, 0.2);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: #0F172A;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: all 0.2s ease;
     }
     .hud-btn:hover {
@@ -151,8 +151,8 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xeaf7fe);
 
-    const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 5.1); // Ample breathing room so top/bottom are never cut
+    const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 5.45); // Generous framing so card sits clearly above bottom HUD buttons
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -696,6 +696,7 @@
     }
 
     const cardGroup = new THREE.Group();
+    cardGroup.position.y = 0.24; // Elevate card so bottom text is completely clear of HUD buttons
     scene.add(cardGroup);
 
     const frontCanvas = createFrontCanvas(variant);

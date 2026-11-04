@@ -3,17 +3,34 @@ import React, { useState } from "react";
 import { AcordHoloCard } from "@/components/effects/acord-holo-card/AcordHoloCard";
 import { useLanguage } from "@/lib/language-context";
 import { useBooking } from "@/lib/booking-context";
-import { Sparkles, ShieldCheck } from "lucide-react";
 
 export const HoloBadgeCanvas = () => {
-  const { t, isHindi } = useLanguage();
+  const { isHindi } = useLanguage();
   const { openBooking } = useBooking();
   const [selectedVariant, setSelectedVariant] = useState("clinic");
 
   const variants = [
-    { id: "clinic", label: "ACORD Badge", labelHi: "एकॉर्ड बैज" },
-    { id: "dr-aakash", label: "Dr. Aakash (Rheum)", labelHi: "डॉ. आकाश (गठिया)" },
-    { id: "dr-ankita", label: "Dr. Ankita (Derm)", labelHi: "डॉ. अंकिता (त्वचा)" },
+    {
+      id: "clinic",
+      name: "ACORD",
+      nameHi: "एकॉर्ड",
+      sub: "Centre",
+      subHi: "सेंटर",
+    },
+    {
+      id: "dr-aakash",
+      name: "Dr. Aakash",
+      nameHi: "डॉ. आकाश",
+      sub: "Rheumatology",
+      subHi: "गठिया विभाग",
+    },
+    {
+      id: "dr-ankita",
+      name: "Dr. Ankita",
+      nameHi: "डॉ. अंकिता",
+      sub: "Dermatology",
+      subHi: "त्वचा विभाग",
+    },
   ];
 
   return (
@@ -30,29 +47,36 @@ export const HoloBadgeCanvas = () => {
         />
       </div>
 
-      {/* Interactive Variant Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-1 p-1 rounded-full bg-white/90 border border-[#13BEB5]/30 shadow-sm mt-3 z-20 backdrop-blur-md">
-        {variants.map((v) => {
-          const isSelected = selectedVariant === v.id;
-          return (
-            <button
-              key={v.id}
-              onClick={() => setSelectedVariant(v.id)}
-              className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1.5 ${
-                isSelected
-                  ? "bg-gradient-to-r from-[#1F2F98] to-[#13BEB5] text-white shadow-sm"
-                  : "text-slate-600 hover:text-[#114E3F] hover:bg-slate-100"
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isSelected ? "bg-[#89EAD7] animate-pulse" : "bg-slate-300"
+      {/* Symmetrical 3-Column Segmented Tab Bar */}
+      <div className="w-full max-w-[315px] sm:max-w-[365px] mt-3 z-20">
+        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          {variants.map((v) => {
+            const isSelected = selectedVariant === v.id;
+            return (
+              <button
+                key={v.id}
+                onClick={() => setSelectedVariant(v.id)}
+                className={`py-2 px-1 rounded-xl text-center transition-all duration-200 flex flex-col items-center justify-center active:scale-95 ${
+                  isSelected
+                    ? "bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white shadow-sm ring-1 ring-[#1CA7EC]/30"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
-              />
-              <span>{isHindi ? v.labelHi : v.label}</span>
-            </button>
-          );
-        })}
+                aria-pressed={isSelected}
+              >
+                <span className="text-[11px] sm:text-xs font-black truncate w-full">
+                  {isHindi ? v.nameHi : v.name}
+                </span>
+                <span
+                  className={`text-[8px] sm:text-[9px] uppercase tracking-wider font-semibold ${
+                    isSelected ? "text-cyan-100" : "text-slate-400"
+                  }`}
+                >
+                  {isHindi ? v.subHi : v.sub}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
