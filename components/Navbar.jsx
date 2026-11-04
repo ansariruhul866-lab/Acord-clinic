@@ -17,6 +17,15 @@ import {
   Globe,
   ArrowRight,
   MessageCircle,
+  Home,
+  Stethoscope,
+  Zap,
+  Award,
+  MapPin,
+  HelpCircle,
+  ShieldCheck,
+  PhoneCall,
+  ChevronRight,
 } from "lucide-react";
 
 export const Navbar = () => {
@@ -33,6 +42,71 @@ export const Navbar = () => {
   const drAnkita = DOCTORS.find((d) => d.id === "dr-ankita" || d.slug === "dr-ankita-pundir") || DOCTORS[1];
 
   const primaryBranch = Array.isArray(CLINIC_INFO.branches) ? CLINIC_INFO.branches[0] : CLINIC_INFO.branches.gorakhpur;
+
+  const mobileNavRows = [
+    {
+      href: "/",
+      label: t("Home", "होम"),
+      sub: t("ACORD Super-Speciality Clinics", "एकॉर्ड सुपर-स्पेशलिटी क्लिनिक"),
+      icon: Home,
+    },
+    {
+      href: "/rheumatology",
+      label: t("Rheumatology & Autoimmunity", "रूमेटोलॉजी एवं गठिया"),
+      sub: t("Arthritis, Lupus, Biologics", "गठिया, ल्यूपस, बायोलॉजिकल दवाएं"),
+      icon: Activity,
+      badge: "AIR-1 PGIMER",
+    },
+    {
+      href: "/dermatology",
+      label: t("Dermatology & Hair Science", "त्वचा, बाल एवं लेजर"),
+      sub: t("Vitiligo, FUE Hair, Lasers", "विटिलिगो, हेयर ट्रांसप्लांट, लेजर"),
+      icon: Sparkles,
+      badge: "AIIMS MD",
+    },
+    {
+      href: "/doctors",
+      label: t("Specialist Doctors", "विशेषज्ञ चिकित्सक"),
+      sub: t("Dr. Aakash & Dr. Ankita", "डॉ. आकाश एवं डॉ. अंकिता"),
+      icon: Stethoscope,
+    },
+    {
+      href: "/technology",
+      label: t("Technology & Lasers", "उपकरण एवं तकनीक"),
+      sub: t("US FDA Medical Lasers & USG", "यूएस एफडीए लेजर तकनीक"),
+      icon: Zap,
+    },
+    {
+      href: "/results",
+      label: t("Clinical Results & Gallery", "परिणाम एवं गैलरी"),
+      sub: t("Verified Patient Outcomes", "सत्यापित उपचार परिणाम"),
+      icon: Award,
+    },
+    {
+      href: "/locations",
+      label: t("Clinic Locations", "क्लिनिक शाखाएं"),
+      sub: t("Gorakhpur & Bhagalpur", "गोरखपुर एवं भागलपुर"),
+      icon: MapPin,
+    },
+    {
+      href: "/patient-hub",
+      label: t("Patient Education & FAQs", "रोगी मार्गदर्शिका एवं FAQs"),
+      sub: t("In-Depth Care Guides", "इलाज संबंधी जानकारी"),
+      icon: HelpCircle,
+    },
+    {
+      href: "/about",
+      label: t("About ACORD Clinics", "हमारे बारे में"),
+      sub: t("Center of Excellence", "उत्कृष्टता केंद्र"),
+      icon: ShieldCheck,
+    },
+    {
+      href: "/contact",
+      label: t("Contact & Inquiries", "संपर्क एवं सहायता"),
+      sub: t("Phone, Maps & WhatsApp", "फोन, नक्शा एवं व्हाट्सएप"),
+      icon: PhoneCall,
+    },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -403,83 +477,40 @@ export const Navbar = () => {
             className="fixed top-[56px] sm:top-[64px] right-0 bottom-0 w-[86%] max-w-sm bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between z-40 animate-in slide-in-from-right duration-300 overflow-y-auto"
             aria-label="Mobile Navigation"
           >
-            {/* Slider Content */}
-            <div className="p-4 sm:p-5 space-y-5 flex-1 overflow-y-auto">
-              {/* Speciality Links */}
-              <div className="space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
-                  {t("Clinical Specialities", "विभाग एवं परामर्श")}
-                </span>
-
+            {/* Slider Content: All Navigation Menu Items in Rows */}
+            <div className="p-3 sm:p-4 space-y-1.5 flex-1 overflow-y-auto">
+              {mobileNavRows.map((item, i) => (
                 <Link
-                  href="/rheumatology"
+                  key={i}
+                  href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1F2F98] hover:bg-[#F0F9FF] transition-all group"
+                  className="p-3 rounded-2xl bg-slate-50/80 hover:bg-[#F0F9FF] border border-slate-200/70 hover:border-[#1CA7EC]/40 flex items-center justify-between text-slate-800 transition-all group active:scale-[0.98]"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#1F2F98]/10 text-[#1F2F98] flex items-center justify-center shrink-0">
-                      <Activity className="w-4 h-4" />
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/80 group-hover:border-[#1CA7EC]/30 text-[#1F2F98] group-hover:text-[#1CA7EC] flex items-center justify-center shrink-0 shadow-2xs transition-colors">
+                      <item.icon className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="block font-bold text-sm text-slate-900 group-hover:text-[#1F2F98]">
-                        {t("Rheumatology & Autoimmunity", "रूमेटोलॉजी एवं गठिया")}
+                    <div className="min-w-0">
+                      <span className="block font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#1F2F98] truncate">
+                        {item.label}
                       </span>
-                      <span className="text-[11px] text-slate-500">
-                        {t("Dr. Aakash Singh (AIR 1 PGIMER)", "डॉ. आकाश सिंह")}
-                      </span>
+                      {item.sub && (
+                        <span className="block text-[10px] text-slate-500 truncate">
+                          {item.sub}
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 group-hover:text-[#1F2F98] transition-all shrink-0" />
-                </Link>
-
-                <Link
-                  href="/dermatology"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1CA7EC] hover:bg-[#F0F9FF] transition-all group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#1CA7EC]/10 text-[#1CA7EC] flex items-center justify-center shrink-0">
-                      <Sparkles className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="block font-bold text-sm text-slate-900 group-hover:text-[#1CA7EC]">
-                        {t("Dermatology & Hair Science", "त्वचा, बाल एवं लेजर")}
+                  <div className="flex items-center gap-2 shrink-0">
+                    {item.badge && (
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#1CA7EC]/10 text-[#1F2F98] border border-[#1CA7EC]/20">
+                        {item.badge}
                       </span>
-                      <span className="text-[11px] text-slate-500">
-                        {t("Dr. Ankita Pundir (AIIMS)", "डॉ. अंकिता पुंडीर")}
-                      </span>
-                    </div>
+                    )}
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 group-hover:text-[#1CA7EC] transition-transform" />
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 group-hover:text-[#1CA7EC] transition-all shrink-0" />
                 </Link>
-              </div>
-
-              {/* General Navigation Links */}
-              <div className="space-y-1 pt-2 border-t border-slate-100">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
-                  {t("Navigation", "मुख्य पृष्ठ")}
-                </span>
-
-                {[
-                  { href: "/doctors", title: t("Specialist Doctors", "विशेषज्ञ चिकित्सक") },
-                  { href: "/technology", title: t("Technology & Medical Lasers", "उपकरण एवं तकनीक") },
-                  { href: "/results", title: t("Clinical Results & Gallery", "परिणाम एवं गैलरी") },
-                  { href: "/locations", title: t("Gorakhpur & Bhagalpur Branches", "क्लिनिक शाखाएं") },
-                  { href: "/patient-hub", title: t("Patient Education & FAQs", "रोगी मार्गदर्शिका एवं FAQs") },
-                  { href: "/about", title: t("About ACORD Clinics", "हमारे बारे में") },
-                  { href: "/contact", title: t("Contact & Support", "संपर्क एवं परामर्श") },
-                ].map((item, i) => (
-                  <Link
-                    key={i}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-700 hover:text-slate-900 text-xs font-semibold transition-colors"
-                  >
-                    <span>{item.title}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                ))}
-              </div>
+              ))}
             </div>
 
             {/* Bottom Actions in Drawer */}
