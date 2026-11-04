@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AcordLogo from "@/components/AcordLogo";
@@ -33,6 +34,7 @@ export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [rheumMegaOpen, setRheumMegaOpen] = useState(false);
   const [dermMegaOpen, setDermMegaOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const pathname = usePathname();
   const { lang, setLang, t, isHindi } = useLanguage();
@@ -109,12 +111,28 @@ export const Navbar = () => {
   ];
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -463,54 +481,92 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Sliding Navigation Drawer (Slider) */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden">
+      {/* Mobile Sliding Navigation Drawer rendered via Portal outside header to avoid backdrop-filter trapping */}
+      {mounted && mobileMenuOpen && createPortal(
+        <div className="fixed inset-0 z-[99999] lg:hidden">
           {/* Backdrop Blur Overlay */}
           <div
-            className="fixed inset-0 top-[56px] sm:top-[64px] bg-slate-900/50 backdrop-blur-sm z-30 transition-opacity animate-in fade-in duration-200"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
           />
 
-          {/* Slide-in Panel from the Right */}
+          {/* Slide-in Drawer from the Right */}
           <aside
-            className="fixed top-[56px] sm:top-[64px] right-0 bottom-0 w-[86%] max-w-sm bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between z-40 animate-in slide-in-from-right duration-300 overflow-y-auto"
+            className="fixed top-0 right-0 bottom-0 w-[86%] max-w-sm bg-white shadow-2xl flex flex-col justify-between border-l border-slate-200 z-[100000] animate-in slide-in-from-right duration-300"
             aria-label="Mobile Navigation"
           >
-            {/* Slider Content: All Navigation Menu Items in Rows */}
+            {/* Drawer Header */}
+            <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/90">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2"
+              >
+                <AcordLogo size={40} />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-9 h-9 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center shadow-xs transition-colors active:scale-95"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Drawer Body: All Navigation Menu Items in Rows */}
             <div className="p-3 sm:p-4 space-y-1.5 flex-1 overflow-y-auto">
-              {mobileNavRows.map((item, i) => (
-                <Link
-                  key={i}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-3 rounded-2xl bg-slate-50/80 hover:bg-[#F0F9FF] border border-slate-200/70 hover:border-[#1CA7EC]/40 flex items-center justify-between text-slate-800 transition-all group active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/80 group-hover:border-[#1CA7EC]/30 text-[#1F2F98] group-hover:text-[#1CA7EC] flex items-center justify-center shrink-0 shadow-2xs transition-colors">
-                      <item.icon className="w-4 h-4" />
+              {mobileNavRows.map((item, i) => {
+                const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={i}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`p-3 rounded-2xl border flex items-center justify-between transition-all group active:scale-[0.98] ${
+                      isActive
+                        ? "bg-[#1CA7EC]/10 border-[#1CA7EC]/40 text-[#1F2F98]"
+                        : "bg-slate-50/80 hover:bg-[#F0F9FF] border-slate-200/70 hover:border-[#1CA7EC]/40 text-slate-800"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-8.5 h-8.5 rounded-xl border flex items-center justify-center shrink-0 shadow-2xs transition-colors ${
+                          isActive
+                            ? "bg-[#1F2F98] text-white border-[#1F2F98]"
+                            : "bg-white border-slate-200/80 text-[#1F2F98] group-hover:text-[#1CA7EC] group-hover:border-[#1CA7EC]/30"
+                        }`}
+                      >
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="block font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#1F2F98] truncate">
+                          {item.label}
+                        </span>
+                        {item.sub && (
+                          <span className="block text-[10px] text-slate-500 truncate">
+                            {item.sub}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="block font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#1F2F98] truncate">
-                        {item.label}
-                      </span>
-                      {item.sub && (
-                        <span className="block text-[10px] text-slate-500 truncate">
-                          {item.sub}
+                    <div className="flex items-center gap-2 shrink-0">
+                      {item.badge && (
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#1CA7EC]/10 text-[#1F2F98] border border-[#1CA7EC]/20">
+                          {item.badge}
                         </span>
                       )}
+                      <ChevronRight
+                        className={`w-4 h-4 transition-transform ${
+                          isActive
+                            ? "text-[#1F2F98]"
+                            : "text-slate-400 group-hover:translate-x-0.5 group-hover:text-[#1CA7EC]"
+                        }`}
+                      />
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {item.badge && (
-                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#1CA7EC]/10 text-[#1F2F98] border border-[#1CA7EC]/20">
-                        {item.badge}
-                      </span>
-                    )}
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 group-hover:text-[#1CA7EC] transition-transform" />
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Bottom Actions in Drawer */}
@@ -549,7 +605,8 @@ export const Navbar = () => {
               </div>
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );
