@@ -29,8 +29,31 @@ export default function ConditionDetailPage({ params }) {
   const doctor = DOCTORS.find((d) => d.id === "dr-aakash") || DOCTORS[0];
   const defaultBranch = CLINIC_INFO.branches[0];
 
+  const conditionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalCondition",
+    name: condition.title,
+    description: condition.shortDesc,
+    possibleTreatment: condition.treatments?.map((t) => ({
+      "@type": "MedicalTherapy",
+      name: t,
+    })),
+    signOrSymptom: condition.symptoms?.map((s) => ({
+      "@type": "MedicalSignOrSymptom",
+      name: s,
+    })),
+    associatedSpecialty: {
+      "@type": "MedicalSpecialty",
+      name: "Rheumatology",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 py-14 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(conditionJsonLd) }}
+      />
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">

@@ -27,8 +27,27 @@ export default function DoctorProfilePage({ params }) {
 
   const defaultBranch = CLINIC_INFO.branches[0];
 
+  const physicianJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    name: doctor.name,
+    image: `https://acordclinics.com${doctor.image}`,
+    medicalSpecialty: doctor.specialty === "rheumatology" ? "Rheumatology" : "Dermatology",
+    description: doctor.bio,
+    alumniOf: doctor.specialty === "rheumatology" ? "PGIMER Chandigarh" : "AIIMS",
+    worksFor: {
+      "@type": "MedicalClinic",
+      name: "ACORD Clinics",
+      url: "https://acordclinics.com",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 py-14 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianJsonLd) }}
+      />
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">

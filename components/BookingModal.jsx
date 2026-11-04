@@ -29,8 +29,12 @@ export const BookingModal = () => {
   const [patientPhone, setPatientPhone] = useState("");
   const [patientCity, setPatientCity] = useState("");
   const [symptomNote, setSymptomNote] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
+
+  // Input sanitization helper to prevent XSS / markup injection
+  const sanitizeText = (val) => (val ? val.replace(/[<>]/g, "").trim().slice(0, 500) : "");
 
   useEffect(() => {
     if (options.branch) setSelectedBranch(options.branch);
@@ -39,6 +43,7 @@ export const BookingModal = () => {
     if (isOpen) {
       setStep(1);
       setBookingConfirmed(false);
+      setPhoneError("");
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       setSelectedDate(tomorrow.toISOString().split("T")[0]);
@@ -50,8 +55,22 @@ export const BookingModal = () => {
 
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    if (!patientName || !patientPhone) return;
+    const cleanName = sanitizeText(patientName);
+    const cleanPhoneDigits = patientPhone.replace(/[^0-9]/g, "");
 
+    if (!cleanName) return;
+
+    if (cleanPhoneDigits.length < 10) {
+      setPhoneError(
+        t(
+          "Please enter a valid 10-digit mobile number.",
+          "कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें।"
+        )
+      );
+      return;
+    }
+
+    setPhoneError("");
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
@@ -61,21 +80,25 @@ export const BookingModal = () => {
   };
 
   const getWhatsAppBookingLink = () => {
+    const cleanName = sanitizeText(patientName);
+    const cleanCity = sanitizeText(patientCity);
+    const cleanNote = sanitizeText(symptomNote);
+
     const text = encodeURIComponent(
       `*ACORD Clinics Appointment Request*\n` +
       `--------------------------------\n` +
-      `*Patient Name:* ${patientName}\n` +
-      `*Phone:* ${patientPhone}\n` +
-      `*City:* ${patientCity || "Not provided"}\n` +
+      `*Patient Name:* ${cleanName}\n` +
+      `*Phone:* ${patientPhone.trim()}\n` +
+      `*City:* ${cleanCity || "Not provided"}\n` +
       `*Branch:* ${branchObj.city}\n` +
       `*Consultation:* ${consultType === "clinic" ? "In-Clinic Visit" : "Video Teleconsultation"}\n` +
       `*Doctor:* ${doctorObj.name} (${doctorObj.role})\n` +
       `*Date:* ${selectedDate}\n` +
       `*Slot:* ${selectedSlot}\n` +
-      (symptomNote ? `*Symptoms/Notes:* ${symptomNote}\n` : "") +
+      (cleanNote ? `*Symptoms/Notes:* ${cleanNote}\n` : "") +
       `\nPlease confirm my appointment slot. Thank you!`
     );
-    return `https://wa.me/${branchObj.whatsapp}?text=${text}`;
+    return `https://wa.me/${branchObj.whatsapp.replace(/[^0-9]/g, "")}?text=${text}`;
   };
 
   if (!isOpen) return null;
@@ -305,9 +328,15 @@ export const BookingModal = () => {
                   required
                   placeholder="+91 77029 41735"
                   value={patientPhone}
-                  onChange={(e) => setPatientPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPatientPhone(e.target.value);
+                    if (phoneError) setPhoneError("");
+                  }}
                   className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs font-medium focus:outline-none focus:border-[#1CA7EC]"
                 />
+                {phoneError && (
+                  <p className="text-[11px] text-red-600 font-semibold mt-1 animate-in fade-in">{phoneError}</p>
+                )}
               </div>
 
               <div>

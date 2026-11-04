@@ -30,8 +30,34 @@ export default function BranchDetailPage({ params }) {
     notFound();
   }
 
+  const branchJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    name: `ACORD Clinics — ${branch.city}`,
+    image: "https://acordclinics.com/logo.png",
+    telephone: branch.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: branch.address,
+      addressLocality: branch.city,
+      addressRegion: branch.state,
+      addressCountry: "IN",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: branch.coordinates?.lat || (branch.city === "Gorakhpur" ? 26.7606 : 25.2425),
+      longitude: branch.coordinates?.lng || (branch.city === "Gorakhpur" ? 83.3732 : 86.9842),
+    },
+    openingHours: branch.hours || branch.timings,
+    url: `https://acordclinics.com/locations/${branch.slug || branch.id}`,
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 py-14 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(branchJsonLd) }}
+      />
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-500">

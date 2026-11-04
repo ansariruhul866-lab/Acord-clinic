@@ -21,6 +21,9 @@ export default function BookAppointmentPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const sanitizeText = (val) => (val ? val.replace(/[<>]/g, "").trim().slice(0, 500) : "");
 
   const handleBranchChange = (branch) => {
     setFormData((prev) => ({ ...prev, branch }));
@@ -33,33 +36,46 @@ export default function BookAppointmentPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      alert("Please enter patient name and mobile number");
+    const cleanName = sanitizeText(formData.name);
+    const cleanPhoneDigits = formData.phone.replace(/[^0-9]/g, "");
+
+    if (!cleanName) {
+      setFormError(t("Please enter patient name", "कृपया मरीज का नाम दर्ज करें"));
       return;
     }
+
+    if (cleanPhoneDigits.length < 10) {
+      setFormError(t("Please enter a valid 10-digit mobile number", "कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें"));
+      return;
+    }
+
+    setFormError("");
 
     const branches = Array.isArray(CLINIC_INFO.branches) ? CLINIC_INFO.branches : Object.values(CLINIC_INFO.branches);
     const branchInfo = branches.find((b) => b.id === formData.branch) || branches[0];
     const docObj = DOCTORS.find((d) => d.id === formData.doctor || d.slug?.includes(formData.doctor));
     const doctorName = docObj ? docObj.name : "ACORD Specialist";
 
+    const cleanCity = sanitizeText(formData.city);
+    const cleanNotes = sanitizeText(formData.notes);
+
     const msg = `*ACORD Clinics - Appointment Request*\n` +
       `--------------------------------\n` +
-      `*Patient Name:* ${formData.name}\n` +
-      `*Phone:* ${formData.phone}\n` +
-      `*City:* ${formData.city || "Not provided"}\n` +
+      `*Patient Name:* ${cleanName}\n` +
+      `*Phone:* ${formData.phone.trim()}\n` +
+      `*City:* ${cleanCity || "Not provided"}\n` +
       `*Branch:* ${branchInfo.name} (${branchInfo.city})\n` +
       `*Specialty:* ${formData.specialty === "rheumatology" ? "Rheumatology & Immunology" : "Dermatology & Aesthetics"}\n` +
       `*Doctor:* ${doctorName}\n` +
       `*Preferred Date:* ${formData.date || "Earliest Available"}\n` +
       `*Time Slot:* ${formData.timeSlot}\n` +
-      (formData.notes ? `*Concern / Symptoms:* ${formData.notes}\n` : "") +
+      (cleanNotes ? `*Concern / Symptoms:* ${cleanNotes}\n` : "") +
       `--------------------------------\n` +
       `Requested via ACORD Website Portal`;
 
     const encoded = encodeURIComponent(msg);
     const waUrl = `https://wa.me/${branchInfo.whatsapp.replace(/[^0-9]/g, "")}?text=${encoded}`;
-    window.open(waUrl, "_blank");
+    window.open(waUrl, "_blank", "noopener,noreferrer");
     setSubmitted(true);
   };
 
@@ -198,6 +214,7 @@ export default function BookAppointmentPage() {
                 <label className="text-xs font-bold text-slate-700">Preferred Date / दिनांक</label>
                 <input
                   type="date"
+                  min={new Date().toISOString().split("T")[0]}
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-[#1CA7EC]"
@@ -269,6 +286,13 @@ export default function BookAppointmentPage() {
                 />
               </div>
             </div>
+
+            {/* Error Message */}
+            {formError && (
+              <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center">
+                {formError}
+              </div>
+            )}
 
             {/* Submit */}
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-4 justify-between border-t border-slate-200">

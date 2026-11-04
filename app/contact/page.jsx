@@ -88,7 +88,7 @@ export default function ContactPage() {
               <a
                 href={`https://wa.me/${gkp.whatsapp.replace(/[^0-9]/g, "")}`}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="py-3 px-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/40 text-[#128C7E] font-bold text-xs hover:bg-[#25D366]/20 transition-colors flex items-center gap-1.5"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -140,7 +140,7 @@ export default function ContactPage() {
               <a
                 href={`https://wa.me/${bgp.whatsapp.replace(/[^0-9]/g, "")}`}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="py-3 px-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/40 text-[#128C7E] font-bold text-xs hover:bg-[#25D366]/20 transition-colors flex items-center gap-1.5"
               >
                 <MessageCircle className="w-4 h-4" />

@@ -28,8 +28,25 @@ export default function DermatologyTreatmentDetailPage({ params }) {
   const doctor = DOCTORS.find((d) => d.id === "dr-ankita") || DOCTORS[1];
   const defaultBranch = CLINIC_INFO.branches[0];
 
+  const procedureJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalProcedure",
+    name: treatment.title,
+    description: treatment.shortDesc,
+    procedureType: "NonSurgicalProcedure",
+    relevantSpecialty: {
+      "@type": "MedicalSpecialty",
+      name: "Dermatology",
+    },
+    howPerformed: treatment.technologyUsed?.join(", "),
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 py-14 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(procedureJsonLd) }}
+      />
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Breadcrumb */}
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
