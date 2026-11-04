@@ -321,9 +321,9 @@ export const Navbar = () => {
         </nav>
 
         {/* Right CTA Actions */}
-        <div className="flex items-center gap-2.5 sm:gap-3.5">
-          {/* Bilingual Language Switcher (Segmented Pill) */}
-          <div className="flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs shadow-inner">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Bilingual Language Switcher (Segmented Pill) - Desktop & Tablet */}
+          <div className="hidden sm:flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs shadow-inner">
             <button
               onClick={() => setLang("en")}
               className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
@@ -350,159 +350,209 @@ export const Navbar = () => {
             </button>
           </div>
 
-          {/* Quick Call Icon Button */}
+          {/* Quick Call Icon Button - Desktop & Tablet */}
           <a
             href={`tel:${primaryBranch.phone}`}
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 hover:bg-[#1CA7EC]/10 hover:border-[#1CA7EC]/40 border border-slate-200 text-slate-800 transition-all shadow-sm group"
+            className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 hover:bg-[#1CA7EC]/10 hover:border-[#1CA7EC]/40 border border-slate-200 text-slate-800 transition-all shadow-sm group"
             title={`${t("Call ACORD Clinics", "कॉल करें")}: ${primaryBranch.phoneDisplay || primaryBranch.phone}`}
             aria-label="Call ACORD Clinics"
           >
             <Phone className="w-4 h-4 text-[#1CA7EC] group-hover:scale-110 transition-transform" />
           </a>
 
-          {/* Book Button */}
+          {/* Book Button - Desktop & Tablet */}
           <button
             onClick={() => openBooking()}
-            className="px-4 sm:px-5 py-2 rounded-full bg-[#1CA7EC] text-white font-bold text-xs shadow-azure-glow hover:bg-[#1AA7EC] transition-all flex items-center gap-1.5"
+            className="hidden md:flex px-4 sm:px-5 py-2 rounded-full bg-[#1CA7EC] text-white font-bold text-xs shadow-azure-glow hover:bg-[#1AA7EC] transition-all items-center gap-1.5"
           >
             <Calendar className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{t("Book Appointment", "अपॉइंटमेंट")}</span>
-            <span className="sm:hidden">{t("Book", "बुक")}</span>
+            <span>{t("Book Appointment", "अपॉइंटमेंट")}</span>
           </button>
 
-          {/* Mobile Menu Button */}
+          {/* Dedicated Hamburger Menu Button for Mobile */}
           <button
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 lg:hidden"
-            aria-label="Toggle Navigation Menu"
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 flex items-center justify-center transition-all active:scale-95 shadow-sm"
+            aria-label="Open Navigation Slider"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-[#1CA7EC]" /> : <Menu className="w-5 h-5" />}
+            <Menu className="w-6 h-6 text-[#1F2F98]" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Sliding Navigation Drawer (Slider) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 p-6 space-y-5 shadow-2xl max-h-[85vh] overflow-y-auto z-50">
-          {/* Mobile Language Switcher */}
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
-            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <Globe className="w-4 h-4 text-[#1CA7EC]" />
-              <span>{t("Select Language", "भाषा चुनें")}:</span>
-            </span>
-            <div className="flex items-center p-0.5 rounded-full bg-white border border-slate-200 text-xs shadow-sm">
+        <div className="lg:hidden fixed inset-0 z-50 animate-in fade-in duration-200">
+          {/* Backdrop Blur Overlay */}
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Slide-in Panel from the Right */}
+          <aside
+            className="fixed top-0 right-0 bottom-0 w-[86%] max-w-sm bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-300 overflow-y-auto"
+            aria-label="Mobile Navigation"
+          >
+            {/* Top Bar inside Drawer */}
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+              <div onClick={() => setMobileMenuOpen(false)}>
+                <AcordLogo size={42} />
+              </div>
               <button
-                onClick={() => setLang("en")}
-                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                  lang === "en"
-                    ? "bg-[#1F2F98] text-white shadow-sm"
-                    : "text-slate-600"
-                }`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors active:scale-95"
+                aria-label="Close navigation"
               >
-                English
-              </button>
-              <button
-                onClick={() => setLang("hi")}
-                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                  lang === "hi"
-                    ? "bg-[#1CA7EC] text-white shadow-sm"
-                    : "text-slate-600"
-                }`}
-              >
-                हिंदी
+                <X className="w-5 h-5 text-slate-800" />
               </button>
             </div>
-          </div>
 
-          <div className="flex flex-col space-y-2.5 text-sm font-semibold">
-            <Link
-              href="/rheumatology"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1F2F98]"
-            >
-              <div className="flex items-center gap-2.5">
-                <Activity className="w-4 h-4 text-[#1F2F98]" />
-                <span>{t("Rheumatology & Autoimmunity", "रूमेटोलॉजी एवं गठिया")}</span>
+            {/* Slider Content */}
+            <div className="p-4 sm:p-5 space-y-5 flex-1 overflow-y-auto">
+              {/* Language Switcher in Drawer */}
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#F0F9FF] border border-[#1CA7EC]/20">
+                <span className="text-xs font-bold text-[#1F2F98] flex items-center gap-1.5">
+                  <Globe className="w-4 h-4 text-[#1CA7EC]" />
+                  <span>{t("Language / भाषा", "भाषा चुनें")}:</span>
+                </span>
+                <div className="flex items-center p-0.5 rounded-full bg-white border border-slate-200 text-xs shadow-sm">
+                  <button
+                    onClick={() => setLang("en")}
+                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                      lang === "en"
+                        ? "bg-[#1F2F98] text-white shadow-sm"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => setLang("hi")}
+                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                      lang === "hi"
+                        ? "bg-[#1CA7EC] text-white shadow-sm"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
 
-            <Link
-              href="/dermatology"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1CA7EC]"
-            >
-              <div className="flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 text-[#1CA7EC]" />
-                <span>{t("Dermatology & Hair Science", "त्वचा, बाल एवं लेजर")}</span>
+              {/* Speciality Links */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+                  {t("Clinical Specialities", "विभाग एवं परामर्श")}
+                </span>
+
+                <Link
+                  href="/rheumatology"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1F2F98] hover:bg-[#F0F9FF] transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-[#1F2F98]/10 text-[#1F2F98] flex items-center justify-center shrink-0">
+                      <Activity className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="block font-bold text-sm text-slate-900 group-hover:text-[#1F2F98]">
+                        {t("Rheumatology & Autoimmunity", "रूमेटोलॉजी एवं गठिया")}
+                      </span>
+                      <span className="text-[11px] text-slate-500">
+                        {t("Dr. Aakash Singh (AIR 1 PGIMER)", "डॉ. आकाश सिंह")}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 group-hover:text-[#1F2F98] transition-all shrink-0" />
+                </Link>
+
+                <Link
+                  href="/dermatology"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800 hover:border-[#1CA7EC] hover:bg-[#F0F9FF] transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-[#1CA7EC]/10 text-[#1CA7EC] flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="block font-bold text-sm text-slate-900 group-hover:text-[#1CA7EC]">
+                        {t("Dermatology & Hair Science", "त्वचा, बाल एवं लेजर")}
+                      </span>
+                      <span className="text-[11px] text-slate-500">
+                        {t("Dr. Ankita Pundir (AIIMS)", "डॉ. अंकिता पुंडीर")}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 group-hover:text-[#1CA7EC] transition-all shrink-0" />
+                </Link>
               </div>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
 
-            <Link
-              href="/doctors"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800"
-            >
-              <span>{t("Specialist Doctors", "विशेषज्ञ डॉक्टर")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
+              {/* General Navigation Links */}
+              <div className="space-y-1 pt-2 border-t border-slate-100">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+                  {t("Navigation", "मुख्य पृष्ठ")}
+                </span>
 
-            <Link
-              href="/technology"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800"
-            >
-              <span>{t("Technology & Lasers", "उपकरण एवं तकनीक")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
+                {[
+                  { href: "/doctors", title: t("Specialist Doctors", "विशेषज्ञ चिकित्सक") },
+                  { href: "/technology", title: t("Technology & Medical Lasers", "उपकरण एवं तकनीक") },
+                  { href: "/results", title: t("Clinical Results & Gallery", "परिणाम एवं गैलरी") },
+                  { href: "/locations", title: t("Gorakhpur & Bhagalpur Branches", "क्लिनिक शाखाएं") },
+                  { href: "/patient-hub", title: t("Patient Education & FAQs", "रोगी मार्गदर्शिका एवं FAQs") },
+                  { href: "/about", title: t("About ACORD Clinics", "हमारे बारे में") },
+                  { href: "/contact", title: t("Contact & Support", "संपर्क एवं परामर्श") },
+                ].map((item, i) => (
+                  <Link
+                    key={i}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-700 hover:text-slate-900 text-xs font-semibold transition-colors"
+                  >
+                    <span>{item.title}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            <Link
-              href="/results"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800"
-            >
-              <span>{t("Clinical Results Gallery", "परिणाम")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
+            {/* Bottom Actions in Drawer */}
+            <div className="p-4 sm:p-5 border-t border-slate-200 bg-slate-50 space-y-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openBooking();
+                }}
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#1F2F98] to-[#1CA7EC] text-white font-bold text-sm shadow-md shadow-[#1CA7EC]/20 flex items-center justify-center gap-2 active:scale-95 transition-transform"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>{t("Book Consultation Slot", "अपॉइंटमेंट स्लॉट बुक करें")}</span>
+              </button>
 
-            <Link
-              href="/locations"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800"
-            >
-              <span>{t("Gorakhpur & Bhagalpur Branches", "क्लिनिक शाखाएं")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
+              <div className="grid grid-cols-2 gap-2">
+                <a
+                  href={`tel:${primaryBranch.phone}`}
+                  className="py-2.5 px-3 rounded-xl bg-white border border-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-transform"
+                >
+                  <Phone className="w-3.5 h-3.5 text-[#1CA7EC]" />
+                  <span>{t("Call Clinic", "कॉल करें")}</span>
+                </a>
 
-            <Link
-              href="/patient-hub"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-800"
-            >
-              <span>{t("Patient Education & FAQs", "रोगी मार्गदर्शिका")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </Link>
-          </div>
-
-          <div className="pt-3 border-t border-slate-200 space-y-2.5">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                openBooking();
-              }}
-              className="w-full py-3.5 rounded-full bg-[#1CA7EC] text-white font-bold text-sm shadow-azure-glow"
-            >
-              {t("Book Consultation", "परामर्श बुक करें")}
-            </button>
-            <a
-              href={`tel:${primaryBranch.phone}`}
-              className="w-full py-3 rounded-full bg-slate-100 border border-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 font-mono"
-            >
-              <Phone className="w-3.5 h-3.5 text-[#1CA7EC]" />
-              <span>{primaryBranch.phoneDisplay || primaryBranch.phone}</span>
-            </a>
-          </div>
+                <a
+                  href={`https://wa.me/${primaryBranch.whatsapp}?text=${encodeURIComponent(
+                    "Hello ACORD Clinics, I would like to book a specialist appointment."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3 rounded-xl bg-[#25D366]/10 border border-[#25D366]/40 text-[#128C7E] font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-transform"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </aside>
         </div>
       )}
     </header>
