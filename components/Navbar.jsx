@@ -16,6 +16,7 @@ import {
   Activity,
   Globe,
   ArrowRight,
+  MessageCircle,
 } from "lucide-react";
 
 export const Navbar = () => {
@@ -322,11 +323,11 @@ export const Navbar = () => {
 
         {/* Right CTA Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Bilingual Language Switcher (Segmented Pill) - Desktop & Tablet */}
-          <div className="hidden sm:flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs shadow-inner">
+          {/* Bilingual Language Switcher (Segmented Pill) - Always visible on navbar just left of hamburger */}
+          <div className="flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs shadow-inner">
             <button
               onClick={() => setLang("en")}
-              className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+              className={`px-2 sm:px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
                 lang === "en"
                   ? "bg-[#1F2F98] text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
@@ -338,7 +339,7 @@ export const Navbar = () => {
             </button>
             <button
               onClick={() => setLang("hi")}
-              className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+              className={`px-2 sm:px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
                 lang === "hi"
                   ? "bg-[#1CA7EC] text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
@@ -372,10 +373,10 @@ export const Navbar = () => {
           {/* Dedicated Hamburger Menu Button for Mobile */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 flex items-center justify-center transition-all active:scale-95 shadow-sm"
+            className="lg:hidden p-2 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 flex items-center justify-center transition-all active:scale-95 shadow-sm"
             aria-label="Open Navigation Slider"
           >
-            <Menu className="w-6 h-6 text-[#1F2F98]" />
+            <Menu className="w-5 h-5 text-[#1F2F98]" />
           </button>
         </div>
       </div>
