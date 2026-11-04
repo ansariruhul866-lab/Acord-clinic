@@ -370,77 +370,41 @@ export const Navbar = () => {
             <span>{t("Book Appointment", "अपॉइंटमेंट")}</span>
           </button>
 
-          {/* Dedicated Hamburger Menu Button for Mobile */}
+          {/* Dedicated Hamburger / Close Toggle Button for Mobile */}
           <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 flex items-center justify-center transition-all active:scale-95 shadow-sm"
-            aria-label="Open Navigation Slider"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className={`lg:hidden p-2 rounded-2xl border transition-all active:scale-95 shadow-sm flex items-center justify-center ${
+              mobileMenuOpen
+                ? "bg-[#1CA7EC]/10 border-[#1CA7EC]/40 text-[#1F2F98]"
+                : "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-900"
+            }`}
+            aria-label={mobileMenuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
           >
-            <Menu className="w-5 h-5 text-[#1F2F98]" />
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 text-[#1F2F98] animate-in spin-in-90 duration-200" />
+            ) : (
+              <Menu className="w-5 h-5 text-[#1F2F98]" />
+            )}
           </button>
         </div>
       </div>
 
       {/* Mobile Sliding Navigation Drawer (Slider) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 animate-in fade-in duration-200">
+        <div className="lg:hidden">
           {/* Backdrop Blur Overlay */}
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 top-[56px] sm:top-[64px] bg-slate-900/50 backdrop-blur-sm z-30 transition-opacity animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
           />
 
           {/* Slide-in Panel from the Right */}
           <aside
-            className="fixed top-0 right-0 bottom-0 w-[86%] max-w-sm bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-300 overflow-y-auto"
+            className="fixed top-[56px] sm:top-[64px] right-0 bottom-0 w-[86%] max-w-sm bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between z-40 animate-in slide-in-from-right duration-300 overflow-y-auto"
             aria-label="Mobile Navigation"
           >
-            {/* Top Bar inside Drawer */}
-            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
-              <div onClick={() => setMobileMenuOpen(false)}>
-                <AcordLogo size={42} />
-              </div>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors active:scale-95"
-                aria-label="Close navigation"
-              >
-                <X className="w-5 h-5 text-slate-800" />
-              </button>
-            </div>
-
             {/* Slider Content */}
             <div className="p-4 sm:p-5 space-y-5 flex-1 overflow-y-auto">
-              {/* Language Switcher in Drawer */}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#F0F9FF] border border-[#1CA7EC]/20">
-                <span className="text-xs font-bold text-[#1F2F98] flex items-center gap-1.5">
-                  <Globe className="w-4 h-4 text-[#1CA7EC]" />
-                  <span>{t("Language / भाषा", "भाषा चुनें")}:</span>
-                </span>
-                <div className="flex items-center p-0.5 rounded-full bg-white border border-slate-200 text-xs shadow-sm">
-                  <button
-                    onClick={() => setLang("en")}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                      lang === "en"
-                        ? "bg-[#1F2F98] text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    English
-                  </button>
-                  <button
-                    onClick={() => setLang("hi")}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                      lang === "hi"
-                        ? "bg-[#1CA7EC] text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    हिंदी
-                  </button>
-                </div>
-              </div>
-
               {/* Speciality Links */}
               <div className="space-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
