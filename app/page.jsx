@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import AcordDoctorStage from "@/components/AcordDoctorStage";
+import AcordOrbitHero from "@/components/AcordOrbitHero";
 import { SymptomFinder } from "@/components/SymptomFinder";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { useLanguage } from "@/lib/language-context";
@@ -148,9 +148,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right Column: Doctor Arches Stage */}
+          {/* Right Column: ACORD Care Orbit Hero */}
           <div className="lg:col-span-5 flex justify-center z-10 w-full">
-            <AcordDoctorStage />
+            <AcordOrbitHero />
           </div>
         </div>
       </section>
