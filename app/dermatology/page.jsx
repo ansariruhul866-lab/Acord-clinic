@@ -35,8 +35,8 @@ export default function DermatologyPage() {
             </h1>
             <p className="text-base text-slate-600 leading-relaxed">
               {t(
-                "Super-specialised clinical dermatology led by Dr. Ankita Pundir (MD Dermatology, South Korea & Chandigarh Fellow). Combining US FDA-cleared lasers, clinical trichology, and advanced aesthetic dermatosurgery.",
-                "डॉ. अंकिता पुंडीर के नेतृत्व में यूएस-एफडीए स्वीकृत लेज़र, हेयर रिस्टोरेशन एवं त्वचा रोगों का संपूर्ण प्रमाण-आधारित इलाज।"
+                "Super-specialised clinical dermatology led by Dr. Ankita Pundir (Faculty at BRD Medical College Gorakhpur, AIIMS AIR 456). Combining US FDA-cleared lasers, clinical trichology, and advanced aesthetic dermatosurgery.",
+                "बीआरडी मेडिकल कॉलेज गोरखपुर में फैकल्टी डॉ. अंकिता पुंडीर (AIIMS AIR 456) के नेतृत्व में यूएस-एफडीए स्वीकृत लेज़र, हेयर रिस्टोरेशन एवं त्वचा रोगों का संपूर्ण प्रमाण-आधारित इलाज।"
               )}
             </p>
             <div className="flex flex-wrap gap-4 pt-2">

@@ -199,7 +199,7 @@ export default function DermatologyTreatmentDetailPage({ params }) {
             <div>
               <div className="font-bold text-base sm:text-lg text-slate-900">{doctor.name}</div>
               <div className="text-xs text-[#1CA7EC] font-semibold">{doctor.role}</div>
-              <div className="text-[11px] text-slate-500">NEET PG AIR 1488, AIIMS AIR 456</div>
+              <div className="text-[11px] text-slate-500">Faculty at BRD Medical College · AIIMS AIR 456</div>
             </div>
           </div>
 

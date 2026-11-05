@@ -57,8 +57,8 @@ export default function DoctorsDirectoryPage() {
                 ]
               : [
                   t(
-                    "MD Dermatology (AIIMS AIR 456 · NEET PG AIR 1488)",
-                    "एमडी डर्मेटोलॉजी (AIIMS AIR 456 · NEET PG AIR 1488)"
+                    "Faculty at BRD Medical College Gorakhpur · MD (AIIMS AIR 456)",
+                    "फैकल्टी, बीआरडी मेडिकल कॉलेज गोरखपुर · एमडी (AIIMS AIR 456)"
                   ),
                   t(
                     "International Fellowships in Lasers & Trichology (South Korea)",

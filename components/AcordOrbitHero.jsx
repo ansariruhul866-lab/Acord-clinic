@@ -28,8 +28,8 @@ const TABS = [
     fallbackImg: "https://acordclinic.vercel.app/images/acord-logo.png",
     logo: true,
     name: "ACORD Clinics",
-    line: "Rheumatology + Dermatology Super-Speciality",
-    who: "",
+    line: "Autoimmunity Centre Of excellence in Rheumatology and Dermatology",
+    who: "One-Stop Solution for Your Health Needs",
     chips: [
       R("Inflammatory Arthritis", rh + "inflammatory-arthritis"),
       D("Vitiligo Surgery", de + "vitiligo-surgeries"),
@@ -69,7 +69,7 @@ const TABS = [
     fallbackImg: "https://acordclinic.vercel.app/images/dr-ankita-pundir.png",
     name: "Dr. Ankita Pundir",
     line: "MD Dermatology · Dermatosurgeon",
-    who: "NEET PG AIR 1488 · AIIMS AIR 456",
+    who: "Faculty at BRD Medical College · AIIMS AIR 456",
     chips: [
       D("Vitiligo Surgery", de + "vitiligo-surgeries"),
       D("FUE Hair Transplant", de + "hair-restoration-transplant"),

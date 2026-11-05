@@ -1,6 +1,6 @@
-# ACORD Clinics — Center of Excellence in Rheumatology & Dermatology
+# ACORD Clinics — Autoimmunity Centre Of excellence in Rheumatology and Dermatology
 
-> ACORD Clinics (Arthritis, Clinical Immunology & Dermatology Super-Speciality Clinics) is India's premier regional institute for advanced autoimmune and dermatological disorders, operating tertiary outpatient centres in Gorakhpur (Uttar Pradesh) and Bhagalpur (Bihar).
+> ACORD Clinics (Autoimmunity Centre Of excellence in Rheumatology and Dermatology) is India's premier hybrid super-speciality centre and one-stop solution for complex autoimmune, rheumatology, skin, and hair health needs, operating tertiary outpatient centres in Gorakhpur (Uttar Pradesh) and Bhagalpur (Bihar).
 
 ## Core Super-Specialists
 
@@ -19,7 +19,7 @@
 - **Profile URL:** https://acordclinics.com/doctors/dr-aakash-singh
 
 ### Dr. Ankita Pundir
-- **Designation:** Consultant Dermatologist, Dermatosurgeon & Aesthetic Physician
+- **Designation:** Faculty at BRD Medical College Gorakhpur · Consultant Dermatologist, Dermatosurgeon & Aesthetic Physician
 - **Qualifications:** MBBS, MD Dermatology, Venereology & Leprosy (AIIMS AIR 456, NEET PG AIR 1488)
 - **Fellowships:** Advanced Aesthetic Dermatosurgery (South Korea & Brazil)
 - **Specializations:**

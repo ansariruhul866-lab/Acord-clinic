@@ -67,29 +67,30 @@ export default function HomePage() {
               <span className="w-2 h-2 rounded-full bg-[#1CA7EC] animate-pulse" />
               <span>
                 {t(
-                  "India's 1st Hybrid Rheumatology & Dermatology Super-Speciality",
-                  "भारत का प्रथम हाइब्रिड रूमेटोलॉजी एवं डर्मेटोलॉजी सेंटर"
+                  "India's 1st Hybrid Super-Speciality · One-Stop Solution for Your Health Needs",
+                  "भारत का प्रथम हाइब्रिड सुपर-स्पेशलिटी · संपूर्ण स्वास्थ्य आवश्यकताओं का एक ही स्थान पर समाधान"
                 )}
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900">
-              <span className="font-display tracking-wider block text-[#1F2F98] mb-1 text-2xl sm:text-3xl">
-                <span className="text-[#1CA7EC]">A</span>UTOIMMUNITY ·{" "}
-                <span className="text-[#1F2F98]">C</span>ARE ·{" "}
-                <span className="text-[#4ADEDE]">O</span>UTCOMES ·{" "}
-                <span className="text-[#1AA7EC]">R</span>ESULTS
+              <span className="font-display tracking-tight block text-[#1F2F98] mb-2 text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-snug">
+                <span className="text-[#1CA7EC]">A</span>utoimmunity{" "}
+                <span className="text-[#1F2F98]">C</span>entre{" "}
+                <span className="text-[#4ADEDE]">O</span>f excellence in{" "}
+                <span className="text-[#1AA7EC]">R</span>heumatology and{" "}
+                <span className="text-[#1CA7EC]">D</span>ermatology
               </span>
-              <span>{t("Choose Your Path to", "स्वास्थ्य और आत्मविश्वास की")}</span>{" "}
+              <span>{t("One-Stop Solution for Your", "स्वास्थ्य और आत्मविश्वास के लिए")}</span>{" "}
               <span className="bg-gradient-to-r from-[#1F2F98] via-[#1CA7EC] to-[#1AA7EC] bg-clip-text text-transparent underline decoration-[#1CA7EC]/40">
-                {t("Health & Confidence", "ओर सही मार्ग")}
+                {t("Health & Confidence", "एकमात्र संपूर्ण समाधान")}
               </span>
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 max-w-2xl font-normal leading-relaxed mx-auto lg:mx-0">
               {t(
-                "Advanced arthritis, lupus, cold-chain biologics, vitiligo micro-grafting, FUE hair restoration and global medical lasers. Serving Gorakhpur, Bhagalpur, Purvanchal, Bihar & Jharkhand.",
-                "जटिल गठिया, ल्यूपस, इन-हाउस बायोलॉजिकल दवाएं, विटिलिगो सर्जरी, FUE हेयर ट्रांसप्लांट और लेजर तकनीक — गोरखपुर एवं भागलपुर में।"
+                "Your comprehensive one-stop destination for arthritis, autoimmune diseases, biologic therapy, vitiligo micro-grafting, FUE hair restoration, and global medical lasers. Serving Gorakhpur, Bhagalpur, Purvanchal, Bihar & Jharkhand with globally benchmarked care.",
+                "जटिल गठिया, ल्यूपस, इन-हाउस बायोलॉजिकल दवाएं, विटिलिगो सर्जरी, FUE हेयर ट्रांसप्लांट और लेजर तकनीक — आपकी संपूर्ण स्वास्थ्य आवश्यकताओं का एक ही छत के नीचे अंतरराष्ट्रीय स्तर का समाधान।"
               )}
             </p>
 
@@ -176,9 +177,9 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-1">
-            <div className="text-[#1CA7EC] font-black text-xl">NEET AIR 1488</div>
+            <div className="text-[#1CA7EC] font-black text-xl">Faculty · BRD Med College</div>
             <p className="text-xs text-slate-600 font-medium">
-              {t("Dr. Ankita Pundir (MD Dermatology)", "डॉ. अंकिता पुंडीर (डर्मेटोलॉजी)")}
+              {t("Dr. Ankita Pundir (AIIMS AIR 456)", "डॉ. अंकिता पुंडीर (AIIMS AIR 456)")}
             </p>
           </div>
 

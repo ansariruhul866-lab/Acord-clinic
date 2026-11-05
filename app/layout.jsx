@@ -43,7 +43,7 @@ export const metadata = {
     template: "%s | ACORD Clinics",
   },
   description:
-    "India's premier hybrid centre of excellence in Rheumatology, Immunology, and Dermatology. Expert care for Arthritis, Lupus, Biologics, Vitiligo Surgery, FUE Hair Transplant, and Laser Treatments by Dr. Aakash Singh (AIR 1, PGIMER Chandigarh) & Dr. Ankita Pundir (MD Dermatology, AIIMS).",
+    "Autoimmunity Centre Of excellence in Rheumatology and Dermatology (ACORD Clinics). Your one-stop super-speciality centre for Arthritis, Lupus, Biologics, Vitiligo Surgery, FUE Hair Transplant, and Laser Treatments by Dr. Aakash Singh (AIR 1, PGIMER Chandigarh) & Dr. Ankita Pundir (Faculty at BRD Medical College, AIIMS).",
   keywords: [
     "Rheumatologist in Gorakhpur",
     "Best Dermatologist in Gorakhpur",
@@ -202,7 +202,7 @@ export default function RootLayout({ children }) {
         name: "Dr. Ankita Pundir",
         jobTitle: "Consultant Dermatologist, Dermatosurgeon & Aesthetic Physician",
         medicalSpecialty: "https://health-lifesci.schema.org/Dermatology",
-        description: "MBBS, MD Dermatology (NEET PG AIR 1488, AIIMS AIR 456), South Korea & Chandigarh Fellow.",
+        description: "MBBS, MD Dermatology (AIIMS AIR 456), Faculty at BRD Medical College Gorakhpur, South Korea & Chandigarh Fellow.",
         alumniOf: [
           { "@type": "EducationalOrganization", name: "AIIMS" },
         ],

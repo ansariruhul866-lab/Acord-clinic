@@ -64,7 +64,7 @@ export const Navbar = () => {
       label: t("Dermatology & Hair Science", "त्वचा, बाल एवं लेजर"),
       sub: t("Vitiligo, FUE Hair, Lasers", "विटिलिगो, हेयर ट्रांसप्लांट, लेजर"),
       icon: Sparkles,
-      badge: "AIIMS MD",
+      badge: "BRD Med College",
     },
     {
       href: "/doctors",
@@ -345,7 +345,7 @@ export const Navbar = () => {
                           {t("Department Lead", "विभागाध्यक्ष")}
                         </span>
                         <h4 className="font-bold text-slate-900 text-sm">{isHindi ? drAnkita.nameHi : drAnkita.name}</h4>
-                        <span className="text-[10px] text-[#1CA7EC] font-mono font-semibold block">NEET PG AIR 1488 · AIIMS 456</span>
+                        <span className="text-[10px] text-[#1CA7EC] font-mono font-semibold block">Faculty at BRD Medical College · AIIMS 456</span>
                       </div>
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">

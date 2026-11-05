@@ -41,7 +41,7 @@ const DOCS = [
     id: "ankita",
     name: "Dr. Ankita Pundir",
     field: "Dermatology & Hair",
-    cred: "MD Dermatology · AIIMS AIR 456",
+    cred: "Faculty at BRD Medical College · AIIMS AIR 456",
     img: BASE + "/images/dr-ankita-pundir.png",
     fallbackImg: "https://acordclinic.vercel.app/images/dr-ankita-pundir.png",
     mono: "AP",

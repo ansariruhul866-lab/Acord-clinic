@@ -61,8 +61,8 @@ export default function AboutPage() {
                 <span className="font-display text-2xl tracking-wider text-[#1F2F98]">A • C • O • R • D</span>
                 <p className="text-xs text-[#1CA7EC] font-semibold">
                   {t(
-                    "Autoimmunity • Care • Outcome • Research • Dermatology",
-                    "ऑटोइम्यूनिटी • केयर • आउटकम • रिसर्च • डर्मेटोलॉजी"
+                    "Autoimmunity Centre Of excellence in Rheumatology and Dermatology",
+                    "ऑटोइम्यूनिटी सेंटर ऑफ एक्सीलेंस इन रूमेटोलॉजी एंड डर्मेटोलॉजी"
                   )}
                 </p>
               </div>

@@ -203,7 +203,7 @@ export default function BookAppointmentPage() {
                 >
                   <span className="text-xs font-bold text-[#1CA7EC] uppercase block">Dermatology & Aesthetics</span>
                   <span className="text-base font-bold text-slate-900 block">Dr. Ankita Pundir</span>
-                  <span className="text-xs text-slate-500 block mt-1">MD Dermatology (AIIMS AIR 456, S. Korea Fellow)</span>
+                  <span className="text-xs text-slate-500 block mt-1">Faculty at BRD Medical College · AIIMS AIR 456</span>
                 </button>
               </div>
             </div>
