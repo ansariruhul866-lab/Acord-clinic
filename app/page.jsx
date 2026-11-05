@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { HoloBadgeCanvas } from "@/components/3d/HoloBadgeCanvas";
+import AcordDoctorStage from "@/components/AcordDoctorStage";
 import { SymptomFinder } from "@/components/SymptomFinder";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { useLanguage } from "@/lib/language-context";
@@ -148,9 +148,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right Column: Prominent Doctor Showcase Card with 3D Flip */}
-          <div className="lg:col-span-5 flex justify-center z-10">
-            <HoloBadgeCanvas />
+          {/* Right Column: Doctor Arches Stage */}
+          <div className="lg:col-span-5 flex justify-center z-10 w-full">
+            <AcordDoctorStage />
           </div>
         </div>
       </section>
