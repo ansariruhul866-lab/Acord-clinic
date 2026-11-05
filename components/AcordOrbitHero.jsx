@@ -83,6 +83,29 @@ const TABS = [
   },
 ];
 
+const SHORT_TITLES = {
+  "Inflammatory Arthritis": "Arthritis",
+  "Vitiligo Surgery": "Vitiligo",
+  "Lupus & Autoimmunity": "Lupus Care",
+  "FUE Hair Transplant": "Hair Transplant",
+  "Biologics Infusion": "Biologics",
+  "Laser & Energy Devices": "Med Lasers",
+  "MSK Ultrasound": "Ultrasound",
+  "Acne Scar Revision": "Acne Scars",
+  "Rheumatoid Arthritis": "Rheumatoid",
+  "Lupus (SLE)": "Lupus",
+  "Ankylosing Spondylitis": "Spondylitis",
+  "Gout & Crystal Arthritis": "Gout Care",
+  "Vasculitis": "Vasculitis",
+  "MSK Ultrasound Injections": "MSK USG",
+  "Biopsy Diagnostics": "Biopsy",
+  "QR678® Therapy": "QR678®",
+  "Laser Hair Reduction": "Laser Hair",
+  "Melasma & Pigmentation": "Melasma",
+  "BOTOX® & Fillers": "Botox/Fillers",
+  "Thread Lift": "Thread Lift",
+};
+
 const Glyph = ({ k }) =>
   k === "r" ? (
     <svg
@@ -121,7 +144,7 @@ export default function AcordOrbitHero() {
 
   return (
     <div className="ao">
-      <style>{css}</style>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
 
       <div className="ao-stage">
         {/* background rings, sweep & drifting particles */}
@@ -149,7 +172,8 @@ export default function AcordOrbitHero() {
                     <span className="ao-ic">
                       <Glyph k={c.k} />
                     </span>
-                    {c.t}
+                    <span className="ao-t-full">{c.t}</span>
+                    <span className="ao-t-short">{SHORT_TITLES[c.t] || c.t}</span>
                   </Link>
                 </div>
               </div>
@@ -213,8 +237,8 @@ export default function AcordOrbitHero() {
 
 const css = `
 .ao{--navy:#1F2F98;--sky:#22b8e0;--mint:#18c7a0;--size:min(470px,88vw);
-  width:var(--size);margin-inline:auto;font-family:inherit;color:#0f1b4d}
-.ao-stage{position:relative;width:var(--size);height:var(--size)}
+  width:100%;max-width:var(--size);margin-inline:auto;font-family:inherit;color:#0f1b4d;box-sizing:border-box}
+.ao-stage{position:relative;width:var(--size);height:var(--size);margin-inline:auto}
 .ao-stage:hover .ao-orbit,.ao-stage:hover .ao-chip{animation-play-state:paused}
 
 /* ambient layers */
@@ -241,14 +265,16 @@ const css = `
 @keyframes ao-spin{to{transform:rotate(360deg)}}
 .ao-body{display:flex;align-items:center;gap:7px;translate:-50% -50%;white-space:nowrap;text-decoration:none;
   padding:6px 12px 6px 6px;border-radius:999px;font-size:12px;font-weight:600;color:#0f1b4d;
-  background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border:1px solid rgba(31,47,152,.12);
+  background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid rgba(31,47,152,.12);
   box-shadow:0 8px 20px -8px rgba(31,47,152,.35);
   animation:ao-pop .6s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i)*70ms + 150ms);
   transition:box-shadow .2s,background .2s}
 .ao-body:hover{background:#fff;box-shadow:0 12px 26px -8px rgba(34,184,224,.7)}
-.ao-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+.ao-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;shrink:0}
 .ao-r .ao-ic,.ao-body.ao-r .ao-ic{background:linear-gradient(135deg,var(--navy),#4a5cf0)}
 .ao-body.ao-d .ao-ic{background:linear-gradient(135deg,var(--sky),var(--mint))}
+.ao-t-full{display:inline}
+.ao-t-short{display:none}
 @keyframes ao-pop{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
 
 /* centre */
@@ -264,21 +290,44 @@ const css = `
 
 /* caption */
 .ao-cap{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;
-  padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.8);border:1px solid rgba(31,47,152,.1);
-  animation:ao-in .5s ease both}
-.ao-cap b{display:block;font-size:15px}.ao-cap span{display:block;font-size:12px;opacity:.7;margin-top:2px}
+  padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.92);border:1px solid rgba(31,47,152,.12);
+  box-shadow:0 10px 24px -10px rgba(31,47,152,.15);animation:ao-in .5s ease both}
+.ao-cap b{display:block;font-size:15px}.ao-cap span{display:block;font-size:12px;opacity:.75;margin-top:2px;line-height:1.4}
 .ao-cap em{display:block;font-style:normal;font-size:11px;font-weight:700;color:var(--navy);margin-top:3px}
 .ao-cta{flex:none;background:linear-gradient(135deg,var(--navy),#3446c8);color:#fff;text-decoration:none;
-  font-size:12px;font-weight:700;padding:10px 14px;border-radius:12px}
+  font-size:12px;font-weight:700;padding:10px 14px;border-radius:12px;transition:opacity .2s}
+.ao-cta:hover{opacity:.95}
 
 /* tabs */
 .ao-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;padding:5px;border-radius:14px;
   background:rgba(31,47,152,.06)}
 .ao-tabs button{border:0;border-radius:10px;padding:8px 4px;background:transparent;cursor:pointer;
   font:700 12px/1.1 inherit;color:#0f1b4d;transition:.25s}
-.ao-tabs small{display:block;font-size:9.5px;font-weight:600;opacity:.6;margin-top:2px;letter-spacing:.04em;text-transform:uppercase}
+.ao-tabs small{display:block;font-size:9.5px;font-weight:600;opacity:.65;margin-top:2px;letter-spacing:.04em;text-transform:uppercase}
 .ao-tabs .on{background:linear-gradient(135deg,var(--navy),#3446c8);color:#fff;box-shadow:0 8px 18px -8px var(--navy)}
 
-@media(max-width:480px){.ao-body{font-size:10.5px;padding:4px 9px 4px 4px}.ao-ic{width:20px;height:20px}.ao-slot{transform:rotate(var(--a)) translateX(calc(var(--size)*.40))}}
+/* Perfect Mobile Responsive Layout */
+@media(max-width:640px){
+  .ao{--size:min(285px,74vw);width:100%;padding:4px 0}
+  .ao-slot{transform:rotate(var(--a)) translateX(calc(var(--size)*.375))}
+  .ao-body{font-size:9px;padding:2.5px 6px 2.5px 2.5px;gap:4px;max-width:92px;overflow:hidden;text-overflow:ellipsis}
+  .ao-ic{width:16px;height:16px}
+  .ao-t-full{display:none}
+  .ao-t-short{display:inline;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ao-core{width:46%}
+  .ao-ring{padding:4px}
+  .ao-photo{border-width:3px}
+  
+  .ao-cap{flex-direction:column;align-items:stretch;text-align:center;gap:10px;padding:12px 14px;margin-top:10px}
+  .ao-cap b{font-size:15px}
+  .ao-cap span{font-size:11px;line-height:1.35;margin-top:2px}
+  .ao-cap em{font-size:10.5px;margin-top:3px}
+  .ao-cta{width:100%;text-align:center;padding:10px 14px;font-size:12px;box-sizing:border-box}
+
+  .ao-tabs{gap:4px;padding:4px;margin-top:8px}
+  .ao-tabs button{padding:6px 2px;font-size:11px}
+  .ao-tabs small{font-size:8px;margin-top:1px}
+}
+
 @media(prefers-reduced-motion:reduce){.ao *{animation-duration:.01s!important;animation-iteration-count:1!important}}
 `;
